@@ -1,0 +1,35 @@
+/**
+ * BlogPro Category Form Styles
+ * BEM methodology compliant styles for category form layout
+ */
+
+.category-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.category-form__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.category-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.category-form__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+  .category-form__actions {
+    flex-direction: column-reverse;
+  }
+}

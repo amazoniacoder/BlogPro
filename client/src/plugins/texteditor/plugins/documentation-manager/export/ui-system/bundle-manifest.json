@@ -1,0 +1,33 @@
+{
+  "plugin": "documentation-manager",
+  "version": "1.0.0",
+  "uiSystemVersion": "^1.0.0",
+  "bundleSize": 9117,
+  "dependencies": {
+    "tokens": [
+      "colors",
+      "spacing",
+      "typography",
+      "effects"
+    ],
+    "components": [
+      "button",
+      "form",
+      "card",
+      "modal"
+    ],
+    "icons": [
+      "save",
+      "edit",
+      "delete",
+      "add",
+      "search",
+      "gear",
+      "book",
+      "image",
+      "x"
+    ],
+    "patterns": []
+  },
+  "generatedAt": "2025-09-07T09:48:12.490Z"
+}

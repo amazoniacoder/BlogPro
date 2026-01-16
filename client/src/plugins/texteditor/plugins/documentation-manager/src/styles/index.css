@@ -1,0 +1,27 @@
+/**
+ * Documentation Manager Plugin Styles
+ * Main entry point for all plugin styles
+ * BEM methodology with library-specific theming
+ */
+
+/* Common base styles */
+@import './common/base.css';
+@import './common/search.css';
+@import './common/components.css';
+@import './common/navigation-helper.css';
+
+/* Library-specific styles */
+@import './libraries/texteditor/texteditor-library.css';
+@import './libraries/site/site-library.css';
+
+/* Admin styles */
+@import './admin/admin-mode.css';
+@import './admin/admin-panel.css';
+@import './admin/admin-overlays.css';
+@import './admin/context-menu.css';
+@import './admin/inline-editor.css';
+@import './admin/content-manager.css';
+@import './admin/content-form.css';
+
+/* Additional component styles */
+@import './reset.css';

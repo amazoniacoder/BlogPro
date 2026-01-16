@@ -1,0 +1,56 @@
+name: Text Editor Tests
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'client/src/plugins/texteditor/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'client/src/plugins/texteditor/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd client && npm ci
+    
+    - name: Run unit tests
+      run: npm run test:texteditor
+    
+    - name: Upload test coverage
+      uses: codecov/codecov-action@v3
+      with:
+        directory: ./client/src/plugins/texteditor/coverage/
+        flags: texteditor
+        name: texteditor-coverage
+    
+    - name: Run Storybook visual tests
+      run: |
+        cd client
+        npm run build-storybook
+        npm run test-storybook -- --url file://$PWD/storybook-static
+      env:
+        VISUAL_TEST: true
+    
+    - name: Upload visual test artifacts
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: visual-test-snapshots
+        path: |
+          client/src/plugins/texteditor/__image_snapshots__/
+          client/src/plugins/texteditor/__image_snapshots__/__diff_output__/

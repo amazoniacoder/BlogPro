@@ -1,0 +1,273 @@
+# BlogPro - Professional Blog Platform
+
+BlogPro is a modern, full-featured blogging platform with real-time content management capabilities, built on React, TypeScript and PostgreSQL.
+
+## Features
+
+- **Real-time content management**: Enhanced real-time updates with 95%+ WebSocket reliability
+- **Advanced admin panel**: Comprehensive content management with BEM-style components
+- **Enterprise-grade analytics**: High-performance analytics system with Redis caching (75% faster response times)
+- **Multi-level caching**: Client-side and server-side caching with Redis integration
+- **Type-safe development**: Full TypeScript implementation with generic types
+- **Modern architecture**: Clear separation of concerns with service layers
+- **Internationalization**: Multi-language support (English/Russian)
+- **Responsive design**: Mobile-first approach with centralized responsive styles in `breakpoints.css`
+- **Advanced search**: Full-text search with relevance scoring
+- **JWT authentication**: Secure stateless authentication with JWT-based access control roles
+- **🆕 Professional Media Library**: Categorized file storage with tabbed interface, bulk operations, and text editor integration
+- **Media Management**: Advanced file organization with automatic categorization by type and source
+- **Email system**: Contact forms and mailing list management
+- **🆕 Professional Text Editor**: Google Docs-compliant editor with character-level formatting, smart boundaries, undo/redo, paste intelligence, and 60fps performance (✅ COMPLETED)
+- **🏗️ Optimized Architecture**: ServiceFactory pattern, consolidated types, organized services, and streamlined hooks (✅ COMPLETED)
+
+## Tech stack
+
+### Frontend
+- React with TypeScript
+- **W3C compliant CSS** with strict BEM methodology (no utility frameworks)
+- **CSS duplicate analyzer** for optimization and standards compliance
+- **Professional text editor** with Google Docs-compliant behavior and performance
+- WebSocket client for real-time updates
+- Multi-level caching system
+- Context-based state management
+
+### Backend
+- Express.js with TypeScript
+- PostgreSQL with Drizzle ORM
+- Redis for caching (optional)
+- WebSocket server for real-time communication
+- RESTful API design with search endpoints
+- JWT authentication with jsonwebtoken
+- Upload handling files with Multer
+- Email service integration
+
+## Quick start
+1. Install dependencies:
+```bash
+npm install
+cd client && npm install
+```
+
+2. Set up environment variables:
+```bash
+cp .env.example .env
+# Set up database and Redis connections
+```
+
+3. Run the development server:
+```bash
+npm run dev
+```
+
+4. Access the application:
+- Frontend: http://localhost:3000
+- Admin panel: http://localhost:3000/admin (login required)
+- Analytics panel: http://localhost:3000/admin/analytics
+- Blog: http://localhost:3000/blog
+- API: http://localhost:5000/api
+- Search: Available in the header with a slide-out menu
+
+## Project structure
+
+### Client (`client/`)
+- `src/components/` - Reusable UI components
+- `src/admin/` - Admin panel with BEM-styled components and analytics system
+- `src/ui-system/` - **Centralized UI System** with reusable components and BEM-compliant styles
+  - `components/` - Organized component library (admin, common, forms)
+  - `icons/` - SVG icon system with TypeScript integration
+  - `admin/` - Admin-specific CSS following BEM methodology
+- `src/services/` - API services and caching system
+- `src/styles/` - **W3C compliant CSS** with strict BEM methodology and centralized architecture
+- `main.css` - Single entry point for all CSS imports (prevents duplicates)
+- `base/` - Global styles, variables and centralized responsive styles
+- `blocks/` - BEM-styled component blocks with strict naming conventions
+- `admin/` - Admin panel styles following BEM architecture
+- **CSS analyzer integration** - Built-in duplicate detection and W3C validation
+- `src/hooks/` - Custom React hooks
+- `src/types/` - TypeScript type definitions
+
+### Server (`server/`)
+- `api/` - RESTful API endpoints organized by functions
+- `db/` - Database configuration with PostgreSQL and Redis
+- `services/` - Business logic layer (auth, blog, media, email)
+- `middleware/` - Express middleware (auth, caching, security)
+- `websocket.ts` - WebSocket server for real-time updates
+- `utils/` - Server utilities and helpers
+
+### Shared (`shared/`)
+- `types/` - Common TypeScript interfaces and database schema
+- `utils/` - Common utility functions
+- `validation/` - Zod validation schemas for API endpoints
+## Security
+
+BlogPro implements comprehensive security measures including:
+- Custom security headers (CSP, HSTS, XSS protection)
+- Input rate limiting and sanitization
+- Session-based authentication with secure cookies
+- CORS configuration and file upload security
+
+See [SECURITY.md](./SECURITY.md) for detailed security implementation.
+
+## Authentication
+
+BlogPro uses JWT token-based authentication:
+
+- **Administrator Access**: Navigate to `/admin` and log in with admin credentials
+- **User Roles**: `admin`, `editor`, `user` with different permission levels
+- **Token Management**: JWT tokens are stored in localStorage with a 7-day expiration
+- **Email Verification**: Required for new user registration
+- **Stateless Design**: No server-side session storage required
+- **Auto-Redirect**: Administrators → `/admin`, Regular Users → `/profile`
+
+### Default Admin Account
+
+```
+Username: admin
+Password: admin123
+Email: admin@blogpro.local
+```
+
+**Note**: Database uses the `username` field instead of `login` to identify the user.
+
+*The administrator account is created automatically when the server is first started*
+
+## Search functionality
+
+Advanced search system with:
+
+- **Full-text search**: Search titles, descriptions and content of blog posts
+- **Relevance score**: Results are ranked by relevance (title > description > content)
+- **Category filtering**: Optional category-based filtering
+- **Real-time search**: Deferred search with instant results
+- **Responsive UI**: Search drop-down list located under the title
+
+## Admin panel features
+
+### Content management
+- **Blog management**: Create, edit, delete blog posts with rich text editor
+- **Analytics panel**: Enterprise-grade analytics system at `/admin/analytics` with:
+  - Real-time visitor tracking and page views
+  - Performance metrics with 75% faster response times
+  - Redis-based caching for optimal performance
+  - WebSocket live updates with 95%+ reliability
+  - Data retention management and automated cleanup
+  - Comprehensive health monitoring and diagnostics
+- **🆕 Professional Media Library**: Categorized file management with:
+  - Tabbed interface (All Files, Images, Documents, Videos, Audio, Editor)
+  - Bulk operations (select all, bulk delete, batch processing)
+  - Advanced filtering (date range, file size, search)
+  - Text editor integration with dedicated upload endpoint
+  - Organized storage (`/uploads/images/`, `/uploads/documents/`, `/uploads/editor/`)
+  - Automatic file categorization and WebP optimization
+- **User management**: Manage user accounts and permissions
+- **Real-time updates**: Enhanced WebSocket integration with connection health monitoring
+- **Cache management**: Redis-based caching with automatic invalidation
+- **Form validation**: Validation of required fields with visual indicators
+- **Responsive admin interface**: Separate mobile admin menu system for optimal mobile experience
+
+### Site Editor
+- **Dynamic Menu Builder**: Create and manage website navigation with drag & drop interface
+- **Hierarchical Menu Structure**: Support nested menu items and submenus
+- **Live Menu Preview**: Live preview of navigation changes
+- **Multiple Menu Types**: Header, Footer and Custom Menu Configurations
+- **Link Management**: Internal Pages, External URLs and Custom Routing
+- **Mobile Menu Optimization**: Automatic responsive menu generation
+- **Visibility Control**: Role-based menu item display
+
+### CSS Quality Assurance
+- **CSS Duplicate Analyzer**: Advanced tool to detect and remove duplicate CSS rules
+- Smart duplicate detection based on properties (not just class names)
+- Similarity Score: Identical (100%) vs Similar (80%+) duplicates
+- Batch Duplicate Removal with safe preservation of originals
+- File location tracking with exact line numbers
+- **W3C CSS validation**: Automated validation against W3C CSS specs
+- Standards compliance check for all CSS files
+- Error categorization: Syntax, property and value errors
+- Support for vendor prefixes and custom properties
+- Detailed error reporting with file locations
+- **Performance optimization**: Reduce CSS bundle size by removing duplicates
+- **Maintenance tools**: Refresh and reset functionality for CSS analysis
+
+## HTTPS configuration
+
+BlogPro supports HTTPS for both local development and production:
+
+```bash
+# Generate local SSL certificates
+npm run ssl:generate
+
+# Run HTTPS server
+npm run dev
+```
+
+The application runs on **https://localhost:3000** (frontend) with the backend on **https://localhost:5000** when SSL certificates are available.
+
+## CSS Architecture and Standards
+
+BlogPro maintains the highest CSS quality standards:
+
+### BEM Methodology Compliance
+- **Strong BEM Naming**: `.block`, `.block__element`, `.block--modifier`
+- **Centralized CSS Architecture**: Single entry point `main.css` prevents duplicates
+- **Component Organization**: Each component has a dedicated CSS directory
+- **No Utility Frameworks**: Pure CSS with semantic class names (Tailwind is prohibited)
+
+### W3C Standards Compliance
+- **100% W3C Valid CSS**: All 227+ CSS files are validated against W3C specs
+- **Built-in Validation Tools**: CSS Parser with Real-Time W3C Conformance Check
+- **Standards Enforcement**: Automated validation prevents non-compliant CSS
+- **Property Validation**: CSS properties and values are validated against official W3C standards
+
+### Performance Optimization
+- **Duplicate Detection**: Advanced parser identifies and removes duplicate CSS rules
+- **Bundle Size Optimization**: Removing duplicates significantly reduces CSS file size
+- **Efficient Loading**: Centralized imports prevent redundant CSS downloads
+- **Cache Optimization**: Clean CSS structure improves browser caching
+
+### Quality Assurance Process
+1. **Development**: Writing CSS following BEM conventions
+2. **Analysis**: Using CSS parser to detect duplicates and validate W3C compliance
+3. **Optimization**: Removing duplicates while maintaining functionality
+4. **Validation**: Ensuring 100% compliance with W3C standards
+5. **Testing**: Checking visual consistency after optimization
+
+See [docs/deployment/HTTPS_SETUP.md](./docs/deployment/HTTPS_SETUP.md) for local development and [docs/deployment/SSL_PRODUCTION_GUIDE.md](./docs/deployment/SSL_PRODUCTION_GUIDE.md) for production SSL configuration.
+
+## Documentation
+
+### Main documentation
+- [Development Guide](./docs/development/DEVELOPMENT_STANDARDS.md)
+- [API Documentation](./docs/api/API_DOCUMENTATION.md)
+- [Deployment Guide](./docs/deployment/DEPLOYMENT_GUIDE.md)
+- [WebSocket Architecture](./docs/architecture/WEBSOCKET_ARCHITECTURE.md)
+- [Security](./SECURITY.md)
+
+### 🆕 Professional Text Editor Documentation (Updated)
+- [Architecture Overview (Updated)](./client/src/plugins/texteditor/docs/ARCHITECTURE_OVERVIEW_UPDATED.md)
+- [API Reference (Optimized)](./client/src/plugins/texteditor/docs/API_REFERENCE_OPTIMIZED.md)
+- [Integration Guide (Updated)](./client/src/plugins/texteditor/docs/INTEGRATION_GUIDE_UPDATED.md)
+- [Google Docs Compliance](./client/src/plugins/texteditor/docs/GOOGLE_DOCS_COMPLIANCE_SPEC.md)
+- [Performance Guide](./client/src/plugins/texteditor/docs/PERFORMANCE_GUIDE.md)
+- [TypeScript Standards](./client/src/plugins/texteditor/docs/TYPESCRIPT_STANDARDS.md)
+
+## Text Editor Testing
+
+The professional text editor includes comprehensive testing (97% coverage):
+
+```bash
+# Run text editor tests
+cd client/src/plugins/texteditor
+npm test
+
+# Run with coverage
+npm run test:coverage
+
+# Watch mode for development
+npm run test:watch
+```
+
+See [Testing Documentation](./client/src/plugins/texteditor/__tests__/) for complete testing suite.
+
+## License
+
+MIT License - see [LICENSE](./LICENSE) file for details.

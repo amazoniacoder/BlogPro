@@ -1,0 +1,58 @@
+/**
+ * Documentation Manager - Theme Customizations
+ * Plugin-specific theme overrides
+ */
+
+.docs-theme {
+  /* Custom brand colors for documentation */
+  --bp-primary-500: #2563eb;
+  --bp-primary-600: #1d4ed8;
+  --bp-accent-500: #7c3aed;
+  --bp-accent-600: #6d28d9;
+  
+  /* Documentation-specific colors */
+  --docs-code-bg: #f8fafc;
+  --docs-code-border: #e2e8f0;
+  --docs-highlight: #fef3c7;
+  --docs-warning: #fbbf24;
+  --docs-info: #3b82f6;
+}
+
+.docs-theme.dark {
+  --docs-code-bg: #1e293b;
+  --docs-code-border: #334155;
+  --docs-highlight: #451a03;
+}
+
+/* Documentation-specific components */
+.docs-code-block {
+  background: var(--docs-code-bg);
+  border: 1px solid var(--docs-code-border);
+  border-radius: var(--bp-radius-lg);
+  padding: var(--bp-space-4);
+  font-family: var(--bp-font-mono);
+  font-size: var(--bp-text-sm);
+  overflow-x: auto;
+}
+
+.docs-highlight {
+  background: var(--docs-highlight);
+  padding: var(--bp-space-1) var(--bp-space-2);
+  border-radius: var(--bp-radius-sm);
+}
+
+.docs-callout {
+  padding: var(--bp-space-4);
+  border-radius: var(--bp-radius-lg);
+  border-left: 4px solid var(--docs-info);
+  background: var(--bp-bg-alt);
+  margin: var(--bp-space-4) 0;
+}
+
+.docs-callout--warning {
+  border-left-color: var(--docs-warning);
+}
+
+.docs-callout--info {
+  border-left-color: var(--docs-info);
+}

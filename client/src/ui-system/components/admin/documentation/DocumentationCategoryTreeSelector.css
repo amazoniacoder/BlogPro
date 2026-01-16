@@ -1,0 +1,180 @@
+/* Documentation Category Tree Selector Styles */
+.doc-category-tree-selector {
+  position: relative;
+  width: 100%;
+}
+
+.doc-category-tree-selector__trigger {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  text-align: left;
+}
+
+.doc-category-tree-selector__trigger:hover {
+  border-color: #d1d5db;
+}
+
+.doc-category-tree-selector__value {
+  flex: 1;
+  color: #374151;
+}
+
+.doc-category-tree-selector__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  margin-top: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  animation: dropdownSlideIn 0.2s ease-out;
+}
+
+@keyframes dropdownSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.doc-category-tree-selector__item {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.doc-category-tree-selector__item:last-child {
+  border-bottom: none;
+}
+
+.doc-category-tree-selector__row {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  gap: 8px;
+  min-height: 40px;
+  position: relative;
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.doc-category-tree-selector__row:hover .doc-category-tree-selector__name-button {
+  background-color: transparent;
+}
+
+.doc-category-tree-selector__row--expandable {
+  cursor: pointer;
+}
+
+.doc-category-tree-selector__row--expandable:hover {
+  background-color: #f9fafb;
+}
+
+.doc-category-tree-selector__row--selected {
+  background-color: #eff6ff;
+}
+
+.doc-category-tree-selector__row--selected:hover {
+  background-color: #dbeafe;
+}
+
+.doc-category-tree-selector__icon {
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.doc-category-tree-selector__name-button {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  display: inline-block;
+  width: auto;
+  min-width: 0;
+}
+
+.doc-category-tree-selector__name-button:hover {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.doc-category-tree-selector__name-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 1px;
+}
+
+.doc-category-tree-selector__spacer {
+  flex: 1;
+}
+
+.doc-category-tree-selector__expand-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.doc-category-tree-selector__expand-area:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.doc-category-tree-selector__expand-icon {
+  transition: transform 0.2s ease;
+}
+
+.doc-category-tree-selector__expand-icon--expanded {
+  transform: rotate(90deg);
+}
+
+.doc-category-tree-selector__children {
+  border-left: 2px solid #f3f4f6;
+}
+
+/* Scrollbar styling */
+.doc-category-tree-selector__dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.doc-category-tree-selector__dropdown::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.doc-category-tree-selector__dropdown::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.doc-category-tree-selector__dropdown::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

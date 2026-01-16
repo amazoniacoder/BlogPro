@@ -1,0 +1,22 @@
+{
+  "home": "Home",
+  "about": "About",
+  "blog": "Blog",
+  "products": "Products",
+  "contact": "Contact",
+  "admin": "Admin",
+  "profile": "Profile",
+  "settings": "Settings",
+  "switchToRussian": "Switch to Russian",
+  "switchToEnglish": "Switch to English",
+  "searchPlaceholder": "Search...",
+  "login": "Login",
+  "logout": "Logout",
+  "loadingNavigation": "Loading navigation...",
+  "services": "Services",
+  "products": "Products",
+  "portfolio": "Portfolio",
+  "news": "News",
+  "support": "Support",
+  "documentation": "Documentation"
+}

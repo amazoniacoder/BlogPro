@@ -1,0 +1,316 @@
+/**
+ * Table Editor Component Styles
+ * Professional table insertion interface with grid selector
+ */
+
+.grid-editor {
+  position: relative;
+  display: inline-block;
+}
+
+.grid-editor__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+}
+
+.grid-editor__trigger:hover:not(:disabled) {
+  border-color: #3b82f6;
+  background: #f8fafc;
+}
+
+.grid-editor__trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.grid-editor__trigger.open {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.grid-editor__icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.grid-editor__label {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Panel Styles */
+.grid-editor__panel {
+  position: fixed;
+  top: auto;
+  right: auto;
+  z-index: 10000;
+  width: 320px;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+.grid-editor__header {
+  margin-bottom: 16px;
+}
+
+.grid-editor__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+/* Error */
+.grid-editor__error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* Sections */
+.grid-editor__section {
+  margin-bottom: 20px;
+}
+
+.grid-editor__section:last-of-type {
+  margin-bottom: 0;
+}
+
+.grid-editor__section-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+/* Quick Grid Selector */
+.grid-editor__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  padding: 8px;
+  background: #f9fafb;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.grid-editor__grid-cell {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #d1d5db;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+}
+
+.grid-editor__grid-cell:hover {
+  background: #3b82f6;
+  border-color: #2563eb;
+}
+
+.grid-editor__grid-hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+  text-align: center;
+}
+
+/* Form */
+.grid-editor__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.grid-editor__row {
+  display: flex;
+  gap: 12px;
+}
+
+.grid-editor__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.grid-editor__field-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.grid-editor__input,
+.grid-editor__select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #111827;
+  background: white;
+  transition: border-color 0.2s ease;
+}
+
+.grid-editor__input:focus,
+.grid-editor__select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.grid-editor__input[type="number"] {
+  text-align: center;
+}
+
+/* Checkbox */
+.grid-editor__checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+}
+
+.grid-editor__checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #3b82f6;
+}
+
+/* Actions */
+.grid-editor__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.grid-editor__button {
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.grid-editor__button--primary {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.grid-editor__button--primary:hover:not(:disabled) {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.grid-editor__button--primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.grid-editor__button--secondary {
+  background: white;
+  color: #6b7280;
+  border-color: #d1d5db;
+}
+
+.grid-editor__button--secondary:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .grid-editor__trigger {
+    background: #374151;
+    color: #f3f4f6;
+    border-color: #4b5563;
+  }
+  
+  .grid-editor__trigger:hover:not(:disabled) {
+    background: #4b5563;
+    border-color: #6b7280;
+  }
+  
+  .grid-editor__trigger.open {
+    background: #1e3a8a;
+    color: #93c5fd;
+    border-color: #3b82f6;
+  }
+  
+  .grid-editor__panel {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .grid-editor__title {
+    color: #f9fafb;
+  }
+  
+  .grid-editor__section-title {
+    color: #d1d5db;
+  }
+  
+  .grid-editor__grid {
+    background: #374151;
+  }
+  
+  .grid-editor__grid-cell {
+    background: #4b5563;
+    border-color: #6b7280;
+  }
+  
+  .grid-editor__input,
+  .grid-editor__select {
+    background: #374151;
+    color: #f3f4f6;
+    border-color: #4b5563;
+  }
+  
+  .grid-editor__checkbox-label {
+    color: #d1d5db;
+  }
+  
+  .grid-editor__button--secondary {
+    background: #374151;
+    color: #d1d5db;
+    border-color: #4b5563;
+  }
+  
+  .grid-editor__button--secondary:hover {
+    background: #4b5563;
+    color: #f3f4f6;
+  }
+}

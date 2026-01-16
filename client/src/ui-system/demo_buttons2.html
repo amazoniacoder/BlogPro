@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogPro UI System Demo</title>
+    <link rel="stylesheet" href="./index.css">
+    <style>
+   
+        .demo-section {
+           
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: var(--bp-radius-lg);
+            box-shadow: var(--bp-shadow-md);
+            transition: background-color var(--bp-transition-base), box-shadow var(--bp-transition-base);
+        }
+        .demo-title {
+            font-size: var(--bp-text-2xl);
+            font-weight: var(--bp-font-semibold);
+            margin-bottom: 1rem;
+            color: var(--bp-text-primary);
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .theme-switcher {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+    
+
+body {
+    font-family: sans-serif;
+    background-color: #81d4fa;
+    font-weight: bold;
+}
+
+.text-box {
+    margin-left: 44vw;
+	 margin-top: 42vh;
+}
+
+.btn:link,
+.btn:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 40px;
+    display: inline-block;
+    border-radius: 100px;
+    transition: all .2s;
+    position: absolute;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-white {
+    background-color: #fff;
+    color: #777;
+}
+
+.btn::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all .4s;
+}
+
+.btn-white::after {
+    background-color: #fff;
+}
+
+.btn:hover::after {
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;
+}
+
+.btn-animated {
+    animation: moveInBottom 5s ease-out;
+    animation-fill-mode: backwards;
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+
+       
+    </style>
+</head>
+<body>
+   
+    
+      <!-- Button Demo -->
+    <div class="demo-section">
+        <h2 class="demo-title">Buttons</h2>
+        <div class="demo-grid">
+         
+         
+<div class="text-box">
+    <a href="#" class="btn btn-white btn-animate">click me</a>
+</div>
+
+
+        </div>
+        
+      
+    </div>
+    
+  
+
+    <script>
+        // Theme switcher functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('use');
+        const body = document.body;
+        
+        // Check for saved theme or default to light
+        const savedTheme = localStorage.getItem('bp-theme') || 'light';
+        
+        // Apply saved theme
+        if (savedTheme === 'dark') {
+            body.classList.add('dark');
+            themeIcon.setAttribute('href', '#bp-icon-moon');
+        }
+        
+        // Theme toggle handler
+        themeToggle.addEventListener('click', () => {
+            const isDark = body.classList.contains('dark');
+            
+            if (isDark) {
+                // Switch to light theme
+                body.classList.remove('dark');
+                themeIcon.setAttribute('href', '#bp-icon-sun');
+                localStorage.setItem('bp-theme', 'light');
+            } else {
+                // Switch to dark theme
+                body.classList.add('dark');
+                themeIcon.setAttribute('href', '#bp-icon-moon');
+                localStorage.setItem('bp-theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

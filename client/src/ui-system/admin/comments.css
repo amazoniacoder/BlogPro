@@ -1,0 +1,316 @@
+/**
+ * BlogPro Admin Comments Styles
+ * BEM Methodology: .comments-manager
+ */
+
+/* Comments Manager Layout */
+.comments-manager {
+  top: 60px;
+  position: relative;
+  padding: 1.5rem;
+  max-width: 100%;
+}
+
+.comments-manager__header {
+  margin-bottom: 2rem;
+}
+
+.comments-manager__header h2 {
+  color: var(--text-primary);
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.comments-manager__stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.comments-manager__stats .card {
+  min-width: 120px;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  transition: all 0.2s ease;
+}
+
+.comments-manager__stats .card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.comments-manager__stats .card .icon {
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.comments-manager__stats .card .text {
+  display: block;
+  margin: 0.25rem 0;
+}
+
+/* Filters Section */
+.comments-manager__filters {
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.comments-manager__filters select {
+  min-width: 200px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.comments-manager__filters select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+}
+
+/* Admin Comment Items */
+.comments-admin__item {
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  transition: all 0.2s ease;
+}
+
+.comments-admin__item:hover {
+  border-color: var(--color-primary-light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.comments-admin__item .text {
+  margin: 0.25rem 0;
+}
+
+.comments-admin__item .text--weight-medium {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.comments-admin__item .text--size-sm {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.comment-content {
+  padding: 0.75rem;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  border-left: 3px solid var(--color-primary-light);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* Action Buttons */
+.comments-admin__item .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.comments-admin__item .button--primary {
+  background: var(--color-success);
+  color: white;
+  border: 1px solid var(--color-success);
+}
+
+.comments-admin__item .button--primary:hover {
+  background: var(--color-success-dark);
+  border-color: var(--color-success-dark);
+}
+
+.comments-admin__item .button--outline {
+  background: transparent;
+  color: var(--color-warning);
+  border: 1px solid var(--color-warning);
+}
+
+.comments-admin__item .button--outline:hover {
+  background: var(--color-warning);
+  color: white;
+}
+
+.comments-admin__item .button--ghost {
+  background: transparent;
+  color: var(--color-error);
+  border: 1px solid transparent;
+}
+
+.comments-admin__item .button--ghost:hover {
+  background: var(--color-error-light);
+  border-color: var(--color-error);
+}
+
+/* Status Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.badge--warning {
+  background: var(--color-warning-light);
+  color: var(--color-warning-dark);
+  border: 1px solid var(--color-warning);
+}
+
+.badge--success {
+  background: var(--color-success-light);
+  color: var(--color-success-dark);
+  border: 1px solid var(--color-success);
+}
+
+.badge--error {
+  background: var(--color-error-light);
+  color: var(--color-error-dark);
+  border: 1px solid var(--color-error);
+}
+
+/* Stack Utilities for Comments Manager */
+.stack {
+  display: flex;
+}
+
+.stack--column {
+  flex-direction: column;
+}
+
+.stack--row {
+  flex-direction: row;
+}
+
+.stack--spacing-xs > * + * {
+  margin-top: 0.25rem;
+}
+
+.stack--spacing-sm > * + * {
+  margin-top: 0.5rem;
+}
+
+.stack--spacing-md > * + * {
+  margin-top: 1rem;
+}
+
+.stack--spacing-lg > * + * {
+  margin-top: 1.5rem;
+}
+
+.stack--row.stack--spacing-xs > * + * {
+  margin-top: 0;
+  margin-left: 0.25rem;
+}
+
+.stack--row.stack--spacing-sm > * + * {
+  margin-top: 0;
+  margin-left: 0.5rem;
+}
+
+.stack--row.stack--spacing-md > * + * {
+  margin-top: 0;
+  margin-left: 1rem;
+}
+
+.stack--row.stack--spacing-lg > * + * {
+  margin-top: 0;
+  margin-left: 1.5rem;
+}
+
+.stack--justify-between {
+  justify-content: space-between;
+}
+
+.stack--align-start {
+  align-items: flex-start;
+}
+
+.stack--align-center {
+  align-items: center;
+}
+
+/* Loading State */
+.comments-manager .text {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .comments-manager {
+    padding: 1rem;
+  }
+  
+  .comments-manager__stats {
+    flex-direction: column;
+  }
+  
+  .comments-manager__stats .card {
+    min-width: auto;
+  }
+  
+  .comments-admin__item {
+    padding: 1rem;
+  }
+  
+  .comments-admin__item .stack--row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .comments-admin__item .stack--row.stack--spacing-sm > * + * {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Dark Mode Support */
+.dark .comments-manager__stats .card {
+  background: var(--bg-tertiary);
+  border-color: var(--border-dark);
+}
+
+.dark .comments-manager__stats .card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark .comments-manager__filters {
+  background: var(--bg-tertiary);
+  border-color: var(--border-dark);
+}
+
+.dark .comments-admin__item {
+  background: var(--bg-secondary);
+  border-color: var(--border-dark);
+}
+
+.dark .comments-admin__item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dark .comment-content {
+  background: var(--bg-tertiary);
+}

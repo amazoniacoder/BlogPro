@@ -1,0 +1,45 @@
+/**
+ * Language Switcher Component - Header Slide Menu
+ * Matches old version header icon pattern
+ */
+
+.lang-switcher {
+  position: relative;
+}
+
+/* header__icon-link styling handled by header-icons.css */
+
+.lang-switcher__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 8px;
+  z-index: 1000;
+  min-width: 120px;
+}
+
+.lang-switcher__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.lang-switcher__option:hover {
+  background-color: var(--bg-hover);
+}
+
+.lang-switcher__option--active {
+  background-color: var(--primary-50);
+  color: var(--primary-700);
+}

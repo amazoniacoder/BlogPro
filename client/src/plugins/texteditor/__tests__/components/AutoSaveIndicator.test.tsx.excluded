@@ -1,0 +1,504 @@
+/**
+ * Auto-Save Indicator Component Tests
+ * Following development methodology for comprehensive testing
+ */
+
+import React from 'react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import AutoSaveIndicator, { AutoSaveStatus } from '../../core/components/AutoSaveIndicator';
+
+describe('AutoSaveIndicator Component', () => {
+  let user: ReturnType<typeof userEvent.setup>;
+  let mockOnManualSave: ReturnType<typeof vi.fn>;
+  let mockOnResolveConflict: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    user = userEvent.setup();
+    mockOnManualSave = vi.fn();
+    mockOnResolveConflict = vi.fn();
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.clearAllMocks();
+  });
+
+  describe('Component Rendering', () => {
+    it('renders with idle status correctly', () => {
+      const status: AutoSaveStatus = { status: 'idle' };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByRole('status')).toBeInTheDocument();
+      expect(screen.getByText('Ready')).toBeInTheDocument();
+      expect(screen.getByText('○')).toBeInTheDocument();
+    });
+
+    it('renders with saving status correctly', () => {
+      const status: AutoSaveStatus = { status: 'saving' };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText('Saving...')).toBeInTheDocument();
+      expect(screen.getByText('⏳')).toBeInTheDocument();
+    });
+
+    it('renders with saved status and timestamp', () => {
+      const lastSaved = new Date('2024-01-01T12:00:00Z');
+      const status: AutoSaveStatus = { status: 'saved', lastSaved };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText(/Saved/)).toBeInTheDocument();
+      expect(screen.getByText('✓')).toBeInTheDocument();
+    });
+
+    it('renders with error status correctly', () => {
+      const status: AutoSaveStatus = { 
+        status: 'error', 
+        error: 'Network error' 
+      };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText('Network error')).toBeInTheDocument();
+      expect(screen.getByText('⚠️')).toBeInTheDocument();
+    });
+
+    it('renders with conflict status correctly', () => {
+      const status: AutoSaveStatus = { 
+        status: 'conflict',
+        conflictData: {
+          localVersion: 'local content',
+          serverVersion: 'server content',
+          timestamp: new Date()
+        }
+      };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText('Conflict detected')).toBeInTheDocument();
+      expect(screen.getByText('⚡')).toBeInTheDocument();
+    });
+  });
+
+  describe('Manual Save Button', () => {
+    it('renders manual save button when enabled', () => {
+      const status: AutoSaveStatus = { status: 'idle' };
+      
+      render(
+        <AutoSaveIndicator 
+          status={status} 
+          enableManualSave={true}
+          onManualSave={mockOnManualSave}
+        />
+      );
+      
+      const saveButton = screen.getByRole('button', { name: /manually save document/i });
+      expect(saveButton).toBeInTheDocument();
+      expect(saveButton).toHaveAttribute('title', 'Save now (Ctrl+S)');
+    });
+
+    it('does not render manual save button when disabled', () => {
+      const status: AutoSaveStatus = { status: 'idle' };
+      
+      render(
+        <AutoSaveIndicator 
+          status={status} 
+          enableManualSave={false}
+        />
+      );
+      
+      expect(screen.queryByRole('button', { name: /manually save document/i })).not.toBeInTheDocument();
+    });
+
+    it('calls onManualSave when button is clicked', async () => {
+      const status: AutoSaveStatus = { status: 'idle' };
+      
+      render(
+        <AutoSaveIndicator 
+          status={status} 
+          onManualSave={mockOnManualSave}
+        />
+      );
+      
+      const saveButton = screen.getByRole('button', { name: /manually save document/i });
+      await user.click(saveButton);
+      
+      expect(mockOnManualSave).toHaveBeenCalledTimes(1);
+    });
+
+    it('disables manual save button when saving', () => {
+      const status: AutoSaveStatus = { status: 'saving' };
+      
+      render(
+        <AutoSaveIndicator 
+          status={status} 
+          onManualSave={mockOnManualSave}
+        />
+      );
+      
+      const saveButton = screen.getByRole('button', { name: /manually save document/i });
+      expect(saveButton).toBeDisabled();
+    });
+
+    it('disables manual save button when component is disabled', () => {
+      const status: AutoSaveStatus = { status: 'idle' };
+      
+      render(
+        <AutoSaveIndicator 
+          status={status} 
+          disabled={true}
+          onManualSave={mockOnManualSave}
+        />
+      );
+      
+      const saveButton = screen.getByRole('button', { name: /manually save document/i });
+      expect(saveButton).toBeDisabled();
+    });
+  });
+
+  describe('Relative Time Display', () => {
+    it('shows "just now" for recent saves', () => {
+      const lastSaved = new Date(Date.now() - 30000); // 30 seconds ago
+      const status: AutoSaveStatus = { status: 'saved', lastSaved };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText('Saved just now')).toBeInTheDocument();
+    });
+
+    it('shows minutes for saves within an hour', () => {
+      const lastSaved = new Date(Date.now() - 300000); // 5 minutes ago
+      const status: AutoSaveStatus = { status: 'saved', lastSaved };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText('Saved 5m ago')).toBeInTheDocument();
+    });
+
+    it('shows hours for saves within a day', () => {
+      const lastSaved = new Date(Date.now() - 7200000); // 2 hours ago
+      const status: AutoSaveStatus = { status: 'saved', lastSaved };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText('Saved 2h ago')).toBeInTheDocument();
+    });
+
+    it('updates relative time automatically', async () => {
+      const lastSaved = new Date(Date.now() - 30000); // 30 seconds ago
+      const status: AutoSaveStatus = { status: 'saved', lastSaved };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText('Saved just now')).toBeInTheDocument();
+      
+      // Fast-forward 5 minutes
+      act(() => {
+        vi.advanceTimersByTime(300000);
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByText('Saved 5m ago')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Conflict Resolution Dialog', () => {
+    const conflictStatus: AutoSaveStatus = {
+      status: 'conflict',
+      conflictData: {
+        localVersion: 'local content',
+        serverVersion: 'server content',
+        timestamp: new Date('2024-01-01T12:00:00Z')
+      }
+    };
+
+    it('shows conflict dialog when status is conflict', () => {
+      render(
+        <AutoSaveIndicator 
+          status={conflictStatus}
+          onResolveConflict={mockOnResolveConflict}
+        />
+      );
+      
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      expect(screen.getByText('Editing Conflict Detected')).toBeInTheDocument();
+      expect(screen.getByText(/This document has been modified by another user/)).toBeInTheDocument();
+    });
+
+    it('shows conflict timestamp', () => {
+      render(
+        <AutoSaveIndicator 
+          status={conflictStatus}
+          onResolveConflict={mockOnResolveConflict}
+        />
+      );
+      
+      expect(screen.getByText(/Conflict occurred:/)).toBeInTheDocument();
+    });
+
+    it('shows all resolution options', () => {
+      render(
+        <AutoSaveIndicator 
+          status={conflictStatus}
+          onResolveConflict={mockOnResolveConflict}
+        />
+      );
+      
+      expect(screen.getByRole('button', { name: /keep my changes/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /use server version/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /try to merge/i })).toBeInTheDocument();
+    });
+
+    it('calls onResolveConflict with "local" when Keep My Changes is clicked', async () => {
+      render(
+        <AutoSaveIndicator 
+          status={conflictStatus}
+          onResolveConflict={mockOnResolveConflict}
+        />
+      );
+      
+      const localButton = screen.getByRole('button', { name: /keep my changes/i });
+      await user.click(localButton);
+      
+      expect(mockOnResolveConflict).toHaveBeenCalledWith('local');
+    });
+
+    it('calls onResolveConflict with "server" when Use Server Version is clicked', async () => {
+      render(
+        <AutoSaveIndicator 
+          status={conflictStatus}
+          onResolveConflict={mockOnResolveConflict}
+        />
+      );
+      
+      const serverButton = screen.getByRole('button', { name: /use server version/i });
+      await user.click(serverButton);
+      
+      expect(mockOnResolveConflict).toHaveBeenCalledWith('server');
+    });
+
+    it('calls onResolveConflict with "merge" when Try to Merge is clicked', async () => {
+      render(
+        <AutoSaveIndicator 
+          status={conflictStatus}
+          onResolveConflict={mockOnResolveConflict}
+        />
+      );
+      
+      const mergeButton = screen.getByRole('button', { name: /try to merge/i });
+      await user.click(mergeButton);
+      
+      expect(mockOnResolveConflict).toHaveBeenCalledWith('merge');
+    });
+
+    it('hides conflict dialog when status changes from conflict', () => {
+      const { rerender } = render(
+        <AutoSaveIndicator 
+          status={conflictStatus}
+          onResolveConflict={mockOnResolveConflict}
+        />
+      );
+      
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      
+      rerender(
+        <AutoSaveIndicator 
+          status={{ status: 'saved' }}
+          onResolveConflict={mockOnResolveConflict}
+        />
+      );
+      
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Save Interval Display', () => {
+    it('shows save interval when status is idle', () => {
+      const status: AutoSaveStatus = { status: 'idle' };
+      
+      render(
+        <AutoSaveIndicator 
+          status={status} 
+          saveInterval={30000}
+        />
+      );
+      
+      expect(screen.getByText('30s')).toBeInTheDocument();
+      expect(screen.getByText('⏱️')).toBeInTheDocument();
+    });
+
+    it('does not show save interval when not idle', () => {
+      const status: AutoSaveStatus = { status: 'saving' };
+      
+      render(
+        <AutoSaveIndicator 
+          status={status} 
+          saveInterval={30000}
+        />
+      );
+      
+      expect(screen.queryByText('30s')).not.toBeInTheDocument();
+    });
+
+    it('shows correct interval time', () => {
+      const status: AutoSaveStatus = { status: 'idle' };
+      
+      render(
+        <AutoSaveIndicator 
+          status={status} 
+          saveInterval={60000}
+        />
+      );
+      
+      expect(screen.getByText('60s')).toBeInTheDocument();
+    });
+  });
+
+  describe('Accessibility', () => {
+    it('has proper ARIA labels', () => {
+      const status: AutoSaveStatus = { status: 'saved' };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      const statusElement = screen.getByRole('status');
+      expect(statusElement).toHaveAttribute('aria-live', 'polite');
+      expect(statusElement).toHaveAttribute('aria-label', expect.stringContaining('Auto-save status'));
+    });
+
+    it('has proper dialog accessibility', () => {
+      const conflictStatus: AutoSaveStatus = {
+        status: 'conflict',
+        conflictData: {
+          localVersion: 'local',
+          serverVersion: 'server',
+          timestamp: new Date()
+        }
+      };
+      
+      render(
+        <AutoSaveIndicator 
+          status={conflictStatus}
+          onResolveConflict={mockOnResolveConflict}
+        />
+      );
+      
+      const dialog = screen.getByRole('dialog');
+      expect(dialog).toHaveAttribute('aria-labelledby', 'conflict-title');
+      expect(dialog).toHaveAttribute('aria-describedby', 'conflict-description');
+    });
+
+    it('has proper button accessibility', () => {
+      const status: AutoSaveStatus = { status: 'idle' };
+      
+      render(
+        <AutoSaveIndicator 
+          status={status}
+          onManualSave={mockOnManualSave}
+        />
+      );
+      
+      const saveButton = screen.getByRole('button', { name: /manually save document/i });
+      expect(saveButton).toHaveAttribute('aria-label', 'Manually save document');
+    });
+
+    it('marks decorative icons as aria-hidden', () => {
+      const status: AutoSaveStatus = { status: 'saved' };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      const icon = screen.getByText('✓');
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
+    });
+  });
+
+  describe('Custom Props', () => {
+    it('applies custom className', () => {
+      const status: AutoSaveStatus = { status: 'idle' };
+      
+      render(
+        <AutoSaveIndicator 
+          status={status} 
+          className="custom-class"
+        />
+      );
+      
+      const indicator = screen.getByRole('status').parentElement;
+      expect(indicator).toHaveClass('custom-class');
+    });
+
+    it('handles missing onManualSave gracefully', async () => {
+      const status: AutoSaveStatus = { status: 'idle' };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      const saveButton = screen.getByRole('button', { name: /manually save document/i });
+      
+      // Should not throw error
+      await user.click(saveButton);
+    });
+
+    it('handles missing onResolveConflict gracefully', async () => {
+      const conflictStatus: AutoSaveStatus = {
+        status: 'conflict',
+        conflictData: {
+          localVersion: 'local',
+          serverVersion: 'server',
+          timestamp: new Date()
+        }
+      };
+      
+      render(<AutoSaveIndicator status={conflictStatus} />);
+      
+      const localButton = screen.getByRole('button', { name: /keep my changes/i });
+      
+      // Should not throw error
+      await user.click(localButton);
+    });
+  });
+
+  describe('Edge Cases', () => {
+    it('handles status without lastSaved date', () => {
+      const status: AutoSaveStatus = { status: 'saved' };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText('Saved')).toBeInTheDocument();
+    });
+
+    it('handles conflict without conflictData', () => {
+      const status: AutoSaveStatus = { status: 'conflict' };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText('Conflict detected')).toBeInTheDocument();
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    it('handles error without error message', () => {
+      const status: AutoSaveStatus = { status: 'error' };
+      
+      render(<AutoSaveIndicator status={status} />);
+      
+      expect(screen.getByText('Save failed')).toBeInTheDocument();
+    });
+
+    it('cleans up intervals on unmount', () => {
+      const lastSaved = new Date();
+      const status: AutoSaveStatus = { status: 'saved', lastSaved };
+      
+      const { unmount } = render(<AutoSaveIndicator status={status} />);
+      
+      const clearIntervalSpy = vi.spyOn(global, 'clearInterval');
+      
+      unmount();
+      
+      expect(clearIntervalSpy).toHaveBeenCalled();
+    });
+  });
+});

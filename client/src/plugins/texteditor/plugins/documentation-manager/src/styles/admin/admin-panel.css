@@ -1,0 +1,187 @@
+/**
+ * Admin Panel Styles
+ * Styles for the admin control center
+ * BEM methodology compliance
+ */
+
+/* Admin Manager Page */
+.admin-manager-page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+}
+
+/* Admin Header */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-header__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.admin-header__role {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: normal;
+}
+
+.admin-header__controls {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Library Switcher */
+.library-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.library-switcher__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.library-switcher__buttons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.library-switcher__button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.library-switcher__button:hover {
+  background: #f3f4f6;
+}
+
+.library-switcher__button--active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+/* View Switcher */
+.view-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.view-switcher__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.view-switcher__buttons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.view-switcher__button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-switcher__button:hover {
+  background: #f3f4f6;
+}
+
+.view-switcher__button--active {
+  background: #059669;
+  color: white;
+  border-color: #059669;
+}
+
+/* Admin Actions */
+.admin-header__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.admin-header__action {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-header__action:hover {
+  background: #f3f4f6;
+}
+
+/* Admin Content */
+.admin-content {
+  flex: 1;
+  overflow: auto;
+  padding: 2rem;
+}
+
+/* Access Denied */
+.admin-access-denied {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.admin-access-denied h1 {
+  font-size: 2rem;
+  color: #dc2626;
+  margin-bottom: 1rem;
+}
+
+.admin-access-denied p {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin-bottom: 2rem;
+}
+
+.admin-access-denied a {
+  padding: 0.75rem 1.5rem;
+  background: #3b82f6;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+}

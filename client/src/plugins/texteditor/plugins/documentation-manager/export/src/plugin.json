@@ -1,0 +1,32 @@
+{
+  "name": "documentation-manager",
+  "version": "1.0.0",
+  "displayName": "Documentation Manager",
+  "description": "Professional documentation management system for text editor docs directory",
+  "author": "BlogPro Team",
+  "category": "productivity",
+  "main": "dist/index.js",
+  "icon": "📚",
+  "permissions": [
+    "file-system-read",
+    "file-system-write",
+    "footer-menu",
+    "keyboard-shortcuts",
+    "new-window"
+  ],
+  "footerButton": {
+    "label": "Documentation",
+    "icon": "📚",
+    "shortcut": "Ctrl+Shift+D"
+  },
+  "engines": {
+    "texteditor": ">=1.0.0"
+  },
+  "keywords": [
+    "documentation",
+    "editor",
+    "management",
+    "ai-export",
+    "markdown"
+  ]
+}

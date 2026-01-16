@@ -1,0 +1,99 @@
+/**
+ * BlogPro Radio Component Styles
+ * BEM Methodology: .radio
+ */
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  /* user select handled by .select-none utility class */
+}
+
+.radio__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radio__circle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  background: var(--input-bg);
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.radio--sm .radio__circle {
+  width: 16px;
+  height: 16px;
+}
+
+.radio--md .radio__circle {
+  width: 20px;
+  height: 20px;
+}
+
+.radio--lg .radio__circle {
+  width: 24px;
+  height: 24px;
+}
+
+.radio__dot {
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background: var(--primary-600);
+  transform: scale(0);
+  transition: transform var(--transition-fast, 0.15s ease);
+}
+
+.radio__input:checked + .radio__circle {
+  border-color: var(--primary-600);
+}
+
+.radio__input:checked + .radio__circle .radio__dot {
+  transform: scale(1);
+}
+
+.radio__input:focus + .radio__circle {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-200);
+}
+
+.radio__label {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.radio--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio--card {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md, 0.375rem);
+  background: var(--card-bg);
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.radio--card:hover {
+  border-color: var(--border-hover);
+}
+
+.radio--card .radio__input:checked ~ * {
+  border-color: var(--primary-600);
+  background: var(--primary-50);
+}

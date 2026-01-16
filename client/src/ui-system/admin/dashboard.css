@@ -1,0 +1,392 @@
+/**
+ * BlogPro Admin Dashboard Components
+ * Control Panel UI components following BEM methodology
+ */
+
+/* Dashboard Layout */
+.admin-dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.admin-dashboard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-dashboard__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.admin-dashboard__actions {
+  display: flex;
+}
+
+/* Stats Grid */
+.admin-dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.admin-dashboard__stat {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-dashboard__stat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.admin-dashboard__stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--color-primary);
+}
+
+.admin-dashboard__stat--blog::before {
+  background: var(--success-500, #10b981);
+}
+
+.admin-dashboard__stat--media::before {
+  background: var(--info-500, #3b82f6);
+}
+
+.admin-dashboard__stat--users::before {
+  background: var(--warning-500, #f59e0b);
+}
+
+.admin-dashboard__stat-content {
+  display: flex;
+  align-items: center;
+}
+
+.admin-dashboard__stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-dashboard__stat-icon--blog {
+  background: var(--success-100, #dcfce7);
+  color: var(--success-600, #16a34a);
+}
+
+.admin-dashboard__stat-icon--media {
+  background: var(--info-100, #dbeafe);
+  color: var(--info-600, #2563eb);
+}
+
+.admin-dashboard__stat-icon--users {
+  background: var(--warning-100, #fef3c7);
+  color: var(--warning-600, #d97706);
+}
+
+.admin-dashboard__stat-info {
+}
+
+.admin-dashboard__stat-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 0 0 0.25rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-dashboard__stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  /* animation fill mode handled by .fill-forwards utility class */
+}
+
+/* Dashboard Grid Layout */
+.admin-dashboard__row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Quick Actions */
+.admin-dashboard__quick-actions {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+}
+
+.admin-dashboard__quick-actions-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+}
+
+.admin-dashboard__actions-grid {
+  display: grid;
+  /* grid-template-columns handled by .grid-cols-1 utility class */
+  gap: 0.75rem;
+}
+
+.admin-dashboard__action {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: var(--bg-alt);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.admin-dashboard__action:hover {
+  background: var(--bg-hover);
+  transform: translateX(4px);
+  border-color: var(--color-primary);
+}
+
+.admin-dashboard__action-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.admin-dashboard__action-icon--blog {
+  background: var(--success-100, #dcfce7);
+  color: var(--success-600, #16a34a);
+}
+
+.admin-dashboard__action-icon--media {
+  background: var(--info-100, #dbeafe);
+  color: var(--info-600, #2563eb);
+}
+
+.admin-dashboard__action-icon--users {
+  background: var(--warning-100, #fef3c7);
+  color: var(--warning-600, #d97706);
+}
+
+.admin-dashboard__action-content {
+}
+
+.admin-dashboard__action-label {
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  color: var(--text-primary);
+}
+
+.admin-dashboard__action-description {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Performance Chart */
+.admin-dashboard__chart {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+}
+
+.admin-dashboard__chart-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+}
+
+.admin-dashboard__chart-container {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-alt);
+  border-radius: 8px;
+  border: 1px dashed var(--border-color);
+}
+
+.admin-dashboard__chart-placeholder {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+}
+
+/* Recent Activity */
+.admin-dashboard__recent {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+  grid-column: 1 / -1;
+}
+
+.admin-dashboard__recent-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+}
+
+.admin-dashboard__activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-dashboard__activity-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: var(--bg-alt);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.admin-dashboard__activity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.admin-dashboard__activity-icon--blog {
+  background: var(--success-500, #10b981);
+  color: white;
+}
+
+.admin-dashboard__activity-icon--media {
+  background: var(--info-500, #3b82f6);
+  color: white;
+}
+
+.admin-dashboard__activity-icon--user {
+  background: var(--warning-500, #f59e0b);
+  color: white;
+}
+
+.admin-dashboard__activity-content {
+}
+
+.admin-dashboard__activity-title {
+  font-weight: 500;
+  margin: 0 0 0.25rem 0;
+  color: var(--text-primary);
+}
+
+.admin-dashboard__activity-meta {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.admin-dashboard__activity-date {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Animations */
+
+.admin-dashboard__stat:nth-child(1) .admin-dashboard__stat-value {
+  animation-delay: 0.1s;
+}
+
+.admin-dashboard__stat:nth-child(2) .admin-dashboard__stat-value {
+  animation-delay: 0.2s;
+}
+
+.admin-dashboard__stat:nth-child(3) .admin-dashboard__stat-value {
+  animation-delay: 0.3s;
+}
+
+.admin-dashboard__stat:nth-child(4) .admin-dashboard__stat-value {
+  animation-delay: 0.4s;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .admin-dashboard__row {
+    gap: 1.5rem;
+  }
+  
+  .admin-dashboard__stats {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 1rem;
+  }
+  
+  .admin-dashboard__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .admin-dashboard__stats {
+  }
+  
+  .admin-dashboard__stat-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .admin-dashboard__activity-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .admin-dashboard__activity-date {
+    margin-left: 0;
+  }
+}
+
+/* Loading States - Use common patterns */

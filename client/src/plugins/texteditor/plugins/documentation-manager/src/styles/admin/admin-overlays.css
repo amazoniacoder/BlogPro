@@ -1,0 +1,122 @@
+/**
+ * Admin Mode Overlays
+ * Visual indicators for editable content and real-time collaboration
+ * BEM methodology compliance
+ */
+
+/* Admin mode content editing indicators */
+.documentation-library--admin-mode .content-section--editable {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.documentation-library--admin-mode .content-section--editable:hover {
+  outline: 2px dashed #f59e0b;
+  outline-offset: 4px;
+  cursor: pointer;
+}
+
+.documentation-library--admin-mode .content-section--editable:hover::after {
+  content: '✏️ Click to edit';
+  position: absolute;
+  top: -30px;
+  right: 0;
+  background: #f59e0b;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+/* Content lock indicators */
+.content-section--locked {
+  position: relative;
+  opacity: 0.7;
+}
+
+.content-section--locked::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(239, 68, 68, 0.1);
+  border: 2px solid #ef4444;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.content-section--locked::after {
+  content: '🔒 ' attr(data-locked-by);
+  position: absolute;
+  top: -30px;
+  right: 0;
+  background: #ef4444;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+/* Lock notice */
+.content-section__lock-notice {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 5;
+}
+
+/* Admin notice */
+.admin-notice {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #f59e0b;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* WebSocket notification */
+.websocket-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #10b981;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 10000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

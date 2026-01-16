@@ -1,0 +1,102 @@
+/* BlogPro UI System - Common Admin Form Styles */
+
+/* Form Groups */
+.admin-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Form Labels */
+.admin-form__label {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.admin-form__required {
+  color: var(--color-error);
+}
+
+/* Form Inputs */
+.admin-form__input,
+.admin-form__textarea,
+.admin-form__select {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.admin-form__input:focus,
+.admin-form__textarea:focus,
+.admin-form__select-table:focus,
+.admin-form__select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-alpha);
+  border-radius: var(--radius-lg);
+}
+
+.admin-form__textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Form Actions */
+.admin-form__actions {
+  display: flex;
+  gap: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-color);
+  margin-top: var(--space-md);
+}
+
+/* Items per page label */
+label[for="itemsPerPage"] {
+  padding: 10px;
+}
+
+/* Entries span */
+.admin-table-controls__per-page span {
+  padding: 10px;
+}
+
+.admin-form__select-table {
+      width: 45px;
+      padding: 1px;
+        outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-alpha);
+  border-radius: var(--radius-lg);
+}
+
+/* Items per page select - ensure selected value is visible */
+#itemsPerPage {
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+#itemsPerPage option {
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+
+#itemsPerPage option:checked {
+  background-color: var(--color-primary);
+  color: var(--bg-primary);
+}
+
+
+
+@media (max-width: 480px) {
+  .admin-form__select  {
+       width: 25%;
+  }  
+
+}

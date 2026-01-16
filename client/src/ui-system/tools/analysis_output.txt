@@ -1,0 +1,354 @@
+🔍 Analyzing CSS files...
+
+📊 CSS ANALYSIS REPORT
+
+==================================================
+
+📁 Total CSS files analyzed: 184
+🔄 Duplicate class definitions: 3
+⚠️  Conflicting class definitions: 754
+
+🔄 CRITICAL DUPLICATES (Same class, identical properties):
+------------------------------------------------------------
+
+📍 Class: .sheet--open
+   Identical definitions in 2 files:
+   • components\overlay\overlay.css:73
+   • components\overlay\overlay.css:80
+
+📍 Class: .table__head
+   Identical definitions in 2 files:
+   • components\table\table.css:27
+   • components\table\table.css:65
+
+📍 Class: .divider--md
+   Identical definitions in 2 files:
+   • components\utility\utility.css:37
+   • components\utility\utility.css:43
+
+⚠️  CRITICAL CONFLICTS (Same class, different properties):
+------------------------------------------------------------
+
+🚨 HIGH PRIORITY CONFLICTS:
+
+📍 Class: .header__cart-link
+   Different definitions in 3 files:
+   • components\ecommerce\cart\cart.css:32
+     Properties: position: relative; display: flex; align-items: center; padding: var(--spacing-s...
+   • components\header\header.css:222
+     Properties: display: flex; align-items: center; justify-content: center; width: 40px; height...
+   • components\header\header.css:580
+     Properties: transform: scale(0.9);
+
+📍 Class: .header__cart-link:hover
+   Different definitions in 2 files:
+   • components\ecommerce\cart\cart.css:42
+     Properties: background: var(--color-surface-hover);
+   • components\header\header.css:236
+     Properties: color: var(--text-primary); background: var(--bg-hover);
+
+📍 Class: .footer__grid
+   Different definitions in 2 files:
+   • components\footer\footer.css:20
+     Properties: display: grid; grid-template-columns: 1.2fr 2fr; gap: var(--space-12); padding: ...
+   • components\footer\footer.css:215
+     Properties: grid-template-columns: 1fr; gap: var(--space-8); padding: var(--space-8) 0 var(-...
+
+📍 Class: .footer__brand
+   Different definitions in 2 files:
+   • components\footer\footer.css:31
+     Properties: display: flex; flex-direction: column; gap: var(--space-6);
+   • components\footer\footer.css:221
+     Properties: text-align: center;
+
+📍 Class: .footer__social
+   Different definitions in 2 files:
+   • components\footer\footer.css:50
+     Properties: display: flex; gap: var(--space-3); margin-top: var(--space-2);
+   • components\footer\footer.css:225
+     Properties: justify-content: center;
+
+📍 Class: .footer__links
+   Different definitions in 2 files:
+   • components\footer\footer.css:92
+     Properties: display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8);
+   • components\footer\footer.css:229
+     Properties: grid-template-columns: 1fr; gap: var(--space-6);
+
+📍 Class: .footer__column
+   Different definitions in 2 files:
+   • components\footer\footer.css:94
+     Properties: display: flex; flex-direction: column; gap: var(--space-4);
+   • components\footer\footer.css:232
+     Properties: text-align: center;
+
+📍 Class: .footer__heading::after
+   Different definitions in 2 files:
+   • components\footer\footer.css:109
+     Properties: content: ''; position: absolute; bottom: 0; left: 0; width: 30px; height: 2px; b...
+   • components\footer\footer.css:234
+     Properties: left: 50%; transform: translateX(-50%);
+
+📍 Class: .footer__bottom
+   Different definitions in 2 files:
+   • components\footer\footer.css:171
+     Properties: display: flex; justify-content: space-between; align-items: center; padding: var...
+   • components\footer\footer.css:241
+     Properties: flex-direction: column; gap: var(--space-4); text-align: center;
+
+📍 Class: .footer__legal
+   Different definitions in 2 files:
+   • components\footer\footer.css:197
+     Properties: display: flex; gap: var(--space-6);
+   • components\footer\footer.css:245
+     Properties: justify-content: center; gap: var(--space-4);
+
+📍 Class: .form-field
+   Different definitions in 2 files:
+   • components\form\form-field.css:1
+     Properties: 
+   • components\form\form-field.css:105
+     Properties: display: flex; flex-direction: column;
+
+📍 Class: .form-field__label
+   Different definitions in 7 files:
+   • components\form\form-field.css:1
+     Properties: font-size: 0.875rem; font-weight: 500; margin-bottom: 0.25rem; color: var(--text...
+   • components\form\form-field.css:46
+     Properties: color: var(--color-primary);
+   • components\form\form-field.css:54
+     Properties: color: var(--color-error);
+   • components\form\form-field.css:71
+     Properties: position: absolute; top: 1rem; left: 1rem; margin: 0; pointer-events: none; tran...
+   • components\form\form-field.css:93
+     Properties: transform: translateY(-0.75rem) scale(0.85); color: var(--color-primary);
+   • components\form\form-field.css:104
+     Properties: color: var(--color-error);
+   • components\form\form-field.css:105
+     Properties: order: 1; margin-bottom: 0.5rem;
+
+📍 Class: .form-field__input
+   Different definitions in 4 files:
+   • components\form\form-field.css:12
+     Properties: padding: 0.75rem 1rem; font-size: 1rem; border: 2px solid #d1d5db; border-radius...
+   • components\form\form-field.css:49
+     Properties: border-color: var(--color-error);
+   • components\form\form-field.css:66
+     Properties: padding: 1rem 1rem 0.5rem; height: 3.5rem;
+   • components\form\form-field.css:107
+     Properties: order: 2;
+
+📍 Class: .header__container
+   Different definitions in 6 files:
+   • components\header\header.css:25
+     Properties: display: grid; grid-template-columns: auto 1fr auto; align-items: center; height...
+   • components\header\header.css:96
+     Properties: padding: 1rem 1.5rem;
+   • components\header\header.css:105
+     Properties: padding: 0.5rem 1.5rem;
+   • components\header\header.css:551
+     Properties: height: 42px; transition: height 0.3s ease;
+   • components\header\header.css:559
+     Properties: height: 64px;
+   • components\header\header.css:587
+     Properties: padding: 0.5rem 1rem; grid-template-columns: 1fr auto;
+
+📍 Class: .header__logo
+   Different definitions in 4 files:
+   • components\header\header.css:41
+     Properties: display: flex; align-items: center; font-weight: 600; font-size: 1rem; color: va...
+   • components\header\header.css:560
+     Properties: transform: scale(0.8) translateY(-50%) translateY(-12px);
+   • components\header\header.css:590
+     Properties: left: 0; justify-self: center; right: 0;
+   • components\header\header.css:674
+     Properties: transform: translateY(-50%);
+
+📍 Class: .header__nav
+   Different definitions in 2 files:
+   • components\header\header.css:55
+     Properties: display: flex; align-items: stretch; gap: 1rem; justify-content: center; height:...
+   • components\header\header.css:621
+     Properties: display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--...
+
+📍 Class: .header__nav--open
+   Different definitions in 2 files:
+   • components\header\header.css:75
+     Properties: display: flex;
+   • components\header\header.css:637
+     Properties: display: flex !important; opacity: 1; transform: translateY(0); padding: 5px;
+
+📍 Class: .header__nav-list
+   Different definitions in 4 files:
+   • components\header\header.css:109
+     Properties: display: flex; align-items: center; gap: 1rem; height: 100%;
+   • components\header\header.css:335
+     Properties: flex-direction: column; gap: 0;
+   • components\header\header.css:473
+     Properties: gap: 0.5rem;
+   • components\header\header.css:644
+     Properties: flex-direction: column; gap: 0; height: auto; width: 100%;
+
+📍 Class: .header__nav-item
+   Different definitions in 4 files:
+   • components\header\header.css:116
+     Properties: position: relative;
+   • components\header\header.css:341
+     Properties: width: 100%;
+   • components\header\header.css:375
+     Properties: opacity: 1; transform: translateX(0);
+   • components\header\header.css:648
+     Properties: width: 100%; border-bottom: 1px solid var(--border-color);
+
+📍 Class: .header__nav-link
+   Different definitions in 6 files:
+   • components\header\header.css:118
+     Properties: display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; color: v...
+   • components\header\header.css:343
+     Properties: padding: 12px 16px; margin: 0 4px; height: auto;
+   • components\header\header.css:480
+     Properties: padding: 0.75rem 0.75rem; font-size: 0.9rem;
+   • components\header\header.css:565
+     Properties: transform: scale(0.8) translateY(-4px);
+   • components\header\header.css:652
+     Properties: padding: 16px 20px; height: auto; min-height: 48px; width: 100%; box-sizing: bor...
+   • components\header\header.css:679
+     Properties: transform: none;
+
+📍 Class: .header__nav-link:hover
+   Different definitions in 2 files:
+   • components\header\header.css:139
+     Properties: color: var(--text-primary);
+   • components\header\header.css:352
+     Properties: background-color: var(--bg-hover);
+
+📍 Class: .header__nav-link::after
+   Different definitions in 3 files:
+   • components\header\header.css:150
+     Properties: content: ''; position: absolute; bottom: -8px; left: 0; width: 0; height: 4px; b...
+   • components\header\header.css:349
+     Properties: bottom: -8px; height: 4px;
+   • components\header\header.css:661
+     Properties: display: none;
+
+📍 Class: .header__mobile-actions
+   Different definitions in 3 files:
+   • components\header\header.css:194
+     Properties: align-items: center; gap: 0.5rem;
+   • components\header\header.css:610
+     Properties: display: flex !important; justify-content: center; align-items: center; gap: 1re...
+   • components\header\header.css:686
+     Properties: display: none !important;
+
+📍 Class: .header__actions--desktop
+   Different definitions in 3 files:
+   • components\header\header.css:207
+     Properties: display: flex; align-items: center; gap: 0.5rem; position: absolute; right: 1rem...
+   • components\header\header.css:596
+     Properties: display: flex !important; justify-self: end;
+   • components\header\header.css:684
+     Properties: display: flex !important;
+
+📍 Class: .header__cart-desktop
+   Different definitions in 2 files:
+   • components\header\header.css:215
+     Properties: display: flex; align-items: center; margin-right: 0.5rem;
+   • components\header\header.css:574
+     Properties: transform: scale(0.9) translateY(-4px);
+
+📍 Class: .header__triangle-icon
+   Different definitions in 2 files:
+   • components\header\header.css:238
+     Properties: width: 20px; height: 20px; transition: transform 0.3s ease;
+   • components\header\header.css:287
+     Properties: transform: rotate(180deg);
+
+📍 Class: .header__slide-toggle
+   Different definitions in 2 files:
+   • components\header\header.css:243
+     Properties: display: flex; align-items: center; justify-content: center; width: 32px; height...
+   • components\header\header.css:571
+     Properties: transform: translateY(-4px);
+
+📍 Class: .header__overflow-toggle
+   Different definitions in 3 files:
+   • components\header\header.css:297
+     Properties: display: flex; align-items: center; justify-content: center; width: 32px; height...
+   • components\header\header.css:379
+     Properties: opacity: 1; transform: scale(1);
+   • components\header\header.css:430
+     Properties: border: 1px solid currentColor;
+
+📍 Class: .header__overflow-menu
+   Different definitions in 3 files:
+   • components\header\header.css:317
+     Properties: position: absolute; top: 100%; right: 0; background: var(--bg-primary); border: ...
+   • components\header\header.css:381
+     Properties: opacity: 0; transform: translateY(-10px); transition: opacity 0.2s ease, transfo...
+   • components\header\header.css:435
+     Properties: border: 2px solid currentColor;
+
+📍 Class: .header__overflow-link
+   Different definitions in 2 files:
+   • components\header\header.css:363
+     Properties: display: block; padding: 12px 16px; color: var(--text-primary); text-decoration:...
+   • components\header\header.css:444
+     Properties: animation: none !important; transition: none !important;
+
+📍 Class: .header__overflow-count
+   Different definitions in 2 files:
+   • components\header\header.css:400
+     Properties: position: absolute; top: -4px; right: -4px; background: var(--color-primary); co...
+   • components\header\header.css:411
+     Properties: background: var(--color-primary-dark, #1d4ed8);
+
+📍 Class: .header__hamburger
+   Different definitions in 3 files:
+   • components\header\header.css:488
+     Properties: position: relative; width: 40px; height: 40px; background: transparent; border: ...
+   • components\header\header.css:605
+     Properties: display: flex !important;
+   • components\header\header.css:681
+     Properties: display: none !important;
+
+📍 Class: .header__hamburger-inner
+   Different definitions in 2 files:
+   • components\header\header.css:506
+     Properties: position: absolute; width: 24px; height: 2px; background-color: var(--text-prima...
+   • components\header\header.css:536
+     Properties: background-color: transparent;
+
+📍 Class: .header__hamburger-inner::after
+   Different definitions in 3 files:
+   • components\header\header.css:519
+     Properties: content: ''; position: absolute; width: 24px; height: 2px; background-color: var...
+   • components\header\header.css:533
+     Properties: top: 8px;
+   • components\header\header.css:544
+     Properties: top: 0; transform: rotate(-45deg);
+
+📍 Class: .header__hamburger-inner::before
+   Different definitions in 2 files:
+   • components\header\header.css:532
+     Properties: top: -8px;
+   • components\header\header.css:539
+     Properties: top: 0; transform: rotate(45deg);
+
+📊 Total conflicts: 754 (showing 35 critical)
+
+🗂️  REDUNDANT FILES:
+------------------------------
+
+📍 Issue: Typography defined in two places
+   • components/typography/typography.css
+   • tokens/typography.css
+
+💡 PRIORITY RECOMMENDATIONS:
+----------------------------------------
+🔥 URGENT: Remove duplicate class definitions - choose one file per class
+🔥 URGENT: Resolve critical component conflicts (.header, .button, .card)
+📋 MEDIUM: Consolidate layout vs component files
+📋 MEDIUM: Establish clear component ownership
+📋 LOW: Clean up utility class variants
+
+✨ Analysis complete!

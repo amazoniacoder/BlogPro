@@ -1,0 +1,17 @@
+{
+  "technology": "Technology",
+  "design": "Design", 
+  "business": "Business",
+  "marketing": "Marketing",
+  "webDevelopment": "Web Development",
+  "mobileDevelopment": "Mobile Development",
+  "frontend": "Frontend",
+  "backend": "Backend",
+  "uiux": "UI/UX",
+  "graphicDesign": "Graphic Design",
+  "programming": "Programming",
+  "javascript": "JavaScript",
+  "react": "React",
+  "nodejs": "Node.js",
+  "python": "Python"
+}

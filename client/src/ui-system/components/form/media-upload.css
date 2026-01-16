@@ -1,0 +1,94 @@
+/**
+ * Media Upload Component Styles
+ * BEM methodology for media upload component
+ */
+
+.media-upload {
+  border: 2px dashed var(--color-border);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.media-upload:hover {
+  border-color: var(--color-primary);
+}
+
+.media-upload--dragging {
+  border-color: var(--color-primary);
+  background-color: rgba(var(--color-primary-rgb), 0.05);
+}
+
+.media-upload__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.media-upload__icon {
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.media-upload__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.media-upload__description {
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.media-upload__info {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+
+
+.media-upload__button {
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+.media-upload__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.media-upload__spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .media-upload {
+    padding: 1.5rem;
+  }
+  
+  .media-upload__icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .media-upload__title {
+    font-size: 1rem;
+  }
+}

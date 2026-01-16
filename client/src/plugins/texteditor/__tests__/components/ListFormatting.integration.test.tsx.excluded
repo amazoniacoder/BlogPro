@@ -1,0 +1,378 @@
+/**
+ * ListFormatting Integration Tests
+ * Tests integration with ListService and ModernFormatService
+ */
+
+import '../setup';
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ListService } from '../../core/services/ListService';
+import { ListFormatting } from '../../core/components/ListFormatting';
+
+// Test globals
+declare global {
+  var describe: any;
+  var test: any;
+  var expect: any;
+  var beforeEach: any;
+  var vi: any;
+}
+
+// Mock ListService
+vi.mock('../../core/services/ListService', () => ({
+  ListService: {
+    createBulletList: vi.fn(),
+    createNumberedList: vi.fn(),
+    removeList: vi.fn(),
+    increaseNesting: vi.fn(),
+    decreaseNesting: vi.fn(),
+    getListState: vi.fn(() => ({
+      isInList: false,
+      listType: null,
+      nestingLevel: 0
+    }))
+  }
+}));
+
+describe('ListFormatting Integration', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    
+    // Setup DOM environment
+    document.body.innerHTML = '<div class="editor-content"><p>Test content</p></div>';
+  });
+
+  describe('Service Integration', () => {
+    test('integrates with ListService for bullet list creation', async () => {
+      const user = userEvent.setup();
+      const mockOnChange = vi.fn((command: string) => {
+        if (command === 'bulletList') {
+          ListService.createBulletList();
+        }
+      });
+      
+      render(
+        <ListFormatting
+          listState={{ isInList: false, listType: null, nestingLevel: 0 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Open dropdown and select bullet list
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const bulletOption = screen.getByRole('option', { name: /bullet list/i });
+      await user.click(bulletOption);
+      
+      expect(mockOnChange).toHaveBeenCalledWith('bulletList');
+      expect(ListService.createBulletList).toHaveBeenCalled();
+    });
+
+    test('integrates with ListService for numbered list creation', async () => {
+      const user = userEvent.setup();
+      const mockOnChange = vi.fn((command: string) => {
+        if (command === 'numberedList') {
+          ListService.createNumberedList();
+        }
+      });
+      
+      render(
+        <ListFormatting
+          listState={{ isInList: false, listType: null, nestingLevel: 0 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Open dropdown and select numbered list
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const numberedOption = screen.getByRole('option', { name: /numbered list/i });
+      await user.click(numberedOption);
+      
+      expect(mockOnChange).toHaveBeenCalledWith('numberedList');
+      expect(ListService.createNumberedList).toHaveBeenCalled();
+    });
+
+    test('integrates with ListService for list removal', async () => {
+      const user = userEvent.setup();
+      const mockOnChange = vi.fn((command: string) => {
+        if (command === 'removeList') {
+          ListService.removeList();
+        }
+      });
+      
+      render(
+        <ListFormatting
+          listState={{ isInList: true, listType: 'bullet', nestingLevel: 1 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Open dropdown and remove list
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const removeButton = screen.getByText('Remove List');
+      await user.click(removeButton);
+      
+      expect(mockOnChange).toHaveBeenCalledWith('removeList');
+      expect(ListService.removeList).toHaveBeenCalled();
+    });
+
+    test('integrates with ListService for nesting operations', async () => {
+      const user = userEvent.setup();
+      const mockOnChange = vi.fn((command: string) => {
+        if (command === 'increaseNesting') {
+          ListService.increaseNesting();
+        } else if (command === 'decreaseNesting') {
+          ListService.decreaseNesting();
+        }
+      });
+      
+      render(
+        <ListFormatting
+          listState={{ isInList: true, listType: 'bullet', nestingLevel: 2 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Test increase nesting
+      const increaseButton = screen.getByLabelText('Increase list indentation');
+      await user.click(increaseButton);
+      
+      expect(mockOnChange).toHaveBeenCalledWith('increaseNesting');
+      expect(ListService.increaseNesting).toHaveBeenCalled();
+      
+      // Test decrease nesting
+      const decreaseButton = screen.getByLabelText('Decrease list indentation');
+      await user.click(decreaseButton);
+      
+      expect(mockOnChange).toHaveBeenCalledWith('decreaseNesting');
+      expect(ListService.decreaseNesting).toHaveBeenCalled();
+    });
+  });
+
+  describe('ListService Functionality', () => {
+    test('validates ListService methods exist', () => {
+      expect(ListService.createBulletList).toBeDefined();
+      expect(ListService.createNumberedList).toBeDefined();
+      expect(ListService.removeList).toBeDefined();
+      expect(ListService.increaseNesting).toBeDefined();
+      expect(ListService.decreaseNesting).toBeDefined();
+      expect(ListService.getListState).toBeDefined();
+    });
+
+    test('ListService.getListState returns proper structure', () => {
+      const state = ListService.getListState();
+      
+      expect(state).toHaveProperty('isInList');
+      expect(state).toHaveProperty('listType');
+      expect(state).toHaveProperty('nestingLevel');
+      expect(typeof state.isInList).toBe('boolean');
+      expect(typeof state.nestingLevel).toBe('number');
+    });
+  });
+
+  describe('Toolbar Integration', () => {
+    test('works within toolbar context for list commands', async () => {
+      const user = userEvent.setup();
+      const mockCommand = vi.fn();
+      
+      // Simulate toolbar integration
+      const ToolbarWrapper = () => {
+        const handleListChange = (command: string) => {
+          mockCommand('list', command);
+        };
+        
+        return (
+          <div className="editor-toolbar">
+            <ListFormatting
+              listState={{ isInList: false, listType: null, nestingLevel: 0 }}
+              onListChange={handleListChange}
+            />
+          </div>
+        );
+      };
+      
+      render(<ToolbarWrapper />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const bulletOption = screen.getByRole('option', { name: /bullet list/i });
+      await user.click(bulletOption);
+      
+      expect(mockCommand).toHaveBeenCalledWith('list', 'bulletList');
+    });
+  });
+
+  describe('Real-world Scenarios', () => {
+    test('handles list type conversion workflow', async () => {
+      const user = userEvent.setup();
+      const commandHistory: string[] = [];
+      
+      const mockOnChange = vi.fn((command: string) => {
+        commandHistory.push(command);
+      });
+      
+      const { rerender } = render(
+        <ListFormatting
+          listState={{ isInList: false, listType: null, nestingLevel: 0 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Create bullet list
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      await user.click(screen.getByRole('option', { name: /bullet list/i }));
+      
+      // Re-render with bullet list state
+      rerender(
+        <ListFormatting
+          listState={{ isInList: true, listType: 'bullet', nestingLevel: 1 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Convert to numbered list
+      await user.click(trigger);
+      await user.click(screen.getByRole('option', { name: /numbered list/i }));
+      
+      // Re-render with numbered list state
+      rerender(
+        <ListFormatting
+          listState={{ isInList: true, listType: 'numbered', nestingLevel: 1 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Remove list
+      await user.click(trigger);
+      await user.click(screen.getByText('Remove List'));
+      
+      expect(commandHistory).toEqual(['bulletList', 'numberedList', 'removeList']);
+      expect(mockOnChange).toHaveBeenCalledTimes(3);
+    });
+
+    test('handles nesting workflow', async () => {
+      const user = userEvent.setup();
+      const nestingHistory: string[] = [];
+      
+      const mockOnChange = vi.fn((command: string) => {
+        nestingHistory.push(command);
+      });
+      
+      const { rerender } = render(
+        <ListFormatting
+          listState={{ isInList: true, listType: 'bullet', nestingLevel: 1 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Increase nesting
+      const increaseButton = screen.getByLabelText('Increase list indentation');
+      await user.click(increaseButton);
+      
+      // Re-render with increased nesting
+      rerender(
+        <ListFormatting
+          listState={{ isInList: true, listType: 'bullet', nestingLevel: 2 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Increase again
+      await user.click(increaseButton);
+      
+      // Re-render with further increased nesting
+      rerender(
+        <ListFormatting
+          listState={{ isInList: true, listType: 'bullet', nestingLevel: 3 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Decrease nesting
+      const decreaseButton = screen.getByLabelText('Decrease list indentation');
+      await user.click(decreaseButton);
+      
+      expect(nestingHistory).toEqual(['increaseNesting', 'increaseNesting', 'decreaseNesting']);
+      expect(mockOnChange).toHaveBeenCalledTimes(3);
+    });
+
+    test('maintains state consistency during rapid interactions', async () => {
+      const user = userEvent.setup();
+      let currentState = { isInList: false, listType: null as any, nestingLevel: 0 };
+      
+      const mockOnChange = vi.fn((command: string) => {
+        // Simulate state changes
+        if (command === 'bulletList') {
+          currentState = { isInList: true, listType: 'bullet', nestingLevel: 1 };
+        } else if (command === 'removeList') {
+          currentState = { isInList: false, listType: null, nestingLevel: 0 };
+        }
+      });
+      
+      const { rerender } = render(
+        <ListFormatting
+          listState={currentState}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Rapid sequence of changes
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      
+      // Open and close rapidly
+      await user.click(trigger);
+      await user.keyboard('{Escape}');
+      
+      await user.click(trigger);
+      await user.click(screen.getByRole('option', { name: /bullet list/i }));
+      
+      // Update component with new state
+      rerender(
+        <ListFormatting
+          listState={currentState}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      // Verify final state
+      expect(screen.getByText('Bullet List')).toBeInTheDocument();
+      expect(mockOnChange).toHaveBeenCalledWith('bulletList');
+    });
+  });
+
+  describe('Error Handling', () => {
+    test('handles service errors gracefully', async () => {
+      const user = userEvent.setup();
+      
+      // Mock service to throw error
+      const mockOnChange = vi.fn(() => {
+        throw new Error('Service error');
+      });
+      
+      render(
+        <ListFormatting
+          listState={{ isInList: false, listType: null, nestingLevel: 0 }}
+          onListChange={mockOnChange}
+        />
+      );
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      // Should not crash when service throws error
+      expect(() => {
+        const bulletOption = screen.getByRole('option', { name: /bullet list/i });
+        user.click(bulletOption);
+      }).not.toThrow();
+    });
+  });
+});

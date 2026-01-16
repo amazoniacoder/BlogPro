@@ -1,0 +1,17 @@
+/**
+ * BlogPro Admin Base Styles - Final Optimized Version
+ */
+
+/* UI System import - includes all admin components */
+@import '../../ui-system/components/index.css';
+
+/* Base styles */
+@import '../base/reset.css';
+@import '../base/variables.css';
+@import '../base/breakpoints.css';
+
+/* Admin essentials only */
+.admin-layout {
+  min-height: 100vh;
+  background: var(--bp-bg-primary);
+}

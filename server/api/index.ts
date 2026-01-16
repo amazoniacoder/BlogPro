@@ -1,0 +1,66 @@
+import { Router } from "express";
+import adminRoutes from "./admin";
+import authRoutes from "./auth";
+import blogRoutes from "./blog";
+import contactRoutes from "./contact";
+import usersRoutes from "./users";
+import mediaRoutes from "./media";
+import uploadsRoutes from "./uploads";
+import healthRoutes from "./health";
+import metricsRoutes from "./metrics";
+import settingsRoutes from "./settings";
+import mailingsRoutes from "./mailings";
+import categoriesRoutes from "./categories";
+import analyticsRoutes from "./analytics/index";
+import documentationRoutes from "./documentation";
+import menuRoutes from "./menu";
+import spellcheckRoutes from "./spellcheck";
+import editorAnalyticsRoutes from "./editor-analytics";
+import editorUploadRoutes from "./editor/upload-image";
+import productsRoutes from "./products";
+import productCategoriesRoutes from "./product-categories";
+import cartRoutes from "./cart/routes";
+import ordersRoutes from "./orders/routes";
+import paymentsRoutes from "./payments/routes";
+import downloadsRoutes from "./downloads/routes";
+import searchRoutes from "./search";
+import commentRoutes from "./comments";
+import adminCommentRoutes from "./admin-comments";
+import userCommentRoutes from "./user-comments";
+import csrfRoutes from "./csrf";
+
+const router = Router();
+
+// Define API routes
+router.use("/admin", adminRoutes);
+router.use("/auth", authRoutes);
+router.use("/blog", blogRoutes);
+router.use("/categories", categoriesRoutes);
+router.use("/contact", contactRoutes);
+router.use("/users", usersRoutes);
+router.use("/media", mediaRoutes);
+router.use("/uploads", uploadsRoutes);
+router.use("/health", healthRoutes);
+router.use("/metrics", metricsRoutes);
+router.use("/settings", settingsRoutes);
+router.use("/mailings", mailingsRoutes);
+router.use("/analytics", analyticsRoutes);
+
+router.use("/documentation", documentationRoutes);
+router.use("/menu", menuRoutes);
+router.use("/spellcheck", spellcheckRoutes);
+router.use("/editor-analytics", editorAnalyticsRoutes);
+router.use("/editor/upload-image", editorUploadRoutes);
+router.use("/products", productsRoutes);
+router.use("/product-categories", productCategoriesRoutes);
+router.use("/cart", cartRoutes);
+router.use("/orders", ordersRoutes);
+router.use("/payments", paymentsRoutes);
+router.use("/downloads", downloadsRoutes);
+router.use("/search", searchRoutes);
+router.use("/comments", commentRoutes);
+router.use("/admin/comments", adminCommentRoutes);
+router.use("/user", userCommentRoutes);
+router.use("/", csrfRoutes);
+
+export default router;

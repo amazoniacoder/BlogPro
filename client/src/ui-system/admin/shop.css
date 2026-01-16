@@ -1,0 +1,791 @@
+/* Shop Dashboard */
+.shop-dashboard {
+  padding: var(--space-lg);
+}
+
+.shop-dashboard__header {
+  margin-bottom: var(--space-lg);
+}
+
+.shop-dashboard__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.shop-dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.shop-dashboard__stat-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.shop-dashboard__stat-content {
+  flex: 1;
+}
+
+.shop-dashboard__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+.shop-dashboard__charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: var(--space-md);
+}
+
+.shop-dashboard__chart-content {
+  min-height: 200px;
+}
+
+.shop-dashboard__revenue-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.shop-dashboard__revenue-orders {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.shop-dashboard__stat-card--warning {
+  border-color: var(--color-warning);
+}
+
+.shop-dashboard__stat-icon {
+  color: var(--color-primary);
+}
+
+.shop-dashboard__stat-card--warning .shop-dashboard__stat-icon {
+  color: var(--color-warning);
+}
+
+.shop-dashboard__stat-value {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.shop-dashboard__stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.shop-dashboard__chart-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.shop-dashboard__chart-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 var(--space-md) 0;
+  color: var(--text-primary);
+}
+
+.shop-dashboard__revenue-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.shop-dashboard__revenue-item:last-child {
+  border-bottom: none;
+}
+
+.shop-dashboard__revenue-date {
+  font-weight: var(--font-weight-medium);
+}
+
+.shop-dashboard__revenue-amount {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-success);
+}
+
+.shop-dashboard__no-data {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: var(--space-xl);
+}
+
+/* .shop-dashboard__loading - removed duplicate, keeping first occurrence above */
+
+/* Orders Manager Loading */
+.orders-manager__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+/* Inventory Manager Loading */
+.inventory-manager__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+.inventory-manager__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.inventory-grid__empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+.inventory-grid__header {
+  margin-bottom: var(--space-sm);
+}
+
+.inventory-grid__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.inventory-grid__stock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+/* Payments Monitor Loading */
+.payments-monitor__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+.payments-monitor__filters {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.payments-monitor__filter-select {
+  padding: var(--space-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+}
+
+.payments-list__empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+.payments-list__header-cell,
+.payments-list__cell {
+  padding: var(--space-md);
+  display: flex;
+  align-items: center;
+}
+
+.payments-list__order-number {
+  font-family: var(--font-mono);
+  font-weight: var(--font-weight-medium);
+}
+
+.payments-list__status-badge {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+}
+
+.payments-list__status-badge--completed {
+  background: var(--color-success-light);
+  color: var(--color-success);
+}
+
+.payments-list__status-badge--pending {
+  background: var(--color-warning-light);
+  color: var(--color-warning);
+}
+
+.payments-list__status-badge--processing {
+  background: var(--color-info-light);
+  color: var(--color-info);
+}
+
+.payments-list__status-badge--failed {
+  background: var(--color-error-light);
+  color: var(--color-error);
+}
+
+.payments-list__status-badge--cancelled {
+  background: var(--color-error-light);
+  color: var(--color-error);
+}
+
+.payments-list__status-badge--refunded {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+/* Customers Analytics Loading */
+.customers-analytics__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+.customers-analytics__header {
+  margin-bottom: var(--space-lg);
+}
+
+.customers-table__empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+.customers-table__header-cell,
+.customers-table__cell {
+  padding: var(--space-md);
+  display: flex;
+  align-items: center;
+}
+
+.customers-table__customer-name {
+  font-weight: var(--font-weight-medium);
+}
+
+.customers-table__order-count,
+.customers-table__total-spent {
+  font-weight: var(--font-weight-medium);
+}
+
+/* Shop Settings Loading */
+.shop-settings__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+/* Orders Manager */
+.orders-manager {
+  padding: var(--space-lg);
+}
+
+.orders-manager__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.orders-manager__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+}
+
+.orders-manager__filters {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.orders-manager__filter-select,
+.orders-manager__search {
+  padding: var(--space-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+}
+
+.orders-table {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.orders-table__header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px 80px 100px 120px 120px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.orders-table__header-cell {
+  padding: var(--space-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+.orders-table__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px 80px 100px 120px 120px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.orders-table__row:hover {
+  background: var(--bg-hover);
+}
+
+.orders-table__cell {
+  padding: var(--space-md);
+  display: flex;
+  align-items: center;
+}
+
+.orders-table__order-number {
+  font-family: var(--font-mono);
+  font-weight: var(--font-weight-medium);
+}
+
+.orders-table__status-badge {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+}
+
+.orders-table__status-badge--pending {
+  background: var(--color-warning-light);
+  color: var(--color-warning);
+}
+
+.orders-table__status-badge--confirmed {
+  background: var(--color-info-light);
+  color: var(--color-info);
+}
+
+.orders-table__status-badge--processing {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.orders-table__status-badge--shipped {
+  background: var(--color-success-light);
+  color: var(--color-success);
+}
+
+.orders-table__status-badge--delivered {
+  background: var(--color-success);
+  color: white;
+}
+
+.orders-table__status-badge--cancelled {
+  background: var(--color-error-light);
+  color: var(--color-error);
+}
+
+.orders-table__status-select {
+  padding: var(--space-xs);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+}
+
+.orders-table__empty {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+/* Inventory Manager */
+.inventory-manager {
+  padding: var(--space-lg);
+}
+
+.inventory-manager__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.inventory-manager__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+}
+
+.inventory-manager__filter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-md);
+}
+
+.inventory-grid__item {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+}
+
+.inventory-grid__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.inventory-grid__sku {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.inventory-grid__category {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin: var(--space-sm) 0;
+}
+
+.inventory-grid__stock-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+.inventory-grid__stock-status--out {
+  color: var(--color-error);
+}
+
+.inventory-grid__stock-status--low {
+  color: var(--color-warning);
+}
+
+.inventory-grid__stock-status--good {
+  color: var(--color-success);
+}
+
+.inventory-grid__stock-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.inventory-grid__stock-btn {
+  padding: var(--space-xs);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  cursor: pointer;
+}
+
+.inventory-grid__stock-btn:hover {
+  background: var(--bg-hover);
+}
+
+.inventory-grid__stock-input {
+  width: 60px;
+  padding: var(--space-xs);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.inventory-grid__alert {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-warning);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-sm);
+  padding: var(--space-sm);
+  background: var(--color-warning-light);
+  border-radius: var(--radius-sm);
+}
+
+.inventory-grid__no-tracking {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* Payments Monitor */
+.payments-monitor {
+  padding: var(--space-lg);
+}
+
+.payments-monitor__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.payments-monitor__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+}
+
+.payments-list {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.payments-list__header {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr 120px 100px 120px 120px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.payments-list__row {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr 120px 100px 120px 120px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.payments-list__row:hover {
+  background: var(--bg-hover);
+}
+
+.payments-list__transaction-id {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+}
+
+.payments-list__gateway {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.payments-list__amount {
+  font-weight: var(--font-weight-medium);
+}
+
+/* Customers Analytics */
+.customers-analytics {
+  padding: var(--space-lg);
+}
+
+.customers-analytics__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0 0 var(--space-lg) 0;
+}
+
+.customers-table {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.customers-table__header {
+  display: grid;
+  grid-template-columns: 2fr 2fr 100px 120px 100px 120px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.customers-table__row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 100px 120px 100px 120px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.customers-table__customer-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.customers-table__customer-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.customers-table__tier {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.customers-table__tier--vip {
+  background: var(--color-primary);
+  color: white;
+}
+
+.customers-table__tier--gold {
+  background: #ffd700;
+  color: #8b6914;
+}
+
+.customers-table__tier--silver {
+  background: #c0c0c0;
+  color: #666;
+}
+
+.customers-table__tier--bronze {
+  background: #cd7f32;
+  color: white;
+}
+
+/* Shop Settings */
+.shop-settings {
+  padding: var(--space-lg);
+}
+
+.shop-settings__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.shop-settings__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+}
+
+.shop-settings__save-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.shop-settings__save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.shop-settings__sections {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.shop-settings__section {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+}
+
+.shop-settings__section-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 var(--space-md) 0;
+  color: var(--text-primary);
+}
+
+.shop-settings__field {
+  margin-bottom: var(--space-md);
+}
+
+.shop-settings__label {
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-xs);
+  color: var(--text-primary);
+}
+
+.shop-settings__input,
+.shop-settings__textarea,
+.shop-settings__select {
+  width: 100%;
+  padding: var(--space-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+}
+
+.shop-settings__checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+}
+
+.shop-settings__checkbox {
+  width: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .shop-dashboard__stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .orders-table__header,
+  .orders-table__row {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+  
+  .inventory-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .payments-list__header,
+  .payments-list__row {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+  
+  .customers-table__header,
+  .customers-table__row {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+}

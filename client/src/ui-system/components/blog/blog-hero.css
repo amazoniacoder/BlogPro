@@ -1,0 +1,104 @@
+/**
+ * BlogPro Blog Hero Component Styles
+ * BEM Methodology: .blog-hero
+ */
+
+.blog-hero {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+}
+
+.blog-hero__image {
+  width: 350px;
+  height: 197px; /* 16:9 aspect ratio */
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.blog-hero__image:hover {
+  transform: scale(1.02);
+}
+
+.blog-hero__image:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.blog-hero__content {
+  flex: 1;
+  min-height: 197px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.blog-hero__title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+}
+
+.blog-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.blog-hero__summary {
+  background: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: auto;
+}
+
+.blog-hero__summary p {
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* Desktop Adaptive Image Height */
+@media (min-width: 769px) {
+  .blog-hero__image {
+    height: auto;
+    min-height: 197px;
+    max-height: 300px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .blog-hero {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .blog-hero__image {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+  }
+  
+  .blog-hero__title {
+    font-size: 1.5rem;
+  }
+  
+  .blog-hero__content {
+    min-height: auto;
+  }
+}
+
+/* Dark Mode Support */
+.dark .blog-hero__summary {
+  background: var(--bg-tertiary);
+}

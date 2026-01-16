@@ -1,0 +1,62 @@
+.spell-check-manager {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.spell-check-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.spell-check-button {
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #dee2e6;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  min-width: auto;
+  white-space: nowrap;
+}
+
+.spell-check-button:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.spell-check-button--active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.spell-check-button--active:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+}
+
+.spell-check-language {
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.spell-check-language--en {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.spell-check-language--ru {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}

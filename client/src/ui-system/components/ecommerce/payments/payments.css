@@ -1,0 +1,354 @@
+/* Payment Status */
+.payment-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+}
+
+.payment-status--pending {
+  background: var(--color-warning-light);
+  color: var(--color-warning-dark);
+}
+
+.payment-status--processing {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.payment-status--success {
+  background: var(--color-success-light);
+  color: var(--color-success-dark);
+}
+
+.payment-status--failed,
+.payment-status--cancelled {
+  background: var(--color-error-light);
+  color: var(--color-error-dark);
+}
+
+.payment-status--refunded {
+  background: var(--color-info-light);
+  color: var(--color-info-dark);
+}
+
+.payment-status--unknown {
+  background: var(--color-surface-secondary);
+  color: var(--color-text-secondary);
+}
+
+/* Security Badges */
+.security-badges {
+  padding: var(--spacing-lg);
+  background: var(--color-success-light);
+  border: 1px solid var(--color-success);
+  border-radius: var(--border-radius-md);
+  text-align: center;
+}
+
+.security-badges__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-success-dark);
+  margin-bottom: var(--spacing-md);
+}
+
+.security-badges__list {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.security-badges__badge {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-success-dark);
+}
+
+.security-badges__note {
+  font-size: var(--font-size-xs);
+  color: var(--color-success-dark);
+  opacity: 0.8;
+}
+
+/* Payment Gateway */
+.payment-gateway {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.payment-gateway__form {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+}
+
+.payment-gateway__no-method {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-secondary);
+}
+
+/* Stripe Payment */
+.stripe-payment {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.stripe-payment__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.stripe-payment__title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.stripe-payment__logos {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.stripe-payment__logo {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-surface-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+}
+
+.stripe-payment__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.stripe-payment__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.stripe-payment__submit {
+  width: 100%;
+}
+
+/* PayPal Payment */
+.paypal-payment {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.paypal-payment__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.paypal-payment__title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.paypal-payment__logo {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: #0070ba;
+  color: white;
+  border-radius: var(--border-radius-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.paypal-payment__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.paypal-payment__info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: var(--color-info-light);
+  color: var(--color-info-dark);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+}
+
+.paypal-payment__amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  background: var(--color-surface-secondary);
+  border-radius: var(--border-radius-sm);
+}
+
+.paypal-payment__amount-label {
+  color: var(--color-text-secondary);
+}
+
+.paypal-payment__amount-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.paypal-payment__submit {
+  width: 100%;
+  background: #0070ba;
+}
+
+.paypal-payment__submit:hover:not(:disabled) {
+  background: #005ea6;
+}
+
+/* Yandex Payment */
+.yandex-payment {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.yandex-payment__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.yandex-payment__title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.yandex-payment__logo {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: #ffcc00;
+  color: #000;
+  border-radius: var(--border-radius-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.yandex-payment__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.yandex-payment__info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: var(--color-info-light);
+  color: var(--color-info-dark);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+}
+
+.yandex-payment__methods {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: var(--color-surface-secondary);
+  border-radius: var(--border-radius-sm);
+}
+
+.yandex-payment__method {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.yandex-payment__amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  background: var(--color-surface-secondary);
+  border-radius: var(--border-radius-sm);
+}
+
+.yandex-payment__amount-label {
+  color: var(--color-text-secondary);
+}
+
+.yandex-payment__amount-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.yandex-payment__submit {
+  width: 100%;
+  background: #ffcc00;
+  color: #000;
+}
+
+.yandex-payment__submit:hover:not(:disabled) {
+  background: #e6b800;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stripe-payment__row {
+    grid-template-columns: 1fr;
+  }
+
+  .stripe-payment__header,
+  .paypal-payment__header,
+  .yandex-payment__header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+  }
+
+  .security-badges__list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .paypal-payment__amount,
+  .yandex-payment__amount {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    text-align: center;
+  }
+}

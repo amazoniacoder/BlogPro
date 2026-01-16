@@ -1,0 +1,66 @@
+/* client/src/styles/components/status-message.css */
+.status-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  min-width: 300px;
+  max-width: 500px;
+  padding: 12px 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: slide-in 0.3s ease-out;
+}
+
+.status-message--success {
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+  color: #52c41a;
+}
+
+.status-message--error {
+  background-color: #fff1f0;
+  border: 1px solid #ffccc7;
+  color: #f5222d;
+}
+
+.status-message--info {
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  color: #1890ff;
+}
+
+.status-message__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.status-message__text {
+  flex-grow: 1;
+  margin-right: 12px;
+}
+
+.status-message__dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+  opacity: 0.7;
+}
+
+.status-message__dismiss:hover {
+  opacity: 1;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

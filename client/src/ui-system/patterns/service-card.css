@@ -1,0 +1,102 @@
+/**
+ * Service Card Pattern Styles
+ * BEM methodology for service card component
+ */
+
+.service-card {
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: var(--color-bg-card);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-align: center;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.service-card__badge {
+  position: absolute;
+  top: -10px;
+  right: 1rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.service-card__icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  margin: 0 auto 1.5rem;
+  font-size: 1.5rem;
+}
+
+.service-card__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.service-card__description {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.service-card__features {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  text-align: left;
+}
+
+.service-card__feature {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.service-card__feature-icon {
+  margin-right: 0.75rem;
+  color: var(--color-success);
+  flex-shrink: 0;
+}
+
+.service-card__price {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: var(--color-bg-secondary);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.service-card__price-amount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.service-card__cta {
+  margin-top: auto;
+  width: 100%;
+}

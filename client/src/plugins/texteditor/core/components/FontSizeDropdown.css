@@ -1,0 +1,144 @@
+.font-size-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.font-size-dropdown__trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  min-width: 50px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.font-size-dropdown__trigger:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.font-size-dropdown__trigger:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.font-size-dropdown__trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f3f4f6;
+}
+
+.font-size-dropdown__trigger--open {
+  background: #f3f4f6;
+  border-color: #3b82f6;
+}
+
+.font-size-dropdown__current {
+  flex: 1;
+  text-align: left;
+  font-weight: 500;
+}
+
+.font-size-dropdown__arrow {
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.font-size-dropdown__trigger--open .font-size-dropdown__arrow {
+  transform: rotate(180deg);
+}
+
+.font-size-dropdown__menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 99999;
+  margin-top: 2px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  max-height: 200px;
+  overflow-y: auto;
+  min-width: 80px;
+  width: max-content;
+}
+
+.font-size-dropdown__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-family: inherit;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.font-size-dropdown__option:hover {
+  background: #f3f4f6;
+}
+
+.font-size-dropdown__option:focus {
+  outline: none;
+  background: #e5e7eb;
+}
+
+.font-size-dropdown__option--selected {
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 500;
+}
+
+.font-size-dropdown__option--selected:hover {
+  background: #dbeafe;
+}
+
+.font-size-dropdown__option-text {
+  flex: 1;
+  text-align: left;
+}
+
+.font-size-dropdown__option-preview {
+  flex-shrink: 0;
+  font-weight: 400;
+  color: #6b7280;
+  margin-left: 8px;
+}
+
+.font-size-dropdown__option--selected .font-size-dropdown__option-preview {
+  color: #1d4ed8;
+}
+
+/* Scrollbar styling for the dropdown menu */
+.font-size-dropdown__menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.font-size-dropdown__menu::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.font-size-dropdown__menu::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.font-size-dropdown__menu::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

@@ -1,0 +1,129 @@
+/* Category Page Pattern Styles */
+.category-page {
+  padding: 2rem 0;
+}
+
+.category-page__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 0;
+}
+
+.category-page__error {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.category-page__header {
+  margin-bottom: 2rem;
+}
+
+.category-page__count {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+.category-page__content {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+}
+
+.category-page__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.category-page__empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-text-secondary);
+}
+
+/* Category Breadcrumb */
+.category-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.category-breadcrumb__item {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.category-breadcrumb__item:hover {
+  color: var(--color-primary);
+}
+
+.category-breadcrumb__item--current {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.category-breadcrumb__separator {
+  color: var(--color-text-tertiary);
+}
+
+/* Subcategory Grid */
+.subcategory-grid {
+  margin-bottom: 2rem;
+}
+
+.subcategory-grid__items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.subcategory-grid__item {
+  display: block;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.subcategory-grid__item:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading Page */
+.loading-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.loading-page__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loading-page__message {
+  color: var(--color-text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .category-page__content {
+    grid-template-columns: 1fr;
+  }
+  
+  .subcategory-grid__items {
+    grid-template-columns: 1fr;
+  }
+}

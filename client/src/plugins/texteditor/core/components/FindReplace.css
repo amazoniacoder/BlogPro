@@ -1,0 +1,46 @@
+/* Find & Replace Component Styles */
+
+.search-highlight {
+  background-color: #fef3c7;
+  border-radius: 2px;
+  padding: 1px 2px;
+}
+
+.search-highlight.current {
+  background-color: #fbbf24;
+  box-shadow: 0 0 0 1px #f59e0b;
+}
+
+.find-replace-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.find-replace-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 99999;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 16px;
+  width: 260px;
+  max-width: calc(100vw - 40px);
+  margin-top: 4px;
+}
+
+.find-replace-panel input:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+.find-replace-panel button:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.find-replace-panel button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

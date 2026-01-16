@@ -1,0 +1,111 @@
+/**
+ * BlogPro Accessibility Styles
+ * Screen reader and focus management styles
+ */
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--primary-600);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: var(--radius-md, 0.375rem);
+  z-index: 10000;
+  font-weight: 600;
+  transition: top 0.3s ease;
+}
+
+.skip-link--visible,
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Focus indicators */
+.focus-indicator {
+  position: relative;
+}
+
+.focus-indicator:focus-within::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid var(--primary-600);
+  border-radius: var(--radius-md, 0.375rem);
+  pointer-events: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .button,
+  .input {
+    border: 2px solid;
+  }
+  
+  .button:focus,
+  .input:focus {
+    outline: 3px solid;
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus visible polyfill - consolidated with .focus-ring utility */
+.button:focus-visible,
+.input:focus-visible,
+.select:focus-visible,
+.checkbox:focus-visible,
+.radio:focus-visible {
+  /* focus styles handled by .focus-ring utility class */
+}
+
+/* Keyboard navigation indicators - consolidated with .focus-ring utility */
+.tabs__tab:focus-visible,
+.breadcrumb__link:focus-visible,
+.admin-sidebar__link:focus-visible {
+  /* focus styles handled by .focus-ring utility class */
+}
+
+/* Live region styling */
+.live-region {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Accessible headings */
+.heading:focus {
+  outline: 2px solid var(--primary-600);
+  outline-offset: 2px;
+}

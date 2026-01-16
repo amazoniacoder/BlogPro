@@ -1,0 +1,493 @@
+/* Admin Mode Styles */
+
+.admin-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-toggle {
+  background: #007cba;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.admin-toggle:hover {
+  background: #005a87;
+}
+
+.admin-toggle.active {
+  background: #28a745;
+}
+
+.admin-toggle.active:hover {
+  background: #1e7e34;
+}
+
+/* Admin Mode Visual Indicators */
+.admin-mode .editable-text:hover {
+  outline: 2px dashed #007cba;
+  cursor: pointer;
+  background: rgba(0, 124, 186, 0.1);
+  position: relative;
+}
+
+.admin-mode .editable-text:hover::after {
+  content: 'Double-click to edit';
+  position: absolute;
+  top: -25px;
+  left: 0;
+  background: #007cba;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+.admin-mode .editable-content:hover {
+  outline: 2px dashed #28a745;
+  cursor: pointer;
+  background: rgba(40, 167, 69, 0.1);
+  position: relative;
+}
+
+.admin-mode .editable-content:hover::after {
+  content: 'Double-click to edit';
+  position: absolute;
+  top: -25px;
+  left: 0;
+  background: #28a745;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+.admin-mode .sidebar-nav__link:hover {
+  outline: 2px dashed #ffc107;
+  background: rgba(255, 193, 7, 0.1);
+}
+
+/* Context Menu Styles */
+.context-menu {
+  position: fixed;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 150px;
+}
+
+.context-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.context-menu__item:hover {
+  background: #f8f9fa;
+}
+
+.context-menu__item--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.context-menu__icon {
+  font-size: 16px;
+}
+
+.context-menu__label {
+  flex: 1;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  gap: 16px;
+}
+
+.loading-spinner span {
+  font-size: 32px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Inline Editor Styles */
+.inline-editor {
+  border: 2px solid #007cba;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  margin: 4px 0;
+}
+
+.editor-input,
+.editor-textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: inherit;
+  resize: vertical;
+}
+
+.editor-input:focus,
+.editor-textarea:focus {
+  outline: none;
+  border-color: #007cba;
+  box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.2);
+}
+
+.editor-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.editor-actions button {
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.editor-actions button:hover {
+  background: #f8f9fa;
+}
+
+.editor-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.editor-hint {
+  color: #666;
+  font-size: 11px;
+  margin-left: auto;
+}
+
+/* Export Button Styles */
+.export-all-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 8px;
+  transition: background-color 0.2s;
+}
+
+.export-all-btn:hover {
+  background: #1e7e34;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+}
+
+.modal-close:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+/* Format Converter Styles */
+.format-converter {
+  max-width: 100%;
+}
+
+.converter-title {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.converter-error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-dismiss {
+  background: none;
+  border: none;
+  color: #721c24;
+  cursor: pointer;
+  margin-left: auto;
+  font-size: 16px;
+}
+
+.format-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.format-option {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 16px;
+  background: #f8f9fa;
+}
+
+.format-info h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.format-description {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: #666;
+}
+
+.format-extension {
+  background: #007cba;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.format-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.preview-btn,
+.download-btn {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.preview-btn:hover {
+  background: #f8f9fa;
+}
+
+.download-btn {
+  background: #007cba;
+  color: white;
+  border-color: #007cba;
+}
+
+.download-btn:hover {
+  background: #005a87;
+}
+
+.download-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+.converter-info {
+  background: #e7f3ff;
+  padding: 12px;
+  border-radius: 4px;
+  border-left: 4px solid #007cba;
+}
+
+.info-text {
+  margin: 0;
+  font-size: 13px;
+  color: #333;
+}
+
+/* Admin Panel Styles */
+.admin-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.admin-panel-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.admin-panel-btn:hover {
+  background: #5a6268;
+}
+
+/* Admin Modal Styles */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.admin-modal-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 95%;
+  max-width: 1200px;
+  height: 90vh;
+  max-height: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  background: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+}
+
+.admin-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.admin-modal-body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Admin Panel Component Styles */
+.doc-admin-panel {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.admin-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Responsive Admin Modal */
+@media (max-width: 768px) {
+  .admin-modal-content {
+    width: 98%;
+    height: 95vh;
+    margin: 2.5vh 1%;
+  }
+  
+  .admin-actions {
+    flex-wrap: wrap;
+  }
+  
+  .admin-panel-btn,
+  .export-all-btn {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+}

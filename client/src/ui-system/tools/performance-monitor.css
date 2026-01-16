@@ -1,0 +1,57 @@
+/**
+ * BlogPro Performance Monitor Styles
+ */
+
+.performance-monitor {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.performance-monitor__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.performance-monitor__header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.performance-monitor__header button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.performance-monitor__metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.performance-monitor__metrics > div {
+  display: flex;
+  justify-content: space-between;
+}

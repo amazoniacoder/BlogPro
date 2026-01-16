@@ -1,0 +1,390 @@
+/**
+ * TextColorPicker Component Tests
+ * Comprehensive test suite with ≥90% coverage
+ */
+
+import '../setup';
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { TextColorPicker } from '../../core/components/TextColorPicker';
+
+// Test globals
+declare global {
+  var describe: any;
+  var test: any;
+  var expect: any;
+  var beforeEach: any;
+  var afterEach: any;
+}
+
+describe('TextColorPicker', () => {
+  const mockOnColorChange = vi.fn();
+  
+  const defaultProps = {
+    currentColor: '#000000',
+    onColorChange: mockOnColorChange,
+    type: 'text' as const
+  };
+
+  beforeEach(() => {
+    mockOnColorChange.mockClear();
+  });
+
+  afterEach(() => {
+    // Clean up any open dropdowns
+    document.body.click();
+  });
+
+  describe('Rendering', () => {
+    test('renders with default props', () => {
+      render(<TextColorPicker {...defaultProps} />);
+      
+      expect(screen.getByRole('button', { name: /text color: black/i })).toBeInTheDocument();
+      expect(screen.getByText('Text Color')).toBeInTheDocument();
+    });
+
+    test('renders background color type', () => {
+      render(<TextColorPicker {...defaultProps} type="background" />);
+      
+      expect(screen.getByRole('button', { name: /background color: black/i })).toBeInTheDocument();
+      expect(screen.getByText('Background')).toBeInTheDocument();
+    });
+
+    test('renders with custom color', () => {
+      render(<TextColorPicker {...defaultProps} currentColor="#ff0000" />);
+      
+      const colorSample = document.querySelector('.text-color-picker__color-sample');
+      expect(colorSample).toHaveStyle({ backgroundColor: '#ff0000' });
+    });
+
+    test('renders disabled state', () => {
+      render(<TextColorPicker {...defaultProps} disabled />);
+      
+      const trigger = screen.getByRole('button');
+      expect(trigger).toBeDisabled();
+    });
+
+    test('shows correct arrow direction when closed', () => {
+      render(<TextColorPicker {...defaultProps} />);
+      
+      expect(screen.getByText('▼')).toBeInTheDocument();
+    });
+  });
+
+  describe('Dropdown Interaction', () => {
+    test('opens dropdown when trigger is clicked', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      expect(screen.getByText('▲')).toBeInTheDocument(); // Arrow should flip
+    });
+
+    test('does not open dropdown when disabled', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} disabled />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    test('closes dropdown when clicking outside', async () => {
+      const user = userEvent.setup();
+      render(
+        <div>
+          <TextColorPicker {...defaultProps} />
+          <div data-testid="outside">Outside element</div>
+        </div>
+      );
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      
+      // Simulate mousedown event on outside element
+      const outsideElement = screen.getByTestId('outside');
+      const mouseDownEvent = new MouseEvent('mousedown', {
+        bubbles: true,
+        cancelable: true
+      });
+      outsideElement.dispatchEvent(mouseDownEvent);
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+
+    test('closes dropdown on Escape key', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      
+      // Press Escape
+      await user.keyboard('{Escape}');
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Color Selection', () => {
+    test('displays all color sections when open', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      // Check all sections are present
+      expect(screen.getByText('Basic Colors')).toBeInTheDocument();
+      expect(screen.getByText('Theme Colors')).toBeInTheDocument();
+      expect(screen.getByText('Standard Colors')).toBeInTheDocument();
+      expect(screen.getByText('Custom Color')).toBeInTheDocument();
+    });
+
+    test('shows current color as selected', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} currentColor="#ff0000" />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      const redOptions = screen.getAllByTitle('Red');
+      const redOption = redOptions[0]; // Basic red
+      expect(redOption).toHaveClass('selected');
+      expect(redOption.querySelector('.color-option__check')).toBeInTheDocument();
+    });
+
+    test('calls onColorChange when color is selected', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      // Select red color (first one - basic red)
+      const redOptions = screen.getAllByTitle('Red');
+      const redOption = redOptions[0]; // Basic red (#ff0000)
+      await user.click(redOption);
+      
+      expect(mockOnColorChange).toHaveBeenCalledWith('#ff0000');
+      expect(mockOnColorChange).toHaveBeenCalledTimes(1);
+    });
+
+    test('closes dropdown after selecting color', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      
+      // Select color (first blue - basic blue)
+      const blueOptions = screen.getAllByTitle('Blue');
+      const blueOption = blueOptions[0]; // Basic blue
+      await user.click(blueOption);
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+
+    test('handles remove color action', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      // Click remove color
+      const removeButton = screen.getByText('Remove Color');
+      await user.click(removeButton);
+      
+      expect(mockOnColorChange).toHaveBeenCalledWith('');
+    });
+  });
+
+  describe('Custom Color Input', () => {
+    test('handles custom color picker input', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      // Find color picker input
+      const colorInput = screen.getByLabelText('Custom color picker');
+      
+      // Simulate color change
+      fireEvent.change(colorInput, { target: { value: '#00ff00' } });
+      
+      expect(mockOnColorChange).toHaveBeenCalledWith('#00ff00');
+    });
+
+    test('handles custom hex text input', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      // Find hex text input
+      const hexInput = screen.getByLabelText('Custom color hex value');
+      await user.clear(hexInput);
+      await user.type(hexInput, '#00ff00');
+      
+      expect(mockOnColorChange).toHaveBeenCalledWith('#00ff00');
+    });
+
+    test('validates hex input format', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      // Find hex text input
+      const hexInput = screen.getByLabelText('Custom color hex value');
+      await user.clear(hexInput);
+      await user.type(hexInput, 'invalid');
+      
+      // Should not call onColorChange for invalid hex
+      expect(mockOnColorChange).not.toHaveBeenCalledWith('invalid');
+    });
+  });
+
+  describe('Accessibility', () => {
+    test('has proper ARIA attributes', () => {
+      render(<TextColorPicker {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
+      expect(trigger).toHaveAttribute('aria-label', 'text color: Black');
+    });
+
+    test('updates ARIA attributes when dropdown opens', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    test('color picker panel has proper role and label', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      const panel = screen.getByRole('dialog');
+      expect(panel).toHaveAttribute('aria-label', 'text color picker');
+    });
+
+    test('background color type has correct labels', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} type="background" />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      const panel = screen.getByRole('dialog');
+      expect(panel).toHaveAttribute('aria-label', 'background color picker');
+    });
+
+    test('color options have proper labels', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      const redOptions = screen.getAllByTitle('Red');
+      const redOption = redOptions[0]; // Basic red
+      expect(redOption).toHaveAttribute('title', 'Red');
+    });
+  });
+
+  describe('Edge Cases', () => {
+    test('handles invalid currentColor gracefully', () => {
+      render(<TextColorPicker {...defaultProps} currentColor="invalid" />);
+      
+      // Should still render without crashing
+      expect(screen.getByRole('button')).toBeInTheDocument();
+    });
+
+    test('handles missing onColorChange prop', async () => {
+      const user = userEvent.setup();
+      // @ts-ignore - Testing missing prop
+      render(<TextColorPicker currentColor="#000000" type="text" />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      const redOptions = screen.getAllByTitle('Red');
+      const redOption = redOptions[0]; // Basic red
+      
+      // Should not throw error
+      expect(() => user.click(redOption)).not.toThrow();
+    });
+
+    test('handles rapid open/close interactions', async () => {
+      const user = userEvent.setup();
+      render(<TextColorPicker {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      
+      // Rapid clicks
+      await user.click(trigger);
+      await user.click(trigger);
+      await user.click(trigger);
+      
+      // Should handle gracefully without errors
+      expect(trigger).toBeInTheDocument();
+    });
+  });
+
+  describe('Performance', () => {
+    test('does not cause unnecessary re-renders', () => {
+      const renderSpy = vi.fn();
+      
+      const TestComponent = (props: any) => {
+        renderSpy();
+        return <TextColorPicker {...props} />;
+      };
+      
+      const { rerender } = render(<TestComponent {...defaultProps} />);
+      
+      // Initial render
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      
+      // Re-render with same props
+      rerender(<TestComponent {...defaultProps} />);
+      
+      // Should not cause additional renders due to memoization
+      expect(renderSpy).toHaveBeenCalledTimes(2);
+    });
+  });
+});

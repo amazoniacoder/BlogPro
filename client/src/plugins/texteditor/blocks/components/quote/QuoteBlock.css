@@ -1,0 +1,27 @@
+.quote-block {
+  margin: 1rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid #e2e8f0;
+  background-color: #f8fafc;
+  font-style: italic;
+}
+
+.quote-block__content {
+  margin-bottom: 0.5rem;
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+.quote-block__author {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.quote-block__citation {
+  margin-top: 0.25rem;
+  font-size: 0.8em;
+  color: #94a3b8;
+}

@@ -1,0 +1,247 @@
+/**
+ * Word Count Component Styles
+ * 
+ * Professional styling for text statistics display with accessibility support.
+ * Includes responsive design and compact mode variations.
+ */
+
+.word-count {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #6c757d;
+  transition: all 0.2s ease;
+  min-width: fit-content;
+}
+
+.word-count:hover {
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
+/* Stats Container */
+.word-count__stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Individual Stat */
+.word-count__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.word-count__value {
+  font-weight: 600;
+  font-size: 14px;
+  color: #495057;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.word-count__label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Compact Mode */
+.word-count--compact {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+.word-count--compact .word-count__stats {
+  gap: 12px;
+}
+
+.word-count--compact .word-count__stat {
+  flex-direction: row;
+  gap: 4px;
+  align-items: baseline;
+}
+
+.word-count--compact .word-count__value {
+  font-size: 12px;
+}
+
+.word-count--compact .word-count__label {
+  font-size: 10px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .word-count {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+
+  .word-count__stats {
+    gap: 12px;
+  }
+
+  .word-count__value {
+    font-size: 12px;
+  }
+
+  .word-count__label {
+    font-size: 9px;
+  }
+
+  /* Force compact mode on mobile */
+  .word-count:not(.word-count--compact) .word-count__stat {
+    flex-direction: row;
+    gap: 4px;
+    align-items: baseline;
+  }
+
+  .word-count:not(.word-count--compact) .word-count__label {
+    text-transform: none;
+    letter-spacing: normal;
+  }
+}
+
+@media (max-width: 480px) {
+  .word-count {
+    padding: 4px 6px;
+  }
+
+  .word-count__stats {
+    gap: 8px;
+  }
+
+  .word-count__value {
+    font-size: 11px;
+  }
+
+  .word-count__label {
+    font-size: 8px;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .word-count {
+    background-color: #ffffff;
+    border-color: #000000;
+    border-width: 2px;
+  }
+
+  .word-count__value {
+    color: #000000;
+  }
+
+  .word-count__label {
+    color: #333333;
+  }
+
+  .word-count:hover {
+    background-color: #f0f0f0;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .word-count {
+    transition: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .word-count {
+    background-color: #343a40;
+    border-color: #495057;
+    color: #adb5bd;
+  }
+
+  .word-count__value {
+    color: #f8f9fa;
+  }
+
+  .word-count__label {
+    color: #adb5bd;
+  }
+
+  .word-count:hover {
+    background-color: #495057;
+    border-color: #6c757d;
+  }
+}
+
+/* Focus States for Accessibility */
+.word-count:focus-within {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+/* Animation for Value Changes */
+.word-count__value {
+  transition: color 0.2s ease;
+}
+
+.word-count__value:not(:empty) {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Separator for Multiple Stats */
+.word-count__stat:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 16px;
+  background-color: #dee2e6;
+  opacity: 0.5;
+}
+
+.word-count--compact .word-count__stat:not(:last-child)::after {
+  display: none;
+}
+
+/* Ensure proper positioning for separators */
+.word-count__stat {
+  position: relative;
+}
+
+/* Loading State */
+.word-count--loading .word-count__value {
+  opacity: 0.6;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}

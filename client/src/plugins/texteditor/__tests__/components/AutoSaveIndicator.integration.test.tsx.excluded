@@ -1,0 +1,495 @@
+/**
+ * Auto-Save Indicator Integration Tests
+ * Testing component and service integration
+ */
+
+import React, { useState, useEffect } from 'react';
+import { render, screen, waitFor, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import AutoSaveIndicator, { AutoSaveStatus } from '../../core/components/AutoSaveIndicator';
+import { AutoSaveService } from '../../core/services/AutoSaveService';
+
+// Mock localStorage
+const mockLocalStorage = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn()
+};
+
+Object.defineProperty(window, 'localStorage', {
+  value: mockLocalStorage
+});
+
+// Test wrapper component that integrates service and component
+const AutoSaveTestWrapper: React.FC<{
+  initialContent?: string;
+  onContentChange?: (content: string) => void;
+}> = ({ initialContent = '', onContentChange }) => {
+  const [status, setStatus] = useState<AutoSaveStatus>({ status: 'idle' });
+  const [content, setContent] = useState(initialContent);
+  const [service] = useState(() => AutoSaveService.getInstance({
+    interval: 1000,
+    maxRetries: 2,
+    debounceDelay: 100,
+    enableConflictDetection: true
+  }));
+
+  useEffect(() => {
+    service.initialize(initialContent);
+    
+    const unsubscribeStatus = service.onStatusChange(setStatus);
+    const unsubscribeContent = service.onContentChange((newContent) => {
+      setContent(newContent);
+      onContentChange?.(newContent);
+    });
+
+    return () => {
+      unsubscribeStatus();
+      unsubscribeContent();
+      service.destroy();
+    };
+  }, [service, initialContent, onContentChange]);
+
+  const handleManualSave = async () => {
+    await service.manualSave();
+  };
+
+  const handleResolveConflict = async (resolution: 'local' | 'server' | 'merge') => {
+    await service.resolveConflict(resolution);
+  };
+
+  const updateContent = (newContent: string) => {
+    setContent(newContent);
+    service.updateContent(newContent);
+  };
+
+  return (
+    <div>
+      <AutoSaveIndicator
+        status={status}
+        onManualSave={handleManualSave}
+        onResolveConflict={handleResolveConflict}
+        saveInterval={1000}
+      />
+      <textarea
+        data-testid="content-editor"
+        value={content}
+        onChange={(e) => updateContent(e.target.value)}
+        placeholder="Type content here..."
+      />
+    </div>
+  );
+};
+
+describe('AutoSaveIndicator Integration', () => {
+  let user: ReturnType<typeof userEvent.setup>;
+
+  beforeEach(() => {
+    user = userEvent.setup();
+    vi.useFakeTimers();
+    mockLocalStorage.getItem.mockClear();
+    mockLocalStorage.setItem.mockClear();
+    
+    // Reset singleton
+    (AutoSaveService as any).instance = null;
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.clearAllMocks();
+  });
+
+  describe('Basic Integration', () => {
+    it('initializes with idle status', () => {
+      render(<AutoSaveTestWrapper />);
+      
+      expect(screen.getByText('Ready')).toBeInTheDocument();
+      expect(screen.getByText('○')).toBeInTheDocument();
+    });
+
+    it('shows save interval indicator', () => {
+      render(<AutoSaveTestWrapper />);
+      
+      expect(screen.getByText('1s')).toBeInTheDocument();
+      expect(screen.getByText('⏱️')).toBeInTheDocument();
+    });
+
+    it('has functional manual save button', () => {
+      render(<AutoSaveTestWrapper />);
+      
+      const saveButton = screen.getByRole('button', { name: /manually save document/i });
+      expect(saveButton).toBeInTheDocument();
+      expect(saveButton).not.toBeDisabled();
+    });
+  });
+
+  describe('Auto-Save Flow', () => {
+    it('triggers auto-save when content changes', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      render(<AutoSaveTestWrapper initialContent="initial" />);
+      
+      const editor = screen.getByTestId('content-editor');
+      await user.clear(editor);
+      await user.type(editor, 'new content');
+      
+      // Should show saving status after debounce
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+      
+      expect(screen.getByText('Saving...')).toBeInTheDocument();
+      expect(screen.getByText('⏳')).toBeInTheDocument();
+      
+      // Should show saved status after save completes
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByText(/Saved/)).toBeInTheDocument();
+        expect(screen.getByText('✓')).toBeInTheDocument();
+      });
+    });
+
+    it('shows relative time after save', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      render(<AutoSaveTestWrapper />);
+      
+      const editor = screen.getByTestId('content-editor');
+      await user.type(editor, 'test content');
+      
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByText('Saved just now')).toBeInTheDocument();
+      });
+    });
+
+    it('performs periodic auto-save', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      render(<AutoSaveTestWrapper />);
+      
+      const editor = screen.getByTestId('content-editor');
+      await user.type(editor, 'content for periodic save');
+      
+      // Wait for auto-save interval
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      
+      expect(screen.getByText('Saving...')).toBeInTheDocument();
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByText(/Saved/)).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Manual Save', () => {
+    it('triggers manual save when button is clicked', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      render(<AutoSaveTestWrapper />);
+      
+      const saveButton = screen.getByRole('button', { name: /manually save document/i });
+      await user.click(saveButton);
+      
+      expect(screen.getByText('Saving...')).toBeInTheDocument();
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByText(/Saved/)).toBeInTheDocument();
+      });
+    });
+
+    it('disables manual save button while saving', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      render(<AutoSaveTestWrapper />);
+      
+      const editor = screen.getByTestId('content-editor');
+      await user.type(editor, 'content');
+      
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+      
+      const saveButton = screen.getByRole('button', { name: /manually save document/i });
+      expect(saveButton).toBeDisabled();
+    });
+  });
+
+  describe('Error Handling', () => {
+    it('shows error status when save fails', async () => {
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new Error('Storage error');
+      });
+      
+      render(<AutoSaveTestWrapper />);
+      
+      const editor = screen.getByTestId('content-editor');
+      await user.type(editor, 'content that will fail');
+      
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByText('Storage error')).toBeInTheDocument();
+        expect(screen.getByText('⚠️')).toBeInTheDocument();
+      });
+    });
+
+    it('shows retry status during error recovery', async () => {
+      let callCount = 0;
+      mockLocalStorage.setItem.mockImplementation(() => {
+        callCount++;
+        if (callCount <= 2) {
+          throw new Error('Temporary error');
+        }
+        // Success on third try
+      });
+      
+      render(<AutoSaveTestWrapper />);
+      
+      const editor = screen.getByTestId('content-editor');
+      await user.type(editor, 'content with retry');
+      
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      // Should show retry status
+      await waitFor(() => {
+        expect(screen.getByText(/Retrying/)).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Conflict Resolution', () => {
+    it('shows conflict dialog when conflict is detected', async () => {
+      mockLocalStorage.getItem.mockImplementation((key) => {
+        if (key === 'editor-content-version') return 'old-version';
+        if (key === 'editor-content') return 'server content';
+        return null;
+      });
+      
+      render(<AutoSaveTestWrapper />);
+      
+      const editor = screen.getByTestId('content-editor');
+      await user.type(editor, 'local content');
+      
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByText('Conflict detected')).toBeInTheDocument();
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+      });
+    });
+
+    it('resolves conflict with local version', async () => {
+      mockLocalStorage.getItem.mockImplementation((key) => {
+        if (key === 'editor-content-version') return 'old-version';
+        if (key === 'editor-content') return 'server content';
+        return null;
+      });
+      
+      render(<AutoSaveTestWrapper />);
+      
+      const editor = screen.getByTestId('content-editor');
+      await user.type(editor, 'local content');
+      
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+      });
+      
+      // Reset mock to allow successful save
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      const keepLocalButton = screen.getByRole('button', { name: /keep my changes/i });
+      await user.click(keepLocalButton);
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(screen.getByText(/Saved/)).toBeInTheDocument();
+      });
+    });
+
+    it('resolves conflict with server version', async () => {
+      const mockContentChange = vi.fn();
+      
+      mockLocalStorage.getItem.mockImplementation((key) => {
+        if (key === 'editor-content-version') return 'old-version';
+        if (key === 'editor-content') return 'server content';
+        return null;
+      });
+      
+      render(<AutoSaveTestWrapper onContentChange={mockContentChange} />);
+      
+      const editor = screen.getByTestId('content-editor');
+      await user.type(editor, 'local content');
+      
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+      });
+      
+      // Reset mock to allow successful save
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      const useServerButton = screen.getByRole('button', { name: /use server version/i });
+      await user.click(useServerButton);
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      await waitFor(() => {
+        expect(mockContentChange).toHaveBeenCalledWith('server content');
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Content Synchronization', () => {
+    it('updates editor content when service changes content', async () => {
+      const mockContentChange = vi.fn();
+      
+      render(<AutoSaveTestWrapper onContentChange={mockContentChange} />);
+      
+      // Simulate external content change (e.g., from conflict resolution)
+      const service = AutoSaveService.getInstance();
+      
+      act(() => {
+        service.updateContent('externally changed content');
+      });
+      
+      expect(mockContentChange).toHaveBeenCalledWith('externally changed content');
+    });
+
+    it('persists content to localStorage', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      render(<AutoSaveTestWrapper />);
+      
+      const editor = screen.getByTestId('content-editor');
+      await user.type(editor, 'content to persist');
+      
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+      
+      await act(async () => {
+        await vi.runAllTimersAsync();
+      });
+      
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+        'editor-content',
+        'content to persist'
+      );
+    });
+  });
+
+  describe('Performance', () => {
+    it('debounces rapid content changes', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      render(<AutoSaveTestWrapper />);
+      
+      const editor = screen.getByTestId('content-editor');
+      
+      // Rapid typing
+      await user.type(editor, 'a');
+      await user.type(editor, 'b');
+      await user.type(editor, 'c');
+      
+      // Should not save immediately
+      expect(screen.queryByText('Saving...')).not.toBeInTheDocument();
+      
+      // Should save after debounce delay
+      act(() => {
+        vi.advanceTimersByTime(100);
+      });
+      
+      expect(screen.getByText('Saving...')).toBeInTheDocument();
+    });
+
+    it('does not save when content has not changed', async () => {
+      render(<AutoSaveTestWrapper initialContent="unchanged" />);
+      
+      // Wait for auto-save interval without changing content
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      
+      // Should not show saving status
+      expect(screen.queryByText('Saving...')).not.toBeInTheDocument();
+      expect(mockLocalStorage.setItem).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Cleanup', () => {
+    it('cleans up service on unmount', () => {
+      const { unmount } = render(<AutoSaveTestWrapper />);
+      
+      const clearIntervalSpy = vi.spyOn(global, 'clearInterval');
+      const clearTimeoutSpy = vi.spyOn(global, 'clearTimeout');
+      
+      unmount();
+      
+      expect(clearIntervalSpy).toHaveBeenCalled();
+      expect(clearTimeoutSpy).toHaveBeenCalled();
+    });
+  });
+});

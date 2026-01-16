@@ -1,0 +1,28 @@
+/* BlogPro UI System - Admin Index */
+
+/* Import shared resources */
+@import './variables.css';
+@import './animations.css';
+@import './common-patterns.css';
+@import './common-forms.css';
+
+/* Import component styles */
+@import './layout.css';
+@import './components.css';
+@import './dashboard.css';
+@import './blog.css';
+@import './categories.css';
+@import './contacts.css';
+@import './settings.css';
+@import './analytics.css';
+@import './documentation.css';
+@import './mailings.css';
+@import './media.css';
+@import './site-editor.css';
+@import './tools.css';
+@import './user-forms.css';
+@import './users.css';
+@import './comments.css';
+@import './shop.css';
+@import './shop-navigation.css';
+@import '../components/admin/admin-editor.css';

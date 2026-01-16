@@ -1,0 +1,133 @@
+/**
+ * Blog Card Pattern Styles
+ * BEM methodology for blog post card component
+ */
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  background-color: var(--bg-primary);
+  height: 70%;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.blog-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.dark .blog-card {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.dark .blog-card:hover {
+  border-color: #4b5563;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.blog-card__image-container {
+  position: relative;
+  height: 100px;
+}
+
+.blog-card__image {
+  width: 100%;
+  height: 100%;
+  /* object fit handled by .object-cover utility class */
+  transition: transform 0.5s ease;
+}
+
+.blog-card:hover .blog-card__image {
+  /* transform handled by .scale-hover utility class */
+}
+
+.blog-card__content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.blog-card__meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.blog-card__date-icon {
+  margin-right: 4px;
+}
+
+.blog-card__title {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.blog-card__excerpt {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Remove footer styles completely */
+.blog-card__footer {
+  display: none;
+}
+
+.blog-card__meta {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.blog-card__date {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.blog-card__category {
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* Blog card link wrapper */
+.blog-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  height: fit-content;
+  align-self: start;
+  cursor: pointer;
+}
+
+.blog-card-link:hover {
+  text-decoration: none;
+  color: inherit;
+}

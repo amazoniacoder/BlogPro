@@ -1,0 +1,457 @@
+/**
+ * LinkManager Component Tests
+ * Comprehensive test suite with ≥90% coverage
+ */
+
+import '../setup';
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { LinkManager } from '../../core/components/LinkManager';
+
+// Test globals
+declare global {
+  var describe: any;
+  var test: any;
+  var expect: any;
+  var beforeEach: any;
+  var afterEach: any;
+}
+
+describe('LinkManager', () => {
+  const mockOnLinkChange = vi.fn();
+  
+  const defaultProps = {
+    onLinkChange: mockOnLinkChange
+  };
+
+  beforeEach(() => {
+    mockOnLinkChange.mockClear();
+    // Setup DOM for selection tests
+    document.body.innerHTML = '<div id="test-content">Test content</div>';
+  });
+
+  afterEach(() => {
+    // Clean up any open dropdowns
+    document.body.click();
+  });
+
+  describe('Rendering', () => {
+    test('renders trigger button with correct attributes', () => {
+      render(<LinkManager {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /insert or edit link/i });
+      expect(trigger).toBeInTheDocument();
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
+      expect(trigger).toHaveAttribute('title', 'Insert Link (Ctrl+K)');
+    });
+
+    test('renders disabled state', () => {
+      render(<LinkManager {...defaultProps} disabled />);
+      
+      const trigger = screen.getByRole('button');
+      expect(trigger).toBeDisabled();
+    });
+
+    test('shows link icon and label', () => {
+      render(<LinkManager {...defaultProps} />);
+      
+      expect(screen.getByText('🔗')).toBeInTheDocument();
+      expect(screen.getByText('Link')).toBeInTheDocument();
+    });
+  });
+
+  describe('Panel Interaction', () => {
+    test('opens panel when trigger is clicked', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /insert link/i })).toBeInTheDocument();
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    test('does not open panel when disabled', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} disabled />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    test('closes panel when clicking outside', async () => {
+      const user = userEvent.setup();
+      render(
+        <div>
+          <LinkManager {...defaultProps} />
+          <div data-testid="outside">Outside element</div>
+        </div>
+      );
+      
+      // Open panel
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      
+      // Click outside by dispatching mousedown event directly
+      const outsideElement = screen.getByTestId('outside');
+      outsideElement.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+
+    test('closes panel on Escape key', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      // Open panel
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      
+      // Press Escape
+      await user.keyboard('{Escape}');
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+
+    test('focuses URL input when panel opens', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      await waitFor(() => {
+        const urlInput = screen.getByLabelText(/url/i);
+        expect(urlInput).toHaveFocus();
+      });
+    });
+  });
+
+  describe('Form Fields', () => {
+    test('renders all form fields', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      expect(screen.getByLabelText(/url/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/link text/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/target/i)).toBeInTheDocument();
+    });
+
+    test('updates URL field and validates', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'https://example.com');
+      
+      expect(urlInput).toHaveValue('https://example.com');
+      expect(screen.queryByText(/invalid/i)).not.toBeInTheDocument();
+    });
+
+    test('shows validation error for invalid URL', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'invalid-url');
+      
+      expect(screen.getByText(/invalid url format/i)).toBeInTheDocument();
+      expect(urlInput).toHaveClass('error');
+    });
+
+    test('updates link text field', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const textInput = screen.getByLabelText(/link text/i);
+      await user.type(textInput, 'Click here');
+      
+      expect(textInput).toHaveValue('Click here');
+    });
+
+    test('updates target field', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const targetSelect = screen.getByLabelText(/target/i) as HTMLSelectElement;
+      // Directly set the value to avoid range.cloneRange issues
+      targetSelect.value = '_blank';
+      targetSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      
+      expect(targetSelect).toHaveValue('_blank');
+    });
+  });
+
+  describe('URL Validation', () => {
+    test('accepts valid HTTP URLs', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'http://example.com');
+      
+      expect(screen.queryByText(/invalid/i)).not.toBeInTheDocument();
+    });
+
+    test('accepts valid HTTPS URLs', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'https://example.com');
+      
+      expect(screen.queryByText(/invalid/i)).not.toBeInTheDocument();
+    });
+
+    test('accepts URLs without protocol', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'example.com');
+      
+      expect(screen.queryByText(/invalid/i)).not.toBeInTheDocument();
+    });
+
+    test('accepts mailto URLs', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'mailto:test@example.com');
+      
+      expect(screen.queryByText(/invalid/i)).not.toBeInTheDocument();
+    });
+
+    test('accepts tel URLs', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'tel:+1234567890');
+      
+      expect(screen.queryByText(/invalid/i)).not.toBeInTheDocument();
+    });
+
+    test('rejects invalid URLs', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'not-a-url');
+      
+      expect(screen.getByText(/invalid url format/i)).toBeInTheDocument();
+    });
+
+    test('shows error for empty URL when required', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'test');
+      await user.clear(urlInput);
+      
+      const insertButton = screen.getByRole('button', { name: /insert link/i });
+      expect(insertButton).toBeDisabled();
+    });
+  });
+
+  describe('Link Actions', () => {
+    test('calls onLinkChange with insertLink when inserting new link', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      // Fill form
+      await user.type(screen.getByLabelText(/url/i), 'https://example.com');
+      await user.type(screen.getByLabelText(/link text/i), 'Example');
+      
+      // Submit
+      await user.click(screen.getByRole('button', { name: /insert link/i }));
+      
+      expect(mockOnLinkChange).toHaveBeenCalledWith('insertLink', {
+        url: 'https://example.com',
+        text: 'Example',
+        target: '_self'
+      });
+    });
+
+    test('applies link on Enter key press', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'https://example.com');
+      await user.keyboard('{Enter}');
+      
+      expect(mockOnLinkChange).toHaveBeenCalledWith('insertLink', expect.objectContaining({
+        url: 'https://example.com'
+      }));
+    });
+
+    test('does not apply invalid link on Enter', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'invalid-url');
+      await user.keyboard('{Enter}');
+      
+      expect(mockOnLinkChange).not.toHaveBeenCalled();
+    });
+
+    test('closes panel after successful link insertion', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      await user.type(screen.getByLabelText(/url/i), 'https://example.com');
+      await user.click(screen.getByRole('button', { name: /insert link/i }));
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+
+    test('cancels link insertion', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      await user.type(screen.getByLabelText(/url/i), 'https://example.com');
+      await user.click(screen.getByText(/cancel/i));
+      
+      expect(mockOnLinkChange).not.toHaveBeenCalled();
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Accessibility', () => {
+    test('has proper ARIA attributes', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
+      
+      await user.click(trigger);
+      
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+      expect(screen.getByRole('dialog')).toHaveAttribute('aria-label', 'Link editor');
+    });
+
+    test('associates error messages with inputs', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'invalid');
+      
+      const errorMessage = screen.getByText(/invalid url format/i);
+      expect(urlInput).toHaveAttribute('aria-describedby', 'url-error');
+      expect(errorMessage).toHaveAttribute('id', 'url-error');
+    });
+
+    test('has proper form labels', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      expect(screen.getByLabelText(/url/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/link text/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/target/i)).toBeInTheDocument();
+    });
+  });
+
+  describe('Edge Cases', () => {
+    test('handles missing onLinkChange prop', async () => {
+      const user = userEvent.setup();
+      // @ts-ignore - Testing missing prop
+      render(<LinkManager />);
+      
+      await user.click(screen.getByRole('button'));
+      await user.type(screen.getByLabelText(/url/i), 'https://example.com');
+      
+      // Should not throw error
+      expect(() => user.click(screen.getByRole('button', { name: /insert link/i }))).not.toThrow();
+    });
+
+    test('handles rapid open/close interactions', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      
+      // Rapid clicks
+      await user.click(trigger);
+      await user.keyboard('{Escape}');
+      await user.click(trigger);
+      await user.keyboard('{Escape}');
+      
+      // Should handle gracefully
+      expect(trigger).toBeInTheDocument();
+    });
+
+    test('trims whitespace from URLs', async () => {
+      const user = userEvent.setup();
+      render(<LinkManager {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      await user.type(screen.getByLabelText(/url/i), '  https://example.com  ');
+      await user.click(screen.getByRole('button', { name: /insert link/i }));
+      
+      expect(mockOnLinkChange).toHaveBeenCalledWith('insertLink', expect.objectContaining({
+        url: 'https://example.com'
+      }));
+    });
+  });
+});

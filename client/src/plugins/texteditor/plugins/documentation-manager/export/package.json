@@ -1,0 +1,36 @@
+{
+  "name": "@blogpro/documentation-manager",
+  "version": "1.0.0",
+  "description": "BlogPro documentation-manager plugin",
+  "main": "src/index.js",
+  "type": "module",
+  "files": [
+    "src/",
+    "ui-system/",
+    "styles/",
+    "README.md",
+    "install.js"
+  ],
+  "scripts": {
+    "install": "node install.js",
+    "dev": "echo \"Development server not configured\"",
+    "build": "echo \"Build process not configured\""
+  },
+  "keywords": [
+    "documentation",
+    "plugin",
+    "blogpro",
+    "ui-system"
+  ],
+  "author": "BlogPro Team",
+  "license": "MIT",
+  "repository": "https://github.com/blogpro/documentation-manager",
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  },
+  "blogpro": {
+    "plugin": true,
+    "uiSystem": true,
+    "version": "1.0.0"
+  }
+}

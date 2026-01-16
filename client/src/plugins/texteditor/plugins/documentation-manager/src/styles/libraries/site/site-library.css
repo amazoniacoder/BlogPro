@@ -1,0 +1,74 @@
+/**
+ * Site Library Styles
+ * Library-specific theming and customization
+ * BEM methodology compliance
+ */
+
+.documentation-library--site {
+  --library-primary: #059669;
+  --library-secondary: #10b981;
+  --library-accent: #047857;
+  --library-bg: #f0fdf4;
+  --library-text: #1e293b;
+}
+
+/* Header theming */
+.documentation-library--site .header {
+  background: var(--library-primary);
+  color: white;
+}
+
+.documentation-library--site .header__title {
+  color: white;
+}
+
+.documentation-library--site .nav__link--active {
+  color: var(--library-accent);
+  border-bottom-color: var(--library-accent);
+}
+
+/* Sidebar theming */
+.documentation-library--site .sidebar-nav__link--active {
+  color: var(--library-primary);
+  border-left-color: var(--library-primary);
+  background-color: rgba(5, 150, 105, 0.1);
+}
+
+.documentation-library--site .sidebar-nav__link:hover {
+  color: var(--library-secondary);
+  background-color: rgba(5, 150, 105, 0.05);
+}
+
+/* Content theming */
+.documentation-library--site .content-section__title {
+  color: var(--library-primary);
+  border-bottom-color: var(--library-secondary);
+}
+
+.documentation-library--site .hero__title {
+  color: var(--library-primary);
+}
+
+.documentation-library--site .stat__value {
+  color: var(--library-accent);
+}
+
+/* Search theming */
+.documentation-library--site .search__input:focus {
+  border-color: var(--library-primary);
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2);
+}
+
+.documentation-library--site .search__result-button:hover {
+  background-color: rgba(5, 150, 105, 0.1);
+}
+
+/* Admin mode theming */
+.documentation-library--site.admin-mode .content-section--editable:hover {
+  outline-color: var(--library-primary);
+}
+
+.documentation-library--site .admin-toggle--active {
+  background-color: var(--library-primary);
+  color: white;
+}

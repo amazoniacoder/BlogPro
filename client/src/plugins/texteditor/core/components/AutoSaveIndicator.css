@@ -1,0 +1,246 @@
+/* Auto Save Indicator Styles - Optimized */
+.auto-save-indicator {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  border: none;
+}
+
+.auto-save-indicator__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.auto-save-indicator__icon {
+  font-size: 16px;
+  line-height: 1;
+  display: inline-block;
+  text-align: center;
+}
+
+/* Hide text - clock icon only */
+.auto-save-indicator__text {
+  display: none;
+}
+
+/* Success popup tooltip */
+.auto-save-popup {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: #4caf50;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  min-width: 120px;
+  max-width: 200px;
+  z-index: 1002;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  text-align: center;
+}
+
+.auto-save-popup::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 12px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #4caf50;
+}
+
+.auto-save-popup--show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.auto-save-popup .check-icon {
+  margin-right: 4px;
+  font-size: 10px;
+}
+
+.auto-save-popup__interval {
+  font-size: 10px;
+  opacity: 0.8;
+  margin-top: 2px;
+  font-style: italic;
+}
+
+/* Status-specific styles */
+.auto-save-indicator--saving {
+  color: #2196f3;
+}
+
+.auto-save-manager .auto-save-indicator.auto-save-indicator--saving .auto-save-indicator__icon {
+  animation: auto-save-spin 1s linear infinite !important;
+  transform-origin: center center;
+}
+
+/* Hourglass animation before popup */
+.auto-save-indicator--saved .auto-save-indicator__icon {
+  animation: hourglass-flip 0.5s ease-in-out;
+}
+
+@keyframes hourglass-flip {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(0deg); }
+}
+
+.auto-save-indicator--saved {
+  color: #4caf50;
+}
+
+.auto-save-indicator--error {
+  color: #f44336;
+}
+
+.auto-save-indicator--conflict {
+  color: #ff9800;
+}
+
+.auto-save-indicator--idle {
+  color: #999;
+}
+
+/* Manual save button - standardized styling */
+.auto-save-indicator__manual-save {
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #dee2e6;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  min-width: auto;
+  white-space: nowrap;
+}
+
+.auto-save-indicator__manual-save:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.auto-save-indicator__manual-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8f9fa;
+}
+
+/* Interval indicator */
+.auto-save-indicator__interval {
+  font-size: 10px;
+  color: #999;
+  opacity: 0.7;
+}
+
+/* Animations */
+@keyframes auto-save-spin {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+  }
+}
+
+/* Ensure animation works even with CSS resets */
+.auto-save-indicator__icon {
+  animation-fill-mode: both;
+  animation-play-state: running;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Conflict dialog */
+.auto-save-indicator__conflict-dialog {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  min-width: 300px;
+  z-index: 1000;
+}
+
+.auto-save-indicator__conflict-title {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.auto-save-indicator__conflict-description {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.auto-save-indicator__conflict-timestamp {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+.auto-save-indicator__conflict-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auto-save-indicator__conflict-button {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background: white;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.auto-save-indicator__conflict-button:hover {
+  background: #f5f5f5;
+}
+
+.auto-save-indicator__conflict-button--local {
+  border-color: #2196f3;
+  color: #2196f3;
+}
+
+.auto-save-indicator__conflict-button--server {
+  border-color: #ff9800;
+  color: #ff9800;
+}
+
+.auto-save-indicator__conflict-button--merge {
+  border-color: #4caf50;
+  color: #4caf50;
+}

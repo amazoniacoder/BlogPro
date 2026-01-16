@@ -1,0 +1,82 @@
+/* Login Form Pattern */
+.auth-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form__container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.auth-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.auth-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.auth-form__label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.required-field {
+  color: var(--color-error);
+}
+
+.auth-form__input {
+  width: 100%;
+}
+
+.auth-form__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.auth-form__submit-section {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-4);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.auth-form__captcha {
+  display: flex;
+  align-items: center;
+}
+
+.auth-form__submit {
+  flex: 1;
+  min-height: 44px;
+}
+
+.auth-form__links {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.auth-form__links--centered {
+  justify-content: center;
+}
+
+.auth-form__link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  transition: color 0.2s ease;
+}
+
+.auth-form__link:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}

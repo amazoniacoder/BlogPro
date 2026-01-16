@@ -1,0 +1,580 @@
+/**
+ * SearchService Tests
+ * Following development methodology for comprehensive service testing
+ */
+
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { SearchService, SearchOptions } from '../../core/services/SearchService';
+
+// Mock DOM methods
+const mockCreateRange = vi.fn(() => ({
+  setStart: vi.fn(),
+  setEnd: vi.fn(),
+  deleteContents: vi.fn(),
+  insertNode: vi.fn(),
+  extractContents: vi.fn(() => document.createDocumentFragment()),
+  surroundContents: vi.fn()
+}));
+
+Object.defineProperty(document, 'createRange', {
+  value: mockCreateRange
+});
+
+const mockCreateTreeWalker = vi.fn((_root: Node, _whatToShow: number) => ({
+  nextNode: vi.fn(() => null)
+}));
+
+Object.defineProperty(document, 'createTreeWalker', {
+  value: mockCreateTreeWalker
+});
+
+describe('SearchService', () => {
+  let mockEditor: HTMLElement;
+  let mockTextNode: Text;
+
+  beforeEach(() => {
+    // Create mock editor with text content
+    mockEditor = document.createElement('div');
+    mockEditor.className = 'editor-content';
+    mockEditor.innerHTML = 'This is a test document with test content for testing search functionality.';
+    
+    // Create mock text node
+    mockTextNode = document.createTextNode('This is a test document with test content for testing search functionality.');
+    mockEditor.appendChild(mockTextNode);
+    
+    document.body.appendChild(mockEditor);
+    
+    // Reset service state
+    SearchService.clearSearch(mockEditor);
+  });
+
+  afterEach(() => {
+    if (document.body.contains(mockEditor)) {
+      document.body.removeChild(mockEditor);
+    }
+    vi.clearAllMocks();
+  });
+
+  describe('findAll', () => {
+    it('finds all occurrences of a search term', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      // Mock createTreeWalker to return our text node
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const results = SearchService.findAll(mockEditor, 'test', options);
+      
+      expect(results).toHaveLength(3); // 'test' appears 3 times
+      expect(results[0].text).toBe('test');
+      expect(results[0].startOffset).toBe(10); // Position of first 'test'
+    });
+
+    it('returns empty array for empty query', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      const results = SearchService.findAll(mockEditor, '', options);
+      
+      expect(results).toHaveLength(0);
+    });
+
+    it('handles case sensitive search', () => {
+      const options: SearchOptions = { caseSensitive: true, wholeWord: false, useRegex: false };
+      
+      // Create content with mixed case
+      mockTextNode.textContent = 'Test test TEST';
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const results = SearchService.findAll(mockEditor, 'test', options);
+      
+      expect(results).toHaveLength(1); // Only lowercase 'test'
+    });
+
+    it('handles whole word search', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: true, useRegex: false };
+      
+      // Create content with partial matches
+      mockTextNode.textContent = 'test testing tested';
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const results = SearchService.findAll(mockEditor, 'test', options);
+      
+      expect(results).toHaveLength(1); // Only whole word 'test'
+    });
+
+    it('handles regex search', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: true };
+      
+      mockTextNode.textContent = 'test123 test456 testing';
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const results = SearchService.findAll(mockEditor, 'test\\d+', options);
+      
+      expect(results).toHaveLength(2); // 'test123' and 'test456'
+    });
+
+    it('falls back to literal search for invalid regex', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: true };
+      
+      mockTextNode.textContent = 'test [invalid regex';
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const results = SearchService.findAll(mockEditor, '[invalid', options);
+      
+      expect(results).toHaveLength(1); // Should find literal '[invalid'
+    });
+  });
+
+  describe('findNext and findPrevious', () => {
+    beforeEach(() => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      SearchService.findAll(mockEditor, 'test', options);
+    });
+
+    it('navigates to next result', () => {
+      const result = SearchService.findNext();
+      
+      expect(result).toBeTruthy();
+      expect(SearchService.getSearchStats().current).toBe(1);
+    });
+
+    it('wraps around to first result after last', () => {
+      // Navigate to last result
+      SearchService.findNext(); // 1
+      SearchService.findNext(); // 2
+      SearchService.findNext(); // 3
+      SearchService.findNext(); // Should wrap to 1
+      
+      expect(SearchService.getSearchStats().current).toBe(1);
+    });
+
+    it('navigates to previous result', () => {
+      SearchService.findNext(); // Go to first result
+      SearchService.findNext(); // Go to second result
+      
+      const result = SearchService.findPrevious();
+      
+      expect(result).toBeTruthy();
+      expect(SearchService.getSearchStats().current).toBe(1);
+    });
+
+    it('wraps around to last result when going previous from first', () => {
+      const result = SearchService.findPrevious();
+      
+      expect(result).toBeTruthy();
+      expect(SearchService.getSearchStats().current).toBe(3); // Last result
+    });
+
+    it('returns null when no results available', () => {
+      SearchService.clearSearch(mockEditor);
+      
+      const nextResult = SearchService.findNext();
+      const prevResult = SearchService.findPrevious();
+      
+      expect(nextResult).toBeNull();
+      expect(prevResult).toBeNull();
+    });
+  });
+
+  describe('replaceCurrent', () => {
+    beforeEach(() => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      // Mock highlight element for findNext
+      const mockHighlight = document.createElement('mark');
+      mockHighlight.scrollIntoView = vi.fn();
+      vi.spyOn(document, 'querySelector').mockReturnValue(mockHighlight);
+      
+      SearchService.findAll(mockEditor, 'test', options);
+      SearchService.findNext(); // Select first result
+    });
+
+    it('replaces current occurrence', () => {
+      // Create a mock highlight element
+      const mockHighlight = document.createElement('mark');
+      mockHighlight.className = 'search-highlight';
+      mockHighlight.setAttribute('data-search-index', '0');
+      mockHighlight.textContent = 'test';
+      
+      const mockParent = document.createElement('div');
+      mockParent.appendChild(mockHighlight);
+      mockEditor.appendChild(mockParent);
+      
+      vi.spyOn(document, 'querySelector').mockReturnValue(mockHighlight);
+      const replaceChildSpy = vi.spyOn(mockParent, 'replaceChild');
+      
+      const result = SearchService.replaceCurrent('replacement');
+      
+      expect(result).toBe(true);
+      expect(replaceChildSpy).toHaveBeenCalled();
+    });
+
+    it('returns false when no current result', () => {
+      SearchService.clearSearch(mockEditor);
+      
+      const result = SearchService.replaceCurrent('replacement');
+      
+      expect(result).toBe(false);
+    });
+
+    it('updates result count after replacement', () => {
+      // Create a mock highlight element
+      const mockHighlight = document.createElement('mark');
+      mockHighlight.className = 'search-highlight';
+      mockHighlight.setAttribute('data-search-index', '0');
+      mockHighlight.textContent = 'test';
+      
+      const mockParent = document.createElement('div');
+      mockParent.appendChild(mockHighlight);
+      mockEditor.appendChild(mockParent);
+      
+      vi.spyOn(document, 'querySelector').mockReturnValue(mockHighlight);
+      
+      const initialStats = SearchService.getSearchStats();
+      SearchService.replaceCurrent('replacement');
+      const updatedStats = SearchService.getSearchStats();
+      
+      expect(updatedStats.total).toBe(initialStats.total - 1);
+    });
+
+    it('triggers content change event', () => {
+      const testEditor = document.createElement('div');
+      testEditor.contentEditable = 'true';
+      document.body.appendChild(testEditor);
+      
+      const dispatchEventSpy = vi.spyOn(testEditor, 'dispatchEvent');
+      
+      // Create a mock highlight element
+      const mockHighlight = document.createElement('mark');
+      mockHighlight.className = 'search-highlight';
+      mockHighlight.setAttribute('data-search-index', '0');
+      mockHighlight.textContent = 'test';
+      
+      const mockParent = document.createElement('div');
+      mockParent.appendChild(mockHighlight);
+      testEditor.appendChild(mockParent);
+      
+      vi.spyOn(document, 'querySelector')
+        .mockReturnValueOnce(testEditor) // For triggerContentChange
+        .mockReturnValueOnce(mockHighlight); // For replaceCurrent
+      
+      SearchService.replaceCurrent('replacement');
+      
+      expect(dispatchEventSpy).toHaveBeenCalledWith(expect.any(Event));
+      
+      document.body.removeChild(testEditor);
+    });
+  });
+
+  describe('replaceAll', () => {
+    it('replaces all occurrences', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const mockRange = {
+        setStart: vi.fn(),
+        setEnd: vi.fn(),
+        deleteContents: vi.fn(),
+        insertNode: vi.fn(),
+        extractContents: vi.fn(() => document.createDocumentFragment()),
+        surroundContents: vi.fn()
+      };
+      
+      mockCreateRange.mockReturnValue(mockRange);
+      
+      const count = SearchService.replaceAll(mockEditor, 'test', 'replacement', options);
+      
+      expect(count).toBe(3); // Should replace all 3 occurrences
+      expect(mockRange.deleteContents).toHaveBeenCalledTimes(3);
+      expect(mockRange.insertNode).toHaveBeenCalledTimes(3);
+    });
+
+    it('returns 0 when no matches found', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const count = SearchService.replaceAll(mockEditor, 'nonexistent', 'replacement', options);
+      
+      expect(count).toBe(0);
+    });
+
+    it('clears search state after replace all', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const mockRange = {
+        setStart: vi.fn(),
+        setEnd: vi.fn(),
+        deleteContents: vi.fn(),
+        insertNode: vi.fn(),
+        extractContents: vi.fn(() => document.createDocumentFragment()),
+        surroundContents: vi.fn()
+      };
+      
+      mockCreateRange.mockReturnValue(mockRange);
+      
+      SearchService.replaceAll(mockEditor, 'test', 'replacement', options);
+      const stats = SearchService.getSearchStats();
+      
+      expect(stats.total).toBe(0);
+      expect(stats.current).toBe(0);
+    });
+  });
+
+  describe('clearSearch', () => {
+    it('clears all search state', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      SearchService.findAll(mockEditor, 'test', options);
+      SearchService.clearSearch(mockEditor);
+      
+      const stats = SearchService.getSearchStats();
+      expect(stats.total).toBe(0);
+      expect(stats.current).toBe(0);
+      expect(stats.query).toBe('');
+    });
+
+    it('removes all highlights from editor', () => {
+      const mockHighlight = document.createElement('mark');
+      mockHighlight.className = 'search-highlight';
+      mockHighlight.textContent = 'test';
+      
+      const mockParent = document.createElement('div');
+      mockParent.appendChild(mockHighlight);
+      mockEditor.appendChild(mockParent);
+      
+      const querySelectorAllSpy = vi.spyOn(mockEditor, 'querySelectorAll')
+        .mockReturnValue([mockHighlight] as any);
+      
+      const replaceChildSpy = vi.spyOn(mockParent, 'replaceChild');
+      const normalizeSpy = vi.spyOn(mockParent, 'normalize');
+      
+      SearchService.clearSearch(mockEditor);
+      
+      expect(querySelectorAllSpy).toHaveBeenCalledWith('.search-highlight');
+      expect(replaceChildSpy).toHaveBeenCalled();
+      expect(normalizeSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('getSearchStats', () => {
+    it('returns correct stats when no search performed', () => {
+      const stats = SearchService.getSearchStats();
+      
+      expect(stats.current).toBe(0);
+      expect(stats.total).toBe(0);
+      expect(stats.query).toBe('');
+    });
+
+    it('returns correct stats after search', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      // Mock highlight element for findNext
+      const mockHighlight = document.createElement('mark');
+      mockHighlight.scrollIntoView = vi.fn();
+      vi.spyOn(document, 'querySelector').mockReturnValue(mockHighlight);
+      
+      SearchService.findAll(mockEditor, 'test', options);
+      SearchService.findNext();
+      
+      const stats = SearchService.getSearchStats();
+      
+      expect(stats.current).toBe(1);
+      expect(stats.total).toBe(3);
+      expect(stats.query).toBe('test');
+    });
+  });
+
+  describe('Highlighting', () => {
+    it('creates highlight elements for search results', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const mockRange = {
+        setStart: vi.fn(),
+        setEnd: vi.fn(),
+        deleteContents: vi.fn(),
+        insertNode: vi.fn(),
+        extractContents: vi.fn(() => document.createDocumentFragment()),
+        surroundContents: vi.fn()
+      };
+      
+      mockCreateRange.mockReturnValue(mockRange);
+      
+      SearchService.findAll(mockEditor, 'test', options);
+      
+      expect(mockRange.surroundContents).toHaveBeenCalledTimes(3);
+    });
+
+    it('handles current result highlighting', () => {
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const mockCurrentHighlight = document.createElement('mark');
+      mockCurrentHighlight.setAttribute('data-search-index', '0');
+      mockCurrentHighlight.scrollIntoView = vi.fn();
+      
+      vi.spyOn(document, 'querySelector')
+        .mockReturnValueOnce(null) // No previous current
+        .mockReturnValueOnce(mockCurrentHighlight) // Current highlight for addClass
+        .mockReturnValueOnce(mockCurrentHighlight); // Current highlight for scroll
+      
+      const addClassSpy = vi.spyOn(mockCurrentHighlight.classList, 'add');
+      
+      SearchService.findAll(mockEditor, 'test', options);
+      SearchService.findNext();
+      
+      expect(addClassSpy).toHaveBeenCalledWith('current');
+    });
+
+    it('scrolls to current result', () => {
+      const mockHighlight = document.createElement('mark');
+      mockHighlight.setAttribute('data-search-index', '0');
+      
+      const scrollIntoViewSpy = vi.fn();
+      mockHighlight.scrollIntoView = scrollIntoViewSpy;
+      
+      vi.spyOn(document, 'querySelector')
+        .mockReturnValueOnce(null) // No previous current
+        .mockReturnValueOnce(mockHighlight) // Current highlight for addClass
+        .mockReturnValueOnce(mockHighlight); // Current highlight for scroll
+      
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      SearchService.findAll(mockEditor, 'test', options);
+      SearchService.findNext();
+      
+      expect(scrollIntoViewSpy).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    });
+  });
+
+  describe('Edge Cases', () => {
+    it('handles empty text nodes', () => {
+      const emptyTextNode = document.createTextNode('');
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(emptyTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      const results = SearchService.findAll(mockEditor, 'test', options);
+      
+      expect(results).toHaveLength(0);
+    });
+
+    it('handles text nodes with only whitespace', () => {
+      const whitespaceNode = document.createTextNode('   \n\t  ');
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(whitespaceNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const options: SearchOptions = { caseSensitive: false, wholeWord: false, useRegex: false };
+      const results = SearchService.findAll(mockEditor, 'test', options);
+      
+      expect(results).toHaveLength(0);
+    });
+
+    it('handles search at text boundaries', () => {
+      mockTextNode.textContent = 'test';
+      
+      mockCreateTreeWalker.mockReturnValue({
+        nextNode: vi.fn()
+          .mockReturnValueOnce(mockTextNode)
+          .mockReturnValueOnce(null)
+      } as any);
+      
+      const options: SearchOptions = { caseSensitive: false, wholeWord: true, useRegex: false };
+      const results = SearchService.findAll(mockEditor, 'test', options);
+      
+      expect(results).toHaveLength(1);
+      expect(results[0].startOffset).toBe(0);
+      expect(results[0].endOffset).toBe(4);
+    });
+  });
+});

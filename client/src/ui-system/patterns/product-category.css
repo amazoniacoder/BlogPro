@@ -1,0 +1,118 @@
+/* Product Category Page - BEM Methodology */
+
+.category-page {
+  min-height: 100vh;
+  padding: var(--space-xl, 2rem) 0;
+  background: var(--bg-primary, #ffffff);
+}
+
+.category-page__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg, 1.5rem);
+}
+
+.category-page__header {
+  margin-bottom: var(--space-xl, 2rem);
+  padding-bottom: var(--space-lg, 1.5rem);
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.category-page__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 0.75rem);
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #6b7280);
+  margin-bottom: var(--space-lg, 1.5rem);
+}
+
+.category-page__breadcrumb a {
+  color: var(--color-primary, #3b82f6);
+  text-decoration: none;
+}
+
+.category-page__breadcrumb span {
+  color: var(--text-primary, #1f2937);
+  font-weight: 500;
+}
+
+.category-page__title-section {
+  margin-bottom: var(--space-lg, 1.5rem);
+}
+
+.category-page__title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary, #1f2937);
+  line-height: 1.2;
+  margin: 0 0 var(--space-md, 1rem) 0;
+}
+
+.category-page__description {
+  font-size: 1.125rem;
+  color: var(--text-secondary, #6b7280);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.category-page__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.category-page__content {
+  margin-top: var(--space-xl, 2rem);
+}
+
+.category-page__loading,
+.category-page__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: var(--space-xl, 2rem);
+}
+
+.category-page__spinner {
+  font-size: var(--font-size-lg, 1.125rem);
+  color: var(--text-secondary, #6b7280);
+}
+
+.category-page__error .icon {
+  color: var(--color-error, #ef4444);
+  margin-bottom: var(--space-lg, 1.5rem);
+}
+
+.category-page__error h2 {
+  font-size: var(--font-size-2xl, 1.875rem);
+  font-weight: 600;
+  color: var(--text-primary, #1f2937);
+  margin: 0 0 var(--space-md, 1rem) 0;
+}
+
+.category-page__error p {
+  font-size: var(--font-size-lg, 1.125rem);
+  color: var(--text-secondary, #6b7280);
+  margin: 0 0 var(--space-xl, 2rem) 0;
+}
+
+@media (max-width: 768px) {
+  .category-page__title {
+    font-size: 2rem;
+  }
+  
+  .category-page__description {
+    font-size: 1rem;
+  }
+  
+  .category-page__header {
+    text-align: center;
+  }
+  
+  .category-page__actions {
+    justify-content: center;
+  }
+}

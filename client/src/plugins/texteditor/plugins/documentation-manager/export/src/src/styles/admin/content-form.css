@@ -1,0 +1,188 @@
+/**
+ * Content Form Styles
+ * Form interface for creating and editing content
+ * BEM methodology compliance
+ */
+
+.content-form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.content-form__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.content-form__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.content-form__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.content-form__cancel {
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.content-form__cancel:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.content-form__form {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Form Fields */
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-field__label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.form-field__input,
+.form-field__textarea,
+.form-field__select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-field__input:focus,
+.form-field__textarea:focus,
+.form-field__select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.form-field__input--error,
+.form-field__textarea--error {
+  border-color: #dc2626;
+}
+
+.form-field__input--error:focus,
+.form-field__textarea--error:focus {
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+}
+
+.form-field__textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-field__editor {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.form-field__editor--error {
+  border-color: #dc2626;
+}
+
+.form-field__error {
+  display: block;
+  font-size: 12px;
+  color: #dc2626;
+  margin-top: 4px;
+}
+
+/* Checkbox Field */
+.form-field--checkbox {
+  margin-bottom: 16px;
+}
+
+.form-field__checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.form-field__checkbox {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.form-field__checkbox-text {
+  font-size: 14px;
+  color: #374151;
+}
+
+/* Form Actions */
+.form-actions {
+  padding: 20px 24px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.form-actions__submit {
+  width: 100%;
+  padding: 12px 24px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.form-actions__submit:hover {
+  background: #2563eb;
+}
+
+.form-actions__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Form Error */
+.form-error {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+}
+
+.form-error__text {
+  font-size: 14px;
+  color: #dc2626;
+  margin: 0;
+}

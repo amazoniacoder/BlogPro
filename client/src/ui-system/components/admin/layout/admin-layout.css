@@ -1,0 +1,124 @@
+/* Universal Admin Tabbed Layout */
+.admin-tabbed-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  top: 70px;
+}
+
+/* Universal Tab Bar */
+.admin-tab-bar {
+  display: flex;
+  position: relative;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 8px 8px 0 0;
+  overflow-x: auto;
+}
+
+.admin-tab-bar__tabs {
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.admin-tab-bar__tab {
+  padding: 1rem 1.5rem;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-radius: 6px 6px 0 0;
+}
+
+.admin-tab-bar__tab:hover:not(.admin-tab-bar__tab--active) {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+  transform: translateY(-1px);
+}
+
+.admin-tab-bar__tab--active {
+  color: var(--color-primary);
+  background: none;
+  font-weight: 600;
+}
+
+.admin-tab-bar__tab-icon {
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.admin-tab-bar__tab-icon--active {
+  color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+.admin-tab-bar__tab-label {
+  font-weight: inherit;
+}
+
+.admin-tab-bar__tab-badge {
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: pulse 2s infinite;
+}
+
+.admin-tab-bar__indicator {
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light, rgba(59, 130, 246, 0.8)));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Universal Tab Content */
+.admin-tab-content {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  min-height: 500px;
+}
+
+.admin-tab-panel {
+  padding: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-tabbed-layout {
+    padding: var(--space-sm);
+  }
+  
+  .admin-tab-bar__tab {
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+  }
+  
+  .admin-tab-bar__tab-label {
+    display: none;
+  }
+  
+  .admin-tab-panel {
+    padding: 1rem;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}

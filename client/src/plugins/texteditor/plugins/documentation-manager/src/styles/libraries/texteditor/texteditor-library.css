@@ -1,0 +1,74 @@
+/**
+ * Text Editor Library Styles
+ * Library-specific theming and customization
+ * BEM methodology compliance
+ */
+
+.documentation-library--texteditor {
+  --library-primary: #2563eb;
+  --library-secondary: #3b82f6;
+  --library-accent: #1d4ed8;
+  --library-bg: #f8fafc;
+  --library-text: #1e293b;
+}
+
+/* Header theming */
+.documentation-library--texteditor .header {
+  background: var(--library-primary);
+  color: white;
+}
+
+.documentation-library--texteditor .header__title {
+  color: white;
+}
+
+.documentation-library--texteditor .nav__link--active {
+  color: var(--library-accent);
+  border-bottom-color: var(--library-accent);
+}
+
+/* Sidebar theming */
+.documentation-library--texteditor .sidebar-nav__link--active {
+  color: var(--library-primary);
+  border-left-color: var(--library-primary);
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.documentation-library--texteditor .sidebar-nav__link:hover {
+  color: var(--library-secondary);
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+/* Content theming */
+.documentation-library--texteditor .content-section__title {
+  color: var(--library-primary);
+  border-bottom-color: var(--library-secondary);
+}
+
+.documentation-library--texteditor .hero__title {
+  color: var(--library-primary);
+}
+
+.documentation-library--texteditor .stat__value {
+  color: var(--library-accent);
+}
+
+/* Search theming */
+.documentation-library--texteditor .search__input:focus {
+  border-color: var(--library-primary);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.documentation-library--texteditor .search__result-button:hover {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+/* Admin mode theming */
+.documentation-library--texteditor.admin-mode .content-section--editable:hover {
+  outline-color: var(--library-primary);
+}
+
+.documentation-library--texteditor .admin-toggle--active {
+  background-color: var(--library-primary);
+  color: white;
+}

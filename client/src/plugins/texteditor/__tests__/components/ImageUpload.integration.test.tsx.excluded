@@ -1,0 +1,461 @@
+/**
+ * ImageUpload Integration Tests
+ * Tests integration with MediaService and editor functionality
+ */
+
+import '../setup';
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ImageUpload } from '../../core/components/ImageUpload';
+import { MediaService } from '../../core/services/MediaService';
+
+// Test globals
+declare global {
+  var describe: any;
+  var test: any;
+  var expect: any;
+  var beforeEach: any;
+  var vi: any;
+}
+
+// Mock MediaService
+vi.mock('../../core/services/MediaService', () => ({
+  MediaService: {
+    validateImage: vi.fn(),
+    uploadImage: vi.fn(),
+    convertToWebP: vi.fn(),
+    getImageDimensions: vi.fn(),
+    insertImage: vi.fn(),
+    handleImageDrop: vi.fn(),
+    resizeImage: vi.fn()
+  }
+}));
+
+const mockedMediaService = vi.mocked(MediaService);
+
+describe('ImageUpload Integration', () => {
+  const mockOnImageInsert = vi.fn();
+  
+  const defaultProps = {
+    onImageInsert: mockOnImageInsert
+  };
+
+  const createMockFile = (name = 'test.jpg', type = 'image/jpeg', size = 1024) => {
+    const file = new File(['test content'], name, { type });
+    Object.defineProperty(file, 'size', { value: size });
+    return file;
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockOnImageInsert.mockClear();
+    
+    // Mock URL methods
+    global.URL.createObjectURL = vi.fn(() => 'blob:mock-url');
+    global.URL.revokeObjectURL = vi.fn();
+    
+    // Setup default mock implementations
+    mockedMediaService.validateImage.mockResolvedValue({
+      isValid: true,
+      fileSize: 1024,
+      dimensions: { width: 100, height: 100 }
+    });
+    
+    mockedMediaService.uploadImage.mockResolvedValue({
+      success: true,
+      url: '/uploads/test.webp',
+      filename: 'test.webp'
+    });
+  });
+
+  describe('Service Integration', () => {
+    test('integrates with MediaService for image validation', async () => {
+      const user = userEvent.setup();
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile();
+      
+      await user.upload(fileInput, file);
+      
+      expect(mockedMediaService.validateImage).toHaveBeenCalledWith(file);
+    });
+
+    test('uses MediaService validation results', async () => {
+      const user = userEvent.setup();
+      mockedMediaService.validateImage.mockResolvedValue({
+        isValid: false,
+        error: 'File too large'
+      });
+      
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile('large.jpg', 'image/jpeg', 20 * 1024 * 1024);
+      
+      await user.upload(fileInput, file);
+      
+      await waitFor(() => {
+        expect(screen.getByText('File too large')).toBeInTheDocument();
+      });
+    });
+
+    test('calls MediaService upload with correct parameters', async () => {
+      const user = userEvent.setup();
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile();
+      
+      await user.upload(fileInput, file);
+      
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: /insert image/i })).toBeInTheDocument();
+      });
+      
+      const insertButton = screen.getByRole('button', { name: /insert image/i });
+      await user.click(insertButton);
+      
+      expect(mockedMediaService.uploadImage).toHaveBeenCalledWith(file);
+    });
+
+    test('handles MediaService upload success', async () => {
+      const user = userEvent.setup();
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile();
+      
+      await user.upload(fileInput, file);
+      
+      // Add alt text
+      const altInput = screen.getByLabelText(/alt text/i);
+      await user.type(altInput, 'Test image');
+      
+      // Change alignment
+      const alignmentSelect = screen.getByLabelText(/alignment/i) as HTMLSelectElement;
+      alignmentSelect.value = 'center';
+      alignmentSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      
+      const insertButton = screen.getByRole('button', { name: /insert image/i });
+      await user.click(insertButton);
+      
+      await waitFor(() => {
+        expect(mockOnImageInsert).toHaveBeenCalledWith('insertImage', {
+          url: '/uploads/test.webp',
+          alt: 'Test image',
+          alignment: 'center',
+          width: undefined,
+          height: undefined
+        });
+      });
+    });
+
+    test('handles MediaService upload failure', async () => {
+      const user = userEvent.setup();
+      mockedMediaService.uploadImage.mockResolvedValue({
+        success: false,
+        error: 'Server error'
+      });
+      
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile();
+      
+      await user.upload(fileInput, file);
+      
+      const insertButton = screen.getByRole('button', { name: /insert image/i });
+      await user.click(insertButton);
+      
+      await waitFor(() => {
+        expect(screen.getByText('Server error')).toBeInTheDocument();
+      });
+      
+      expect(mockOnImageInsert).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('File Type Validation', () => {
+    test('accepts JPEG files', async () => {
+      const user = userEvent.setup();
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile('test.jpg', 'image/jpeg');
+      
+      await user.upload(fileInput, file);
+      
+      expect(mockedMediaService.validateImage).toHaveBeenCalledWith(file);
+      await waitFor(() => {
+        expect(screen.getByAltText('Preview')).toBeInTheDocument();
+      });
+    });
+
+    test('accepts PNG files', async () => {
+      const user = userEvent.setup();
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile('test.png', 'image/png');
+      
+      await user.upload(fileInput, file);
+      
+      expect(mockedMediaService.validateImage).toHaveBeenCalledWith(file);
+      await waitFor(() => {
+        expect(screen.getByAltText('Preview')).toBeInTheDocument();
+      });
+    });
+
+    test('accepts WebP files', async () => {
+      const user = userEvent.setup();
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile('test.webp', 'image/webp');
+      
+      await user.upload(fileInput, file);
+      
+      expect(mockedMediaService.validateImage).toHaveBeenCalledWith(file);
+      await waitFor(() => {
+        expect(screen.getByAltText('Preview')).toBeInTheDocument();
+      });
+    });
+
+    test('rejects non-image files', async () => {
+      const user = userEvent.setup();
+      mockedMediaService.validateImage.mockResolvedValue({
+        isValid: false,
+        error: 'Invalid file type. Please upload JPEG, PNG, GIF, or WebP images.'
+      });
+      
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile('document.pdf', 'application/pdf');
+      
+      await user.upload(fileInput, file);
+      
+      await waitFor(() => {
+        expect(screen.getByText(/invalid file type/i)).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Real-world Scenarios', () => {
+    test('handles complete image upload workflow', async () => {
+      const user = userEvent.setup();
+      render(<ImageUpload {...defaultProps} />);
+      
+      // Open panel
+      await user.click(screen.getByRole('button'));
+      
+      // Select file
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile('photo.jpg', 'image/jpeg', 2 * 1024 * 1024);
+      
+      await user.upload(fileInput, file);
+      
+      // Wait for preview
+      await waitFor(() => {
+        expect(screen.getByAltText('Preview')).toBeInTheDocument();
+      });
+      
+      // Fill form
+      const altInput = screen.getByLabelText(/alt text/i);
+      await user.type(altInput, 'Beautiful landscape photo');
+      
+      const alignmentSelect = screen.getByLabelText(/alignment/i) as HTMLSelectElement;
+      alignmentSelect.value = 'center';
+      alignmentSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      
+      // Upload
+      const insertButton = screen.getByRole('button', { name: /insert image/i });
+      await user.click(insertButton);
+      
+      // Verify upload process
+      expect(screen.getByText(/converting to webp and uploading/i)).toBeInTheDocument();
+      
+      await waitFor(() => {
+        expect(mockOnImageInsert).toHaveBeenCalledWith('insertImage', {
+          url: '/uploads/test.webp',
+          alt: 'Beautiful landscape photo',
+          alignment: 'center',
+          width: undefined,
+          height: undefined
+        });
+      });
+    });
+
+    test('handles drag and drop workflow', async () => {
+      render(<ImageUpload {...defaultProps} />);
+      
+      // Open panel
+      await userEvent.click(screen.getByRole('button'));
+      
+      const dropzone = screen.getByText(/drag & drop an image here/i).closest('div');
+      const file = createMockFile('dropped.png', 'image/png');
+      
+      // Create DataTransfer with file
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      
+      // Simulate drop event
+      const dropEvent = new DragEvent('drop', {
+        bubbles: true,
+        dataTransfer
+      });
+      
+      dropzone?.dispatchEvent(dropEvent);
+      
+      await waitFor(() => {
+        expect(mockedMediaService.validateImage).toHaveBeenCalledWith(file);
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByAltText('Preview')).toBeInTheDocument();
+      });
+    });
+
+    test('handles network errors gracefully', async () => {
+      const user = userEvent.setup();
+      mockedMediaService.uploadImage.mockRejectedValue(new Error('Network error'));
+      
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile();
+      
+      await user.upload(fileInput, file);
+      
+      const insertButton = screen.getByRole('button', { name: /insert image/i });
+      await user.click(insertButton);
+      
+      await waitFor(() => {
+        expect(screen.getByText('Network error')).toBeInTheDocument();
+      });
+    });
+
+    test('handles large file validation', async () => {
+      const user = userEvent.setup();
+      mockedMediaService.validateImage.mockResolvedValue({
+        isValid: false,
+        error: 'File size too large. Maximum size is 10MB.'
+      });
+      
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile('huge.jpg', 'image/jpeg', 15 * 1024 * 1024);
+      
+      await user.upload(fileInput, file);
+      
+      await waitFor(() => {
+        expect(screen.getByText(/file size too large/i)).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Error Recovery', () => {
+    test('recovers from validation errors', async () => {
+      const user = userEvent.setup();
+      
+      // First file fails validation
+      mockedMediaService.validateImage.mockResolvedValueOnce({
+        isValid: false,
+        error: 'Invalid file'
+      });
+      
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const invalidFile = createMockFile('invalid.txt', 'text/plain');
+      
+      await user.upload(fileInput, invalidFile);
+      
+      await waitFor(() => {
+        expect(screen.getByText('Invalid file')).toBeInTheDocument();
+      });
+      
+      // Second file passes validation
+      mockedMediaService.validateImage.mockResolvedValueOnce({
+        isValid: true,
+        fileSize: 1024,
+        dimensions: { width: 100, height: 100 }
+      });
+      
+      const validFile = createMockFile('valid.jpg', 'image/jpeg');
+      await user.upload(fileInput, validFile);
+      
+      await waitFor(() => {
+        expect(screen.queryByText('Invalid file')).not.toBeInTheDocument();
+        expect(screen.getByAltText('Preview')).toBeInTheDocument();
+      });
+    });
+
+    test('recovers from upload errors', async () => {
+      const user = userEvent.setup();
+      
+      // First upload fails
+      mockedMediaService.uploadImage.mockResolvedValueOnce({
+        success: false,
+        error: 'Upload failed'
+      });
+      
+      render(<ImageUpload {...defaultProps} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const fileInput = screen.getByLabelText(/select image file/i);
+      const file = createMockFile();
+      
+      await user.upload(fileInput, file);
+      
+      const insertButton = screen.getByRole('button', { name: /insert image/i });
+      await user.click(insertButton);
+      
+      await waitFor(() => {
+        expect(screen.getByText('Upload failed')).toBeInTheDocument();
+      });
+      
+      // Second upload succeeds
+      mockedMediaService.uploadImage.mockResolvedValueOnce({
+        success: true,
+        url: '/uploads/success.webp',
+        filename: 'success.webp'
+      });
+      
+      await user.click(insertButton);
+      
+      await waitFor(() => {
+        expect(mockOnImageInsert).toHaveBeenCalled();
+      });
+    });
+  });
+});

@@ -1,0 +1,9 @@
+.auto-save-manager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.auto-save-manager__indicator {
+  margin-left: auto;
+}

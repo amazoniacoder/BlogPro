@@ -1,0 +1,160 @@
+/* BlogPro UI System - Admin User Forms */
+
+/* User Edit Container */
+.admin-user-edit {
+  padding: var(--space-lg);
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.admin-user-edit__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-user-edit__loading,
+.admin-user-edit__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.admin-user-edit__content {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+/* User Status */
+.admin-user-edit__status {
+  background-color: var(--bg-secondary);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.admin-user-edit__status-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-sm);
+}
+
+.admin-user-edit__status-badge {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.admin-user-edit__status-badge--active {
+  background-color: var(--color-success-light);
+  color: var(--color-success);
+}
+
+.admin-user-edit__status-badge--blocked {
+  background-color: var(--color-error-light);
+  color: var(--color-error);
+}
+
+/* User Form */
+.admin-user-edit__form {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.admin-user-edit__form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-user-edit__form-group label {
+  margin-bottom: var(--space-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.admin-user-edit__form-group--checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.admin-user-edit__form-group--checkbox label {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.admin-user-edit__select {
+  height: 2.5rem;
+  padding: 0 var(--space-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.admin-user-edit__select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-alpha);
+}
+
+.admin-user-edit__form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-color);
+}
+
+.admin-user-edit__admin-note {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: var(--font-size-sm);
+}
+
+/* Danger Zone */
+.admin-user-edit__danger-zone {
+  margin-top: var(--space-xl);
+  padding: var(--space-md);
+  border: 1px dashed var(--color-error);
+  border-radius: var(--radius-md);
+  background-color: var(--color-error-light);
+}
+
+.admin-user-edit__danger-actions {
+  margin-top: var(--space-md);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-user-edit {
+    padding: var(--space-md);
+  }
+  
+  .admin-user-edit__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+  
+  .admin-user-edit__form-actions {
+    flex-direction: column;
+  }
+}

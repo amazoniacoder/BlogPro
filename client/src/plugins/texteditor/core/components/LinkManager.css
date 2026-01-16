@@ -1,0 +1,269 @@
+/**
+ * Link Manager Component Styles
+ * Professional link insertion and editing interface
+ */
+
+.link-manager {
+  position: relative;
+  display: inline-block;
+}
+
+.link-manager__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+}
+
+.link-manager__trigger:hover:not(:disabled) {
+  border-color: #3b82f6;
+  background: #f8fafc;
+}
+
+.link-manager__trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.link-manager__trigger.open {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.link-manager__icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.link-manager__label {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Panel Styles */
+.link-manager__panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 99999;
+  width: 320px;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+.link-manager__header {
+  margin-bottom: 16px;
+}
+
+.link-manager__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+/* Form Styles */
+.link-manager__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.link-manager__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.link-manager__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.link-manager__input,
+.link-manager__select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #111827;
+  background: white;
+  transition: border-color 0.2s ease;
+}
+
+.link-manager__input:focus,
+.link-manager__select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.link-manager__input.error {
+  border-color: #ef4444;
+}
+
+.link-manager__input.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.link-manager__error {
+  font-size: 12px;
+  color: #ef4444;
+  margin-top: 2px;
+}
+
+/* Actions */
+.link-manager__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.link-manager__button {
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  min-width: 80px;
+}
+
+.link-manager__button--primary {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.link-manager__button--primary:hover:not(:disabled) {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.link-manager__button--primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.link-manager__button--danger {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+.link-manager__button--danger:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+.link-manager__button--secondary {
+  background: white;
+  color: #6b7280;
+  border-color: #d1d5db;
+}
+
+.link-manager__button--secondary:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+/* Desktop Responsive */
+@media (min-width: 1200px) {
+  .link-manager__panel {
+    min-width: 320px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .link-manager__panel {
+    width: 280px;
+    left: -50px;
+  }
+  
+  .link-manager__actions {
+    flex-direction: column;
+  }
+  
+  .link-manager__button {
+    flex: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .link-manager__trigger {
+    background: #374151;
+    color: #f3f4f6;
+    border-color: #4b5563;
+  }
+  
+  .link-manager__trigger:hover:not(:disabled) {
+    background: #4b5563;
+    border-color: #6b7280;
+  }
+  
+  .link-manager__trigger.open {
+    background: #1e3a8a;
+    color: #93c5fd;
+    border-color: #3b82f6;
+  }
+  
+  .link-manager__panel {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .link-manager__title {
+    color: #f9fafb;
+  }
+  
+  .link-manager__label {
+    color: #d1d5db;
+  }
+  
+  .link-manager__input,
+  .link-manager__select {
+    background: #374151;
+    color: #f3f4f6;
+    border-color: #4b5563;
+  }
+  
+  .link-manager__input:focus,
+  .link-manager__select:focus {
+    border-color: #3b82f6;
+  }
+  
+  .link-manager__button--secondary {
+    background: #374151;
+    color: #d1d5db;
+    border-color: #4b5563;
+  }
+  
+  .link-manager__button--secondary:hover {
+    background: #4b5563;
+    color: #f3f4f6;
+  }
+}

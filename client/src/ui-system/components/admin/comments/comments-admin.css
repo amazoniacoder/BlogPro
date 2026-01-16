@@ -1,0 +1,99 @@
+/**
+ * BlogPro Admin Comment Management Styles
+ * BEM Methodology: .comments-manager, .comment-item
+ */
+
+/* Comments Manager */
+.comments-manager {
+  padding: 1.5rem;
+}
+
+.comments-manager__header {
+  margin-bottom: 2rem;
+}
+
+.comments-manager__stats {
+  margin-top: 1rem;
+}
+
+.comments-manager__stats .card {
+  padding: 1.5rem;
+  text-align: center;
+  min-width: 120px;
+}
+
+.comments-manager__filters {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Admin Comment Item */
+.comments-manager__item {
+  padding: 1.5rem;
+  border-left: 4px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.comments-manager__item:hover {
+  border-left-color: var(--color-primary);
+}
+
+.comments-manager__item--pending {
+  border-left-color: var(--color-warning);
+  background: var(--color-warning-light);
+}
+
+.comments-manager__item--flagged {
+  border-left-color: var(--color-error);
+  background: var(--color-error-light);
+}
+
+.comments-manager__item--approved {
+  border-left-color: var(--color-success);
+}
+
+.comments-manager__item--rejected {
+  border-left-color: var(--color-error);
+  opacity: 0.7;
+}
+
+.comment-content {
+  background: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--border-color);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .comments-manager {
+    padding: 1rem;
+  }
+  
+  .comments-manager__stats {
+    flex-direction: column;
+  }
+  
+  .comments-manager__stats .card {
+    min-width: auto;
+  }
+  
+  .comments-manager__item {
+    padding: 1rem;
+  }
+}
+
+/* Dark Mode Support */
+.dark .comment-content {
+  background: var(--bg-tertiary);
+}
+
+.dark .comments-manager__item--pending {
+  background: rgba(251, 191, 36, 0.1);
+}
+
+.dark .comments-manager__item--flagged {
+  background: rgba(239, 68, 68, 0.1);
+}

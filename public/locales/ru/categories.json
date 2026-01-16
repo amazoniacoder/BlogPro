@@ -1,0 +1,17 @@
+{
+  "technology": "Технологии",
+  "design": "Дизайн", 
+  "business": "Бизнес",
+  "marketing": "Маркетинг",
+  "webDevelopment": "Веб-разработка",
+  "mobileDevelopment": "Мобильная разработка",
+  "frontend": "Фронтенд",
+  "backend": "Бэкенд",
+  "uiux": "UI/UX",
+  "graphicDesign": "Графический дизайн",
+  "programming": "Программирование",
+  "javascript": "JavaScript",
+  "react": "React",
+  "nodejs": "Node.js",
+  "python": "Python"
+}

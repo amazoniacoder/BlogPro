@@ -1,0 +1,124 @@
+/**
+ * BlogPro Documentation Form Styles
+ * BEM methodology compliant styles for documentation form layout
+ */
+
+.documentation-form {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.documentation-form__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.documentation-form__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.documentation-form__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Metadata row layout */
+.documentation-form__metadata-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 3fr 5fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+/* Content section */
+.documentation-form__content-section {
+  width: 100%;
+}
+
+.documentation-content-editor {
+  min-height: 400px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+/* Form actions */
+.documentation-form__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .documentation-form__metadata-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .documentation-form {
+    padding: 0;
+  }
+  
+  .documentation-form__metadata-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .documentation-form__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .documentation-form__actions {
+    flex-direction: column-reverse;
+  }
+}
+
+/* Form field adjustments for compact layout - textarea sizing handled by form-field.css */
+
+/* Content editor specific styles - form-field spacing handled by form-field.css */
+
+/* form-field__label styling handled by form-field.css */
+
+
+
+/* URL Preview */
+.url-preview {
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.url-preview strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #495057;
+  font-weight: 600;
+}
+
+.url-path {
+  color: #6c757d;
+  font-family: 'Courier New', monospace;
+  background-color: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  border: 1px solid #dee2e6;
+  display: inline-block;
+}

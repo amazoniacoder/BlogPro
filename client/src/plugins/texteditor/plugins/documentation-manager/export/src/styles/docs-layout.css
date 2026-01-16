@@ -1,0 +1,87 @@
+/**
+ * Documentation Manager - Layout Styles
+ * Plugin-specific layouts using BlogPro UI System
+ */
+
+/* Documentation Layout */
+.docs-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  gap: 0;
+  background: var(--bp-bg-secondary);
+}
+
+.docs-layout__header {
+  grid-column: 1 / -1;
+  background: var(--bp-bg-primary);
+  border-bottom: 1px solid var(--bp-border-color);
+  padding: var(--bp-space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.docs-layout__sidebar {
+  background: var(--bp-bg-primary);
+  border-right: 1px solid var(--bp-border-color);
+  padding: var(--bp-space-4);
+  overflow-y: auto;
+}
+
+.docs-layout__main {
+  padding: var(--bp-space-6);
+  overflow-y: auto;
+  background: var(--bp-bg-secondary);
+}
+
+/* Documentation Navigation */
+.docs-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.docs-nav__item {
+  margin-bottom: var(--bp-space-1);
+}
+
+.docs-nav__link {
+  display: block;
+  padding: var(--bp-space-2) var(--bp-space-3);
+  color: var(--bp-text-secondary);
+  text-decoration: none;
+  border-radius: var(--bp-radius-md);
+  font-size: var(--bp-text-sm);
+  transition: var(--bp-transition-colors) var(--bp-transition-base);
+}
+
+.docs-nav__link:hover {
+  background: var(--bp-bg-hover);
+  color: var(--bp-text-primary);
+}
+
+.docs-nav__link--active {
+  background: var(--bp-primary-50);
+  color: var(--bp-primary-600);
+  font-weight: var(--bp-font-medium);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .docs-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+  
+  .docs-layout__sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--bp-border-color);
+    max-height: 200px;
+  }
+  
+  .docs-layout__main {
+    padding: var(--bp-space-4);
+  }
+}

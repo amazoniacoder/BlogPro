@@ -1,0 +1,558 @@
+/**
+ * Auto-Save Service Tests
+ * Following development methodology for comprehensive service testing
+ */
+
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { AutoSaveService, AutoSaveConfig } from '../../core/services/AutoSaveService';
+
+// Mock localStorage
+const mockLocalStorage = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn()
+};
+
+Object.defineProperty(window, 'localStorage', {
+  value: mockLocalStorage
+});
+
+describe('AutoSaveService', () => {
+  let service: AutoSaveService;
+  let mockStatusCallback: ReturnType<typeof vi.fn>;
+  let mockContentCallback: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    mockStatusCallback = vi.fn();
+    mockContentCallback = vi.fn();
+    mockLocalStorage.getItem.mockClear();
+    mockLocalStorage.setItem.mockClear();
+    
+    // Reset singleton instance
+    (AutoSaveService as any).instance = null;
+    
+    service = AutoSaveService.getInstance({
+      interval: 1000, // 1 second for testing
+      maxRetries: 2,
+      debounceDelay: 100,
+      enableConflictDetection: true
+    });
+  });
+
+  afterEach(() => {
+    service.destroy();
+    vi.useRealTimers();
+    vi.clearAllMocks();
+  });
+
+  describe('Singleton Pattern', () => {
+    it('returns same instance on multiple calls', () => {
+      const instance1 = AutoSaveService.getInstance();
+      const instance2 = AutoSaveService.getInstance();
+      
+      expect(instance1).toBe(instance2);
+    });
+
+    it('applies config only on first instantiation', () => {
+      const instance1 = AutoSaveService.getInstance({ interval: 5000 });
+      const instance2 = AutoSaveService.getInstance({ interval: 10000 });
+      
+      expect(instance1).toBe(instance2);
+      // Config should be from first instantiation
+      expect(instance1.getStatus()).toBeDefined();
+    });
+  });
+
+  describe('Initialization', () => {
+    it('initializes with idle status', () => {
+      service.initialize('initial content');
+      
+      const status = service.getStatus();
+      expect(status.status).toBe('idle');
+    });
+
+    it('starts auto-save interval on initialization', () => {
+      const setIntervalSpy = vi.spyOn(global, 'setInterval');
+      
+      service.initialize('initial content');
+      
+      expect(setIntervalSpy).toHaveBeenCalledWith(expect.any(Function), 1000);
+    });
+
+    it('sets initial content correctly', () => {
+      service.initialize('test content');
+      service.onContentChange(mockContentCallback);
+      
+      service.updateContent('test content'); // Same content
+      
+      // Should not trigger save since content hasn't changed
+      vi.advanceTimersByTime(1000);
+      expect(mockLocalStorage.setItem).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Content Updates', () => {
+    beforeEach(() => {
+      service.initialize('initial content');
+      service.onContentChange(mockContentCallback);
+    });
+
+    it('updates content and notifies callbacks', () => {
+      service.updateContent('new content');
+      
+      expect(mockContentCallback).toHaveBeenCalledWith('new content');
+    });
+
+    it('triggers debounced save check on content update', async () => {
+      service.onStatusChange(mockStatusCallback);
+      service.updateContent('new content');
+      
+      // Should not save immediately
+      expect(mockStatusCallback).not.toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'saving' })
+      );
+      
+      // Should save after debounce delay
+      vi.advanceTimersByTime(100);
+      
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'saving' })
+      );
+    });
+
+    it('resets debounce timer on multiple updates', () => {
+      service.onStatusChange(mockStatusCallback);
+      
+      service.updateContent('content 1');
+      vi.advanceTimersByTime(50);
+      
+      service.updateContent('content 2');
+      vi.advanceTimersByTime(50);
+      
+      // Should not have saved yet
+      expect(mockStatusCallback).not.toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'saving' })
+      );
+      
+      vi.advanceTimersByTime(50);
+      
+      // Should save now
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'saving' })
+      );
+    });
+  });
+
+  describe('Auto-Save Functionality', () => {
+    beforeEach(() => {
+      service.initialize('initial content');
+      service.onStatusChange(mockStatusCallback);
+    });
+
+    it('performs auto-save when content changes', () => {
+      service.updateContent('changed content');
+      
+      vi.advanceTimersByTime(1000);
+      
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'saving' })
+      );
+    });
+
+    it('does not save when content has not changed', () => {
+      // No content update
+      vi.advanceTimersByTime(1000);
+      
+      expect(mockStatusCallback).not.toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'saving' })
+      );
+    });
+
+    it('updates status to saved after successful save', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      service.updateContent('new content');
+      vi.advanceTimersByTime(100);
+      
+      await vi.runAllTimersAsync();
+      
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'saved' })
+      );
+    });
+
+    it('saves content to localStorage', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      service.updateContent('test content');
+      vi.advanceTimersByTime(100);
+      
+      await vi.runAllTimersAsync();
+      
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+        'editor-content',
+        'test content'
+      );
+    });
+  });
+
+  describe('Manual Save', () => {
+    beforeEach(() => {
+      service.initialize('initial content');
+      service.onStatusChange(mockStatusCallback);
+    });
+
+    it('triggers manual save immediately', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      service.updateContent('manual save content');
+      
+      const result = await service.manualSave();
+      
+      expect(result).toBe(true);
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'saving' })
+      );
+    });
+
+    it('saves even when content has not changed', async () => {
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      const result = await service.manualSave();
+      
+      expect(result).toBe(true);
+      expect(mockLocalStorage.setItem).toHaveBeenCalled();
+    });
+
+    it('returns false on save failure', async () => {
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new Error('Storage error');
+      });
+      
+      const result = await service.manualSave();
+      
+      expect(result).toBe(false);
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'error' })
+      );
+    });
+  });
+
+  describe('Error Handling and Retries', () => {
+    beforeEach(() => {
+      service.initialize('initial content');
+      service.onStatusChange(mockStatusCallback);
+    });
+
+    it('retries failed saves up to maxRetries', async () => {
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new Error('Network error');
+      });
+      
+      service.updateContent('content');
+      vi.advanceTimersByTime(100);
+      
+      await vi.runAllTimersAsync();
+      
+      // Should show retry status
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ 
+          status: 'error',
+          error: expect.stringContaining('Retrying')
+        })
+      );
+    });
+
+    it('stops retrying after maxRetries attempts', async () => {
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new Error('Persistent error');
+      });
+      
+      service.updateContent('content');
+      vi.advanceTimersByTime(100);
+      
+      // Wait for all retries
+      await vi.runAllTimersAsync();
+      vi.advanceTimersByTime(5000);
+      await vi.runAllTimersAsync();
+      
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ 
+          status: 'error',
+          error: 'Persistent error'
+        })
+      );
+    });
+
+    it('does not retry manual saves', async () => {
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new Error('Manual save error');
+      });
+      
+      const result = await service.manualSave();
+      
+      expect(result).toBe(false);
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ 
+          status: 'error',
+          error: 'Manual save error'
+        })
+      );
+    });
+  });
+
+  describe('Conflict Detection', () => {
+    beforeEach(() => {
+      service.initialize('initial content');
+      service.onStatusChange(mockStatusCallback);
+    });
+
+    it('detects conflicts when version mismatch', async () => {
+      mockLocalStorage.getItem.mockImplementation((key) => {
+        if (key === 'editor-content-version') return 'old-version';
+        if (key === 'editor-content') return 'server content';
+        return null;
+      });
+      
+      service.updateContent('local content');
+      vi.advanceTimersByTime(100);
+      
+      await vi.runAllTimersAsync();
+      
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ 
+          status: 'conflict',
+          conflictData: expect.objectContaining({
+            localVersion: 'local content',
+            serverVersion: 'server content'
+          })
+        })
+      );
+    });
+
+    it('does not detect conflicts when versions match', async () => {
+      const currentVersion = Date.now().toString(36);
+      mockLocalStorage.getItem.mockImplementation((key) => {
+        if (key === 'editor-content-version') return currentVersion;
+        return null;
+      });
+      
+      // Mock generateVersion to return predictable value
+      const originalRandom = Math.random;
+      Math.random = () => 0.5;
+      
+      service.updateContent('content');
+      vi.advanceTimersByTime(100);
+      
+      await vi.runAllTimersAsync();
+      
+      expect(mockStatusCallback).not.toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'conflict' })
+      );
+      
+      Math.random = originalRandom;
+    });
+  });
+
+  describe('Conflict Resolution', () => {
+    beforeEach(() => {
+      service.initialize('initial content');
+      service.onStatusChange(mockStatusCallback);
+      service.onContentChange(mockContentCallback);
+    });
+
+    it('resolves conflict with local version', async () => {
+      // Set up conflict state
+      const conflictStatus = {
+        status: 'conflict' as const,
+        conflictData: {
+          localVersion: 'local content',
+          serverVersion: 'server content',
+          timestamp: new Date()
+        }
+      };
+      
+      // Manually set conflict status
+      (service as any).currentStatus = conflictStatus;
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      await service.resolveConflict('local');
+      
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+        'editor-content',
+        'local content'
+      );
+    });
+
+    it('resolves conflict with server version', async () => {
+      const conflictStatus = {
+        status: 'conflict' as const,
+        conflictData: {
+          localVersion: 'local content',
+          serverVersion: 'server content',
+          timestamp: new Date()
+        }
+      };
+      
+      (service as any).currentStatus = conflictStatus;
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      await service.resolveConflict('server');
+      
+      expect(mockContentCallback).toHaveBeenCalledWith('server content');
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+        'editor-content',
+        'server content'
+      );
+    });
+
+    it('resolves conflict with merge', async () => {
+      const conflictStatus = {
+        status: 'conflict' as const,
+        conflictData: {
+          localVersion: 'local line 1\nlocal line 2',
+          serverVersion: 'server line 1\nserver line 2',
+          timestamp: new Date()
+        }
+      };
+      
+      (service as any).currentStatus = conflictStatus;
+      mockLocalStorage.getItem.mockReturnValue(null);
+      
+      await service.resolveConflict('merge');
+      
+      expect(mockContentCallback).toHaveBeenCalled();
+      expect(mockLocalStorage.setItem).toHaveBeenCalled();
+    });
+
+    it('does nothing when not in conflict state', async () => {
+      await service.resolveConflict('local');
+      
+      expect(mockLocalStorage.setItem).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Service Control', () => {
+    beforeEach(() => {
+      service.initialize('initial content');
+    });
+
+    it('stops auto-save when disabled', () => {
+      const clearIntervalSpy = vi.spyOn(global, 'clearInterval');
+      
+      service.setEnabled(false);
+      
+      expect(clearIntervalSpy).toHaveBeenCalled();
+    });
+
+    it('starts auto-save when re-enabled', () => {
+      const setIntervalSpy = vi.spyOn(global, 'setInterval');
+      
+      service.setEnabled(false);
+      service.setEnabled(true);
+      
+      expect(setIntervalSpy).toHaveBeenCalledTimes(2); // Once on init, once on re-enable
+    });
+
+    it('updates configuration and restarts auto-save', () => {
+      const setIntervalSpy = vi.spyOn(global, 'setInterval');
+      
+      service.updateConfig({ interval: 5000 });
+      
+      expect(setIntervalSpy).toHaveBeenCalledWith(expect.any(Function), 5000);
+    });
+
+    it('cleans up resources on destroy', () => {
+      const clearIntervalSpy = vi.spyOn(global, 'clearInterval');
+      const clearTimeoutSpy = vi.spyOn(global, 'clearTimeout');
+      
+      service.destroy();
+      
+      expect(clearIntervalSpy).toHaveBeenCalled();
+      expect(clearTimeoutSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('Callback Management', () => {
+    it('adds and removes status change callbacks', () => {
+      const unsubscribe = service.onStatusChange(mockStatusCallback);
+      
+      service.initialize('content');
+      expect(mockStatusCallback).toHaveBeenCalled();
+      
+      unsubscribe();
+      mockStatusCallback.mockClear();
+      
+      service.updateContent('new content');
+      vi.advanceTimersByTime(100);
+      
+      expect(mockStatusCallback).not.toHaveBeenCalled();
+    });
+
+    it('adds and removes content change callbacks', () => {
+      const unsubscribe = service.onContentChange(mockContentCallback);
+      
+      service.updateContent('test content');
+      expect(mockContentCallback).toHaveBeenCalledWith('test content');
+      
+      unsubscribe();
+      mockContentCallback.mockClear();
+      
+      service.updateContent('new content');
+      expect(mockContentCallback).not.toHaveBeenCalled();
+    });
+
+    it('handles multiple callbacks correctly', () => {
+      const callback1 = vi.fn();
+      const callback2 = vi.fn();
+      
+      service.onStatusChange(callback1);
+      service.onStatusChange(callback2);
+      
+      service.initialize('content');
+      
+      expect(callback1).toHaveBeenCalled();
+      expect(callback2).toHaveBeenCalled();
+    });
+  });
+
+  describe('Edge Cases', () => {
+    it('handles localStorage errors gracefully', async () => {
+      service.initialize('content');
+      service.onStatusChange(mockStatusCallback);
+      
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new Error('Storage full');
+      });
+      
+      const result = await service.manualSave();
+      
+      expect(result).toBe(false);
+      expect(mockStatusCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ 
+          status: 'error',
+          error: 'Storage full'
+        })
+      );
+    });
+
+    it('handles missing conflict data gracefully', async () => {
+      (service as any).currentStatus = { status: 'conflict' };
+      
+      await service.resolveConflict('local');
+      
+      // Should not throw error
+      expect(mockLocalStorage.setItem).not.toHaveBeenCalled();
+    });
+
+    it('generates unique versions', () => {
+      const version1 = (service as any).generateVersion();
+      const version2 = (service as any).generateVersion();
+      
+      expect(version1).not.toBe(version2);
+      expect(typeof version1).toBe('string');
+      expect(version1.length).toBeGreaterThan(0);
+    });
+  });
+});

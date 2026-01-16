@@ -1,0 +1,32 @@
+{
+  "name": "blogpro-client",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui",
+    "test:e2e": "cd .. && npx playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:watch": "vitest --watch",
+    "test:run": "vitest --run",
+    "test:report": "node scripts/test-reporter.js",
+    "test:comprehensive": "node scripts/test-reporter.js",
+    "test:texteditor": "cd src/plugins/texteditor && npm test",
+    "test:texteditor:watch": "cd src/plugins/texteditor && npm run test:watch",
+    "test:texteditor:coverage": "cd src/plugins/texteditor && npm run test:coverage",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "@types/dompurify": "^3.0.5",
+    "dompurify": "^3.2.6",
+    "lucide-react": "^0.525.0"
+  }
+}

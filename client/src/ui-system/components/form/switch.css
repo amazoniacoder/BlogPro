@@ -1,0 +1,109 @@
+/**
+ * BlogPro Switch Component Styles
+ * BEM Methodology: .switch
+ */
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  /* user select handled by .select-none utility class */
+}
+
+.switch__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.switch__track {
+  position: relative;
+  background: var(--border-color);
+  border-radius: var(--radius-full, 50%);
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.switch--sm .switch__track {
+  width: 32px;
+  height: 18px;
+}
+
+.switch--md .switch__track {
+  width: 40px;
+  height: 22px;
+}
+
+.switch--lg .switch__track {
+  width: 48px;
+  height: 26px;
+}
+
+.switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background: white;
+  border-radius: 50%;
+  transition: all var(--transition-fast, 0.15s ease);
+  box-shadow: var(--shadow-sm);
+}
+
+.switch--sm .switch__thumb {
+  width: 14px;
+  height: 14px;
+}
+
+.switch--md .switch__thumb {
+  width: 18px;
+  height: 18px;
+}
+
+.switch--lg .switch__thumb {
+  width: 22px;
+  height: 22px;
+}
+
+.switch--checked .switch__track {
+  background: var(--primary-600);
+}
+
+.switch--sm.switch--checked .switch__thumb {
+  transform: translateX(14px);
+}
+
+.switch--md.switch--checked .switch__thumb {
+  transform: translateX(18px);
+}
+
+.switch--lg.switch--checked .switch__thumb {
+  transform: translateX(22px);
+}
+
+.switch__input:focus + .switch__track {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-200);
+}
+
+.switch__label {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.switch--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Variant Colors */
+.switch--success.switch--checked .switch__track {
+  background: var(--success-600);
+}
+
+.switch--warning.switch--checked .switch__track {
+  background: var(--warning-600);
+}
+
+.switch--error.switch--checked .switch__track {
+  background: var(--error-600);
+}

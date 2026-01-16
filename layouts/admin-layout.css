@@ -1,0 +1,5 @@
+/* Temporary file to fix build error */
+/* This file should be removed once all references are updated */
+
+/* Import the actual layout styles */
+@import "../client/src/styles/admin/components/layout/layout.css";

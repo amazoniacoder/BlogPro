@@ -1,0 +1,12 @@
+/* Register Form Pattern */
+.auth-form--register {
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form__hint {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  margin: var(--space-1) 0 0 0;
+  font-style: italic;
+}

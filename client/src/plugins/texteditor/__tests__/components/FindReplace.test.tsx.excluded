@@ -1,0 +1,435 @@
+/**
+ * Find & Replace Component Tests
+ * Following development methodology for comprehensive testing
+ */
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen, waitFor, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import FindReplace from '../../core/components/FindReplace';
+import { SearchService } from '../../core/services/SearchService';
+
+// Mock SearchService
+vi.mock('../../core/services/SearchService', () => ({
+  SearchService: {
+    findAll: vi.fn(),
+    findNext: vi.fn(),
+    findPrevious: vi.fn(),
+    replaceCurrent: vi.fn(),
+    replaceAll: vi.fn(),
+    clearSearch: vi.fn(),
+    getSearchStats: vi.fn(() => ({ current: 0, total: 0, query: '' }))
+  }
+}));
+
+// Mock editor element
+const createMockEditor = (content: string = 'Sample text for testing find and replace functionality') => {
+  const editor = document.createElement('div');
+  editor.className = 'editor-content';
+  editor.contentEditable = 'true';
+  editor.textContent = content;
+  document.body.appendChild(editor);
+  return editor;
+};
+
+describe('FindReplace Component', () => {
+  let mockEditor: HTMLElement;
+  let user: ReturnType<typeof userEvent.setup>;
+
+  beforeEach(() => {
+    mockEditor = createMockEditor();
+    user = userEvent.setup();
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    document.body.removeChild(mockEditor);
+    vi.clearAllTimers();
+  });
+
+  describe('Component Rendering', () => {
+    it('renders find button correctly', () => {
+      render(<FindReplace />);
+      
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      expect(findButton).toBeInTheDocument();
+      expect(findButton).toHaveTextContent('🔍');
+    });
+
+    it('does not show panel initially', () => {
+      render(<FindReplace />);
+      
+      expect(screen.queryByPlaceholderText('Find...')).not.toBeInTheDocument();
+    });
+
+    it('shows panel when button is clicked', async () => {
+      render(<FindReplace />);
+      
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      await user.click(findButton);
+      
+      expect(screen.getByPlaceholderText('Find...')).toBeInTheDocument();
+    });
+
+    it('applies disabled state correctly', () => {
+      render(<FindReplace disabled />);
+      
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      expect(findButton).toBeDisabled();
+    });
+  });
+
+  describe('Panel Interface', () => {
+    beforeEach(async () => {
+      render(<FindReplace />);
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      await user.click(findButton);
+    });
+
+    it('shows find and replace mode buttons', () => {
+      expect(screen.getByRole('button', { name: 'Find' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Replace' })).toBeInTheDocument();
+    });
+
+    it('shows search input and navigation buttons', () => {
+      expect(screen.getByPlaceholderText('Find...')).toBeInTheDocument();
+      expect(screen.getByTitle('Previous (Shift+Enter)')).toBeInTheDocument();
+      expect(screen.getByTitle('Next (Enter)')).toBeInTheDocument();
+    });
+
+    it('shows search options checkboxes', () => {
+      expect(screen.getByLabelText('Case sensitive')).toBeInTheDocument();
+      expect(screen.getByLabelText('Whole word')).toBeInTheDocument();
+      expect(screen.getByLabelText('Regex')).toBeInTheDocument();
+    });
+
+    it('shows close button', () => {
+      expect(screen.getByRole('button', { name: '×' })).toBeInTheDocument();
+    });
+  });
+
+  describe('Replace Mode', () => {
+    beforeEach(async () => {
+      render(<FindReplace />);
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      await user.click(findButton);
+      
+      const replaceButton = screen.getByRole('button', { name: 'Replace' });
+      await user.click(replaceButton);
+    });
+
+    it('shows replace input when in replace mode', () => {
+      expect(screen.getByPlaceholderText('Replace with...')).toBeInTheDocument();
+    });
+
+    it('shows replace buttons', () => {
+      expect(screen.getByTitle('Replace current')).toBeInTheDocument();
+      expect(screen.getByTitle('Replace all')).toBeInTheDocument();
+    });
+
+    it('hides replace input when switching back to find mode', async () => {
+      const findButton = screen.getByRole('button', { name: 'Find' });
+      await user.click(findButton);
+      
+      expect(screen.queryByPlaceholderText('Replace with...')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Search Functionality', () => {
+    beforeEach(async () => {
+      render(<FindReplace />);
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      await user.click(findButton);
+    });
+
+    it('calls SearchService.findAll when typing in search input', async () => {
+      const searchInput = screen.getByPlaceholderText('Find...');
+      
+      await user.type(searchInput, 'test');
+      
+      await waitFor(() => {
+        expect(SearchService.findAll).toHaveBeenCalledWith(
+          mockEditor,
+          'test',
+          { caseSensitive: false, wholeWord: false, useRegex: false }
+        );
+      });
+    });
+
+    it('calls SearchService.findNext when next button is clicked', async () => {
+      vi.mocked(SearchService.getSearchStats).mockReturnValue({ current: 1, total: 3, query: 'test' });
+      
+      const nextButton = screen.getByTitle('Next (Enter)');
+      await user.click(nextButton);
+      
+      expect(SearchService.findNext).toHaveBeenCalled();
+    });
+
+    it('calls SearchService.findPrevious when previous button is clicked', async () => {
+      vi.mocked(SearchService.getSearchStats).mockReturnValue({ current: 1, total: 3, query: 'test' });
+      
+      const prevButton = screen.getByTitle('Previous (Shift+Enter)');
+      await user.click(prevButton);
+      
+      expect(SearchService.findPrevious).toHaveBeenCalled();
+    });
+
+    it('disables navigation buttons when no results', () => {
+      vi.mocked(SearchService.getSearchStats).mockReturnValue({ current: 0, total: 0, query: '' });
+      
+      const nextButton = screen.getByTitle('Next (Enter)');
+      const prevButton = screen.getByTitle('Previous (Shift+Enter)');
+      
+      expect(nextButton).toBeDisabled();
+      expect(prevButton).toBeDisabled();
+    });
+
+    it('shows search stats when results are found', async () => {
+      vi.mocked(SearchService.getSearchStats).mockReturnValue({ current: 2, total: 5, query: 'test' });
+      
+      const searchInput = screen.getByPlaceholderText('Find...');
+      await user.type(searchInput, 'test');
+      
+      await waitFor(() => {
+        expect(screen.getByText('2 of 5')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Replace Functionality', () => {
+    beforeEach(async () => {
+      render(<FindReplace />);
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      await user.click(findButton);
+      
+      const replaceButton = screen.getByRole('button', { name: 'Replace' });
+      await user.click(replaceButton);
+    });
+
+    it('calls SearchService.replaceCurrent when replace button is clicked', async () => {
+      vi.mocked(SearchService.getSearchStats).mockReturnValue({ current: 1, total: 3, query: 'test' });
+      vi.mocked(SearchService.replaceCurrent).mockReturnValue(true);
+      
+      const replaceInput = screen.getByPlaceholderText('Replace with...');
+      await user.type(replaceInput, 'replacement');
+      
+      const replaceCurrentButton = screen.getByTitle('Replace current');
+      await user.click(replaceCurrentButton);
+      
+      expect(SearchService.replaceCurrent).toHaveBeenCalledWith('replacement');
+    });
+
+    it('calls SearchService.replaceAll when replace all button is clicked', async () => {
+      vi.mocked(SearchService.getSearchStats).mockReturnValue({ current: 1, total: 3, query: 'test' });
+      vi.mocked(SearchService.replaceAll).mockReturnValue(3);
+      
+      const searchInput = screen.getByPlaceholderText('Find...');
+      await user.type(searchInput, 'test');
+      
+      const replaceInput = screen.getByPlaceholderText('Replace with...');
+      await user.type(replaceInput, 'replacement');
+      
+      const replaceAllButton = screen.getByTitle('Replace all');
+      await user.click(replaceAllButton);
+      
+      expect(SearchService.replaceAll).toHaveBeenCalledWith(
+        mockEditor,
+        'test',
+        'replacement',
+        { caseSensitive: false, wholeWord: false, useRegex: false }
+      );
+    });
+
+    it('disables replace buttons when no results', () => {
+      vi.mocked(SearchService.getSearchStats).mockReturnValue({ current: 0, total: 0, query: '' });
+      
+      const replaceCurrentButton = screen.getByTitle('Replace current');
+      const replaceAllButton = screen.getByTitle('Replace all');
+      
+      expect(replaceCurrentButton).toBeDisabled();
+      expect(replaceAllButton).toBeDisabled();
+    });
+  });
+
+  describe('Search Options', () => {
+    beforeEach(async () => {
+      render(<FindReplace />);
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      await user.click(findButton);
+    });
+
+    it('updates case sensitive option', async () => {
+      const caseSensitiveCheckbox = screen.getByLabelText('Case sensitive');
+      await user.click(caseSensitiveCheckbox);
+      
+      const searchInput = screen.getByPlaceholderText('Find...');
+      await user.type(searchInput, 'test');
+      
+      await waitFor(() => {
+        expect(SearchService.findAll).toHaveBeenCalledWith(
+          mockEditor,
+          'test',
+          { caseSensitive: true, wholeWord: false, useRegex: false }
+        );
+      });
+    });
+
+    it('updates whole word option', async () => {
+      const wholeWordCheckbox = screen.getByLabelText('Whole word');
+      await user.click(wholeWordCheckbox);
+      
+      const searchInput = screen.getByPlaceholderText('Find...');
+      await user.type(searchInput, 'test');
+      
+      await waitFor(() => {
+        expect(SearchService.findAll).toHaveBeenCalledWith(
+          mockEditor,
+          'test',
+          { caseSensitive: false, wholeWord: true, useRegex: false }
+        );
+      });
+    });
+
+    it('updates regex option', async () => {
+      const regexCheckbox = screen.getByLabelText('Regex');
+      await user.click(regexCheckbox);
+      
+      const searchInput = screen.getByPlaceholderText('Find...');
+      await user.type(searchInput, 'test');
+      
+      await waitFor(() => {
+        expect(SearchService.findAll).toHaveBeenCalledWith(
+          mockEditor,
+          'test',
+          { caseSensitive: false, wholeWord: false, useRegex: true }
+        );
+      });
+    });
+  });
+
+  describe('Keyboard Shortcuts', () => {
+    it('opens find panel with Ctrl+F', async () => {
+      render(<FindReplace />);
+      
+      await user.keyboard('{Control>}f{/Control}');
+      
+      expect(screen.getByPlaceholderText('Find...')).toBeInTheDocument();
+    });
+
+    it('opens replace panel with Ctrl+H', async () => {
+      render(<FindReplace />);
+      
+      await user.keyboard('{Control>}h{/Control}');
+      
+      expect(screen.getByPlaceholderText('Find...')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Replace with...')).toBeInTheDocument();
+    });
+
+    it('closes panel with Escape key', async () => {
+      render(<FindReplace />);
+      
+      await user.keyboard('{Control>}f{/Control}');
+      expect(screen.getByPlaceholderText('Find...')).toBeInTheDocument();
+      
+      await user.keyboard('{Escape}');
+      expect(screen.queryByPlaceholderText('Find...')).not.toBeInTheDocument();
+    });
+
+    it('navigates with Enter and Shift+Enter', async () => {
+      render(<FindReplace />);
+      
+      await user.keyboard('{Control>}f{/Control}');
+      vi.mocked(SearchService.getSearchStats).mockReturnValue({ current: 1, total: 3, query: 'test' });
+      
+      await user.keyboard('{Enter}');
+      expect(SearchService.findNext).toHaveBeenCalled();
+      
+      await user.keyboard('{Shift>}{Enter}{/Shift}');
+      expect(SearchService.findPrevious).toHaveBeenCalled();
+    });
+  });
+
+  describe('Panel Closing', () => {
+    beforeEach(async () => {
+      render(<FindReplace />);
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      await user.click(findButton);
+    });
+
+    it('closes panel when close button is clicked', async () => {
+      const closeButton = screen.getByRole('button', { name: '×' });
+      await user.click(closeButton);
+      
+      expect(screen.queryByPlaceholderText('Find...')).not.toBeInTheDocument();
+      expect(SearchService.clearSearch).toHaveBeenCalledWith(mockEditor);
+    });
+
+    it('closes panel when clicking outside', async () => {
+      await user.click(document.body);
+      
+      expect(screen.queryByPlaceholderText('Find...')).not.toBeInTheDocument();
+      expect(SearchService.clearSearch).toHaveBeenCalledWith(mockEditor);
+    });
+
+    it('resets state when closing', async () => {
+      const searchInput = screen.getByPlaceholderText('Find...');
+      await user.type(searchInput, 'test query');
+      
+      const closeButton = screen.getByRole('button', { name: '×' });
+      await user.click(closeButton);
+      
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      await user.click(findButton);
+      
+      const newSearchInput = screen.getByPlaceholderText('Find...');
+      expect(newSearchInput).toHaveValue('');
+    });
+  });
+
+  describe('Focus Management', () => {
+    it('focuses search input when panel opens', async () => {
+      render(<FindReplace />);
+      
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      await user.click(findButton);
+      
+      const searchInput = screen.getByPlaceholderText('Find...');
+      expect(searchInput).toHaveFocus();
+    });
+  });
+
+  describe('Performance', () => {
+    it('debounces search input', async () => {
+      vi.useFakeTimers();
+      
+      render(<FindReplace />);
+      const findButton = screen.getByRole('button', { name: /find & replace/i });
+      await user.click(findButton);
+      
+      const searchInput = screen.getByPlaceholderText('Find...');
+      
+      await user.type(searchInput, 'test');
+      expect(SearchService.findAll).not.toHaveBeenCalled();
+      
+      act(() => {
+        vi.advanceTimersByTime(300);
+      });
+      
+      expect(SearchService.findAll).toHaveBeenCalledTimes(1);
+      vi.useRealTimers();
+    });
+
+    it('clears search when input is empty', async () => {
+      render(<FindReplace />);
+      const findButton = screen.getByTitle('Find & Replace (Ctrl+F)');
+      await user.click(findButton);
+      
+      const searchInput = screen.getByPlaceholderText('Find...');
+      await user.type(searchInput, 'test');
+      await user.clear(searchInput);
+      
+      expect(SearchService.clearSearch).toHaveBeenCalledWith(mockEditor);
+    });
+  });
+});

@@ -1,0 +1,260 @@
+/* Text Color Picker Styles */
+
+.text-color-picker {
+  position: relative;
+  display: inline-block;
+}
+
+.text-color-picker__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+}
+
+.text-color-picker__trigger:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.text-color-picker__trigger:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.text-color-picker__trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.text-color-picker__trigger.open {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.text-color-picker__preview {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.text-color-picker__color-sample {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.text-color-picker__label {
+  font-size: 13px;
+  color: #374151;
+}
+
+.text-color-picker__arrow {
+  font-size: 10px;
+  color: #6b7280;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.text-color-picker__trigger.open .text-color-picker__arrow {
+  transform: rotate(180deg);
+}
+
+/* Color Picker Panel */
+.text-color-picker__panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  margin-top: 4px;
+  padding: 12px;
+  min-width: 240px;
+}
+
+.color-section {
+  margin-bottom: 16px;
+}
+
+.color-section:last-child {
+  margin-bottom: 0;
+}
+
+.color-section__title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Color Grids */
+.color-grid {
+  display: grid;
+  gap: 4px;
+}
+
+.color-grid--basic {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.color-grid--theme {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.color-grid--standard {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.color-option {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #d1d5db;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.color-option:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.color-option.selected {
+  border-color: #3b82f6;
+  border-width: 2px;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
+}
+
+.color-option__check {
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Custom Color Input */
+.custom-color-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.custom-color-input__picker {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+}
+
+.custom-color-input__picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.custom-color-input__picker::-webkit-color-swatch {
+  border: none;
+  border-radius: 3px;
+}
+
+.custom-color-input__text {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.custom-color-input__text:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.1);
+}
+
+/* Color Actions */
+.color-actions {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.color-action-button {
+  width: 100%;
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.color-action-button:hover {
+  background: #f3f4f6;
+}
+
+.color-action-button--remove {
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.color-action-button--remove:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .text-color-picker__panel {
+    min-width: 200px;
+    padding: 10px;
+  }
+  
+  .color-grid--standard {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .color-option {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .text-color-picker__trigger {
+    min-width: 30px;
+    padding: 4px 8px;
+    height: 28px;
+    font-size: 12px;
+  }
+}

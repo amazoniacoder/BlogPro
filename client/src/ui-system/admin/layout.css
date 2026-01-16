@@ -1,0 +1,129 @@
+/* BlogPro UI System - Admin Layout */
+
+/* Admin Layout Container */
+.admin-layout {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-secondary);
+}
+
+.admin-layout--dark {
+}
+
+/* Admin Page Wrapper */
+.admin-page {
+  background: var(--bg-secondary);
+  min-height: calc(100vh - 64px);
+  padding: 0;
+}
+
+.admin-container {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 60px);
+}
+
+.admin-main {
+  flex: 1;
+  padding: var(--space-lg);
+  overflow-y: auto;
+  margin-left: 0;
+  border-radius: var(--radius-lg) 0 0 0;
+}
+
+/* Admin Header */
+.admin-header {
+  height: 60px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-header__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.admin-header__actions {
+  margin-left: auto;
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+/* Admin Content */
+.admin-content {
+  padding: var(--space-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.admin-content--narrow {
+  max-width: 800px;
+}
+
+.admin-content--wide {
+  max-width: none;
+}
+
+/* Admin Page Header */
+.admin-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-xl);
+  gap: var(--space-lg);
+}
+
+.admin-page-header__content {
+  flex: 1;
+}
+
+.admin-page-header__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.admin-page-header__description {
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  margin: 0;
+}
+
+.admin-page-header__actions {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-main {
+    padding: 0;
+  }
+  .admin-card {
+    padding: 0;
+  }
+  
+  .admin-content {
+    padding: var(--space-md);
+  }
+  
+  .admin-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+  
+  .admin-page-header__actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

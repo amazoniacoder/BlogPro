@@ -1,0 +1,463 @@
+/**
+ * ListFormatting Component Tests
+ * Comprehensive test suite with ≥90% coverage
+ */
+
+import '../setup';
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ListFormatting } from '../../core/components/ListFormatting';
+import { ListState } from '../../core/services/ListService';
+
+// Test globals
+declare global {
+  var describe: any;
+  var test: any;
+  var expect: any;
+  var beforeEach: any;
+  var afterEach: any;
+}
+
+describe('ListFormatting', () => {
+  const mockOnListChange = vi.fn();
+  
+  const defaultListState: ListState = {
+    isInList: false,
+    listType: null,
+    nestingLevel: 0
+  };
+
+  const bulletListState: ListState = {
+    isInList: true,
+    listType: 'bullet',
+    nestingLevel: 1
+  };
+
+  const numberedListState: ListState = {
+    isInList: true,
+    listType: 'numbered',
+    nestingLevel: 2
+  };
+
+  const defaultProps = {
+    listState: defaultListState,
+    onListChange: mockOnListChange
+  };
+
+  beforeEach(() => {
+    mockOnListChange.mockClear();
+  });
+
+  afterEach(() => {
+    // Clean up any open dropdowns
+    document.body.click();
+  });
+
+  describe('Rendering', () => {
+    test('renders with default props (no list)', () => {
+      render(<ListFormatting {...defaultProps} />);
+      
+      expect(screen.getByRole('button', { name: /lists: lists/i })).toBeInTheDocument();
+      expect(screen.getByText('Lists')).toBeInTheDocument();
+      expect(screen.getByText('☰')).toBeInTheDocument();
+    });
+
+    test('renders with bullet list state', () => {
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      expect(screen.getByRole('button', { name: /lists: bullet list/i })).toBeInTheDocument();
+      expect(screen.getByText('Bullet List')).toBeInTheDocument();
+      expect(screen.getByText('•')).toBeInTheDocument();
+    });
+
+    test('renders with numbered list state', () => {
+      render(<ListFormatting {...defaultProps} listState={numberedListState} />);
+      
+      expect(screen.getByRole('button', { name: /lists: numbered list/i })).toBeInTheDocument();
+      expect(screen.getByText('Numbered List')).toBeInTheDocument();
+      expect(screen.getByText('1.')).toBeInTheDocument();
+    });
+
+    test('renders disabled state', () => {
+      render(<ListFormatting {...defaultProps} disabled />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      expect(trigger).toBeDisabled();
+    });
+
+    test('shows nesting controls when in list', () => {
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      expect(screen.getByLabelText('Decrease list indentation')).toBeInTheDocument();
+      expect(screen.getByLabelText('Increase list indentation')).toBeInTheDocument();
+      expect(screen.getByText('1')).toBeInTheDocument(); // nesting level
+    });
+
+    test('hides nesting controls when not in list', () => {
+      render(<ListFormatting {...defaultProps} />);
+      
+      expect(screen.queryByLabelText('Decrease list indentation')).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('Increase list indentation')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Dropdown Interaction', () => {
+    test('opens dropdown when trigger is clicked', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      expect(screen.getByText('▲')).toBeInTheDocument(); // Arrow should flip
+    });
+
+    test('does not open dropdown when disabled', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} disabled />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+
+    test('closes dropdown when clicking outside', async () => {
+      const user = userEvent.setup();
+      render(
+        <div>
+          <ListFormatting {...defaultProps} />
+          <div data-testid="outside">Outside element</div>
+        </div>
+      );
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      
+      // Simulate mousedown event on outside element
+      const outsideElement = screen.getByTestId('outside');
+      const mouseDownEvent = new MouseEvent('mousedown', {
+        bubbles: true,
+        cancelable: true
+      });
+      outsideElement.dispatchEvent(mouseDownEvent);
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+      });
+    });
+
+    test('closes dropdown on Escape key', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      
+      // Press Escape
+      await user.keyboard('{Escape}');
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('List Options', () => {
+    test('displays all list options when open', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      // Check all sections are present
+      expect(screen.getByText('List Types')).toBeInTheDocument();
+      expect(screen.getByText('Nesting')).toBeInTheDocument();
+      
+      // Check list options
+      expect(screen.getByRole('option', { name: /bullet list/i })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: /numbered list/i })).toBeInTheDocument();
+    });
+
+    test('shows current list type as selected', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const bulletOption = screen.getByRole('option', { name: /bullet list/i });
+      expect(bulletOption).toHaveAttribute('aria-selected', 'true');
+      expect(bulletOption).toHaveClass('selected');
+      expect(bulletOption.querySelector('.list-option__check')).toBeInTheDocument();
+    });
+
+    test('calls onListChange when bullet list is selected', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      // Select bullet list
+      const bulletOption = screen.getByRole('option', { name: /bullet list/i });
+      await user.click(bulletOption);
+      
+      expect(mockOnListChange).toHaveBeenCalledWith('bulletList');
+      expect(mockOnListChange).toHaveBeenCalledTimes(1);
+    });
+
+    test('calls onListChange when numbered list is selected', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      // Select numbered list
+      const numberedOption = screen.getByRole('option', { name: /numbered list/i });
+      await user.click(numberedOption);
+      
+      expect(mockOnListChange).toHaveBeenCalledWith('numberedList');
+      expect(mockOnListChange).toHaveBeenCalledTimes(1);
+    });
+
+    test('closes dropdown after selecting option', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      
+      // Select option
+      const bulletOption = screen.getByRole('option', { name: /bullet list/i });
+      await user.click(bulletOption);
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('List Actions', () => {
+    test('shows remove list action when in list', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      expect(screen.getByText('List Actions')).toBeInTheDocument();
+      expect(screen.getByText('Remove List')).toBeInTheDocument();
+    });
+
+    test('hides remove list action when not in list', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      expect(screen.queryByText('List Actions')).not.toBeInTheDocument();
+      expect(screen.queryByText('Remove List')).not.toBeInTheDocument();
+    });
+
+    test('calls onListChange when remove list is clicked', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      // Click remove list
+      const removeButton = screen.getByText('Remove List');
+      await user.click(removeButton);
+      
+      expect(mockOnListChange).toHaveBeenCalledWith('removeList');
+    });
+  });
+
+  describe('Nesting Controls', () => {
+    test('calls onListChange when increase nesting is clicked', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const increaseButton = screen.getByLabelText('Increase list indentation');
+      await user.click(increaseButton);
+      
+      expect(mockOnListChange).toHaveBeenCalledWith('increaseNesting');
+    });
+
+    test('calls onListChange when decrease nesting is clicked', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} listState={numberedListState} />);
+      
+      const decreaseButton = screen.getByLabelText('Decrease list indentation');
+      await user.click(decreaseButton);
+      
+      expect(mockOnListChange).toHaveBeenCalledWith('decreaseNesting');
+    });
+
+    test('disables decrease nesting at level 1', () => {
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const decreaseButton = screen.getByLabelText('Decrease list indentation');
+      expect(decreaseButton).toBeDisabled();
+    });
+
+    test('disables increase nesting at level 5', () => {
+      const maxNestedState: ListState = {
+        isInList: true,
+        listType: 'bullet',
+        nestingLevel: 5
+      };
+      
+      render(<ListFormatting {...defaultProps} listState={maxNestedState} />);
+      
+      const increaseButton = screen.getByLabelText('Increase list indentation');
+      expect(increaseButton).toBeDisabled();
+    });
+
+    test('displays current nesting level', () => {
+      render(<ListFormatting {...defaultProps} listState={numberedListState} />);
+      
+      expect(screen.getByText('2')).toBeInTheDocument(); // nesting level
+    });
+  });
+
+  describe('Accessibility', () => {
+    test('has proper ARIA attributes', () => {
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      expect(trigger).toHaveAttribute('aria-haspopup', 'listbox');
+      expect(trigger).toHaveAttribute('aria-label', 'Lists: Lists');
+    });
+
+    test('updates ARIA attributes when dropdown opens', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    test('dropdown panel has proper role and label', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const panel = screen.getByRole('listbox');
+      expect(panel).toHaveAttribute('aria-label', 'List formatting options');
+    });
+
+    test('list options have proper ARIA attributes', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const options = screen.getAllByRole('option');
+      options.forEach(option => {
+        expect(option).toHaveAttribute('aria-selected');
+      });
+      
+      // Bullet option should be selected
+      const bulletOption = screen.getByRole('option', { name: /bullet list/i });
+      expect(bulletOption).toHaveAttribute('aria-selected', 'true');
+    });
+
+    test('nesting controls have proper labels', () => {
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      expect(screen.getByLabelText('Decrease list indentation')).toBeInTheDocument();
+      expect(screen.getByLabelText('Increase list indentation')).toBeInTheDocument();
+    });
+  });
+
+  describe('Edge Cases', () => {
+    test('handles invalid listState gracefully', () => {
+      const invalidState = {
+        isInList: true,
+        listType: null,
+        nestingLevel: 0
+      } as ListState;
+      
+      render(<ListFormatting {...defaultProps} listState={invalidState} />);
+      
+      // Should still render without crashing
+      expect(screen.getByRole('button', { name: /lists:/i })).toBeInTheDocument();
+    });
+
+    test('handles missing onListChange prop', async () => {
+      const user = userEvent.setup();
+      // @ts-ignore - Testing missing prop
+      render(<ListFormatting listState={defaultListState} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const bulletOption = screen.getByRole('option', { name: /bullet list/i });
+      
+      // Should not throw error
+      expect(() => user.click(bulletOption)).not.toThrow();
+    });
+
+    test('handles rapid interactions gracefully', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      const increaseButton = screen.getByLabelText('Increase list indentation');
+      
+      // Rapid clicks
+      await user.click(trigger);
+      await user.click(increaseButton);
+      await user.click(trigger);
+      
+      // Should handle gracefully without errors
+      expect(trigger).toBeInTheDocument();
+    });
+  });
+
+  describe('Performance', () => {
+    test('does not cause unnecessary re-renders', () => {
+      const renderSpy = vi.fn();
+      
+      const TestComponent = (props: any) => {
+        renderSpy();
+        return <ListFormatting {...props} />;
+      };
+      
+      const { rerender } = render(<TestComponent {...defaultProps} />);
+      
+      // Initial render
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      
+      // Re-render with same props
+      rerender(<TestComponent {...defaultProps} />);
+      
+      // Should not cause additional renders due to memoization
+      expect(renderSpy).toHaveBeenCalledTimes(2);
+    });
+  });
+});

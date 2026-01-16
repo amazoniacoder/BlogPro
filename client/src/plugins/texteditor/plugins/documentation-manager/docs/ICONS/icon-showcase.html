@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogPro Icon System - Visual Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .icon-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .icon-card:hover {
+            background: #f1f5f9;
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+
+        .icon-display {
+            margin-bottom: 1rem;
+        }
+
+        .icon-display svg {
+            width: 48px;
+            height: 48px;
+            stroke: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+
+        .icon-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .icon-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .icon-code {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.75rem;
+            text-align: left;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .size-demo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
+
+        .size-demo svg {
+            stroke: #3b82f6;
+        }
+
+        .size-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .color-demo {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .original-badge {
+            background: #10b981;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .custom-badge {
+            background: #8b5cf6;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 BlogPro Icon System</h1>
+            <p>Professional SVG Icon Collection - Visual Showcase</p>
+        </div>
+
+        <div class="content">
+            <!-- Layout & Navigation Icons -->
+            <div class="section">
+                <h2 class="section-title">📐 Layout & Navigation Icons</h2>
+                
+                <div class="icon-grid">
+                    <!-- Original Four Squares (Grid) -->
+                    <div class="icon-card">
+                        <div class="original-badge">Reference Icon</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Grid Layout</div>
+                        <div class="icon-description">Four squares in grid formation - dashboard/grid view</div>
+                        <div class="icon-code">&lt;svg&gt;&lt;rect x="3" y="3" width="7" height="7"&gt;&lt;/rect&gt;...&lt;/svg&gt;</div>
+                    </div>
+
+                    <!-- Custom Three Squares -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="8.5" y="3" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Three Layout</div>
+                        <div class="icon-description">Three squares - one top center, two bottom</div>
+                        <div class="icon-code">&lt;rect x="8.5" y="3" width="7" height="7"&gt;&lt;/rect&gt;</div>
+                    </div>
+
+                    <!-- Custom Two Columns -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="18"></rect>
+                                <rect x="14" y="3" width="7" height="18"></rect>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Two Columns</div>
+                        <div class="icon-description">Two vertical columns layout</div>
+                        <div class="icon-code">&lt;rect x="3" y="3" width="7" height="18"&gt;&lt;/rect&gt;</div>
+                    </div>
+
+                    <!-- Custom Sidebar Layout -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="5" height="18"></rect>
+                                <rect x="10" y="3" width="11" height="18"></rect>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Sidebar Layout</div>
+                        <div class="icon-description">Sidebar with main content area</div>
+                        <div class="icon-code">&lt;rect x="3" y="3" width="5" height="18"&gt;&lt;/rect&gt;</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Icons -->
+            <div class="section">
+                <h2 class="section-title">⚡ Action Icons</h2>
+                
+                <div class="icon-grid">
+                    <!-- Save Icon -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17,21 17,13 7,13 7,21"></polyline>
+                                <polyline points="7,3 7,8 15,8"></polyline>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Save</div>
+                        <div class="icon-description">Save document or content</div>
+                        <div class="icon-code">&lt;path d="M19 21H5a2 2 0 0 1-2-2V5..."&gt;&lt;/path&gt;</div>
+                    </div>
+
+                    <!-- Edit Icon -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Edit</div>
+                        <div class="icon-description">Edit or modify content</div>
+                        <div class="icon-code">&lt;path d="M11 4H4a2 2 0 0 0-2 2v14..."&gt;&lt;/path&gt;</div>
+                    </div>
+
+                    <!-- Delete Icon -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3,6 5,6 21,6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Delete</div>
+                        <div class="icon-description">Delete or remove content</div>
+                        <div class="icon-code">&lt;polyline points="3,6 5,6 21,6"&gt;&lt;/polyline&gt;</div>
+                    </div>
+
+                    <!-- Add Icon -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Add</div>
+                        <div class="icon-description">Add new content or item</div>
+                        <div class="icon-code">&lt;circle cx="12" cy="12" r="10"&gt;&lt;/circle&gt;</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Icons -->
+            <div class="section">
+                <h2 class="section-title">📄 Content Icons</h2>
+                
+                <div class="icon-grid">
+                    <!-- Document Icon -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14,2 14,8 20,8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10,9 9,9 8,9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Document</div>
+                        <div class="icon-description">Text document or file</div>
+                        <div class="icon-code">&lt;path d="M14 2H6a2 2 0 0 0-2 2v16..."&gt;&lt;/path&gt;</div>
+                    </div>
+
+                    <!-- Folder Icon -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Folder</div>
+                        <div class="icon-description">Folder or directory</div>
+                        <div class="icon-code">&lt;path d="M22 19a2 2 0 0 1-2 2H4..."&gt;&lt;/path&gt;</div>
+                    </div>
+
+                    <!-- Image Icon -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21,15 16,10 5,21"></polyline>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Image</div>
+                        <div class="icon-description">Image or photo file</div>
+                        <div class="icon-code">&lt;rect x="3" y="3" width="18" height="18"&gt;&lt;/rect&gt;</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Size Demonstration -->
+            <div class="section">
+                <h2 class="section-title">📏 Size Variations</h2>
+                <div class="size-demo">
+                    <div style="text-align: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <div class="size-label">16px (Small)</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <div class="size-label">20px (Default)</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <div class="size-label">24px (Medium)</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <div class="size-label">32px (Large)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color Demonstration -->
+            <div class="section">
+                <h2 class="section-title">🎨 Color Variations</h2>
+                <div class="color-demo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="8.5" y="3" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="8.5" y="3" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="8.5" y="3" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="8.5" y="3" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

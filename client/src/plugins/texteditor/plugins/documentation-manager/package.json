@@ -1,0 +1,39 @@
+{
+  "name": "@blogpro/documentation-manager-plugin",
+  "version": "1.0.0",
+  "description": "Professional documentation management plugin for BlogPro Text Editor",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "lint": "eslint src --ext .ts,.tsx"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "jest": "^29.0.0"
+  },
+  "peerDependencies": {
+    "@blogpro/texteditor-plugin-api": "^1.0.0"
+  },
+  "keywords": [
+    "blogpro",
+    "texteditor",
+    "plugin",
+    "documentation",
+    "ai-export"
+  ],
+  "author": "BlogPro Team",
+  "license": "MIT"
+}

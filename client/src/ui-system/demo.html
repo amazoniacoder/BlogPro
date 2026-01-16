@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogPro UI System Demo</title>
+    <link rel="stylesheet" href="./index.css">
+    <style>
+        body {
+            font-family: var(--bp-font-sans);
+            padding: 2rem;
+            background: var(--bp-bg-secondary);
+            color: var(--bp-text-primary);
+            transition: background-color var(--bp-transition-base), color var(--bp-transition-base);
+        }
+        .demo-section {
+            background: var(--bp-bg-primary);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: var(--bp-radius-lg);
+            box-shadow: var(--bp-shadow-md);
+            transition: background-color var(--bp-transition-base), box-shadow var(--bp-transition-base);
+        }
+        .demo-title {
+            font-size: var(--bp-text-2xl);
+            font-weight: var(--bp-font-semibold);
+            margin-bottom: 1rem;
+            color: var(--bp-text-primary);
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .theme-switcher {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+        
+     
+    </style>
+</head>
+<body>
+    <!-- SVG Sprite -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="bp-icon-add" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+        </symbol>
+        <symbol id="bp-icon-alert-circle" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </symbol>
+        <symbol id="bp-icon-delete" viewBox="0 0 24 24">
+            <polyline points="3,6 5,6 21,6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+        </symbol>
+        <symbol id="bp-icon-edit" viewBox="0 0 24 24">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </symbol>
+        <symbol id="bp-icon-save" viewBox="0 0 24 24">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17,21 17,13 7,13 7,21"></polyline>
+            <polyline points="7,3 7,8 15,8"></polyline>
+        </symbol>
+        <symbol id="bp-icon-search" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+        </symbol>
+        <symbol id="bp-icon-gear" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </symbol>
+        <symbol id="bp-icon-sun" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </symbol>
+        <symbol id="bp-icon-moon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </symbol>
+        <symbol id="bp-icon-x" viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </symbol>
+    </svg>
+    
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <button id="theme-toggle" class="bp-icon-button bp-icon-button--ghost bp-icon-button--md" title="Toggle theme">
+            <svg class="bp-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <use href="#bp-icon-sun"></use>
+            </svg>
+        </button>
+    </div>
+    
+    <h1 style="text-align: center; margin-bottom: 2rem;">🎨 BlogPro UI System Demo</h1>
+    
+    <!-- Button Demo -->
+    <div class="demo-section">
+        <h2 class="demo-title">Buttons</h2>
+        <div class="demo-grid">
+            <button class="bp-button bp-button--variant-primary">Primary Button</button>
+            <button class="bp-button bp-button--variant-secondary">Secondary Button</button>
+            <button class="bp-button bp-button--variant-outline">Outline Button</button>
+            <button class="bp-button bp-button--variant-ghost">Ghost Button</button>
+            <button class="bp-button bp-button--variant-danger">Danger Button</button>
+            <button class="bp-button bp-button--variant-primary" disabled>Disabled Button</button>
+          
+        </div>
+        
+        <h3 style="margin: 1rem 0;">Button Sizes</h3>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <button class="bp-button bp-button--variant-primary bp-button--size-sm">Small</button>
+            <button class="bp-button bp-button--variant-primary bp-button--size-md">Medium</button>
+            <button class="bp-button bp-button--variant-primary bp-button--size-lg">Large</button>
+        </div>
+    </div>
+    
+    <!-- Form Demo -->
+    <div class="demo-section">
+        <h2 class="demo-title">Form Components</h2>
+        
+        <div class="bp-form-field">
+            <label class="bp-form-field__label bp-form-field__label--required">Email Address</label>
+            <input type="email" class="bp-form-field__input" placeholder="Enter your email">
+        </div>
+        
+        <div class="bp-form-field bp-form-field--error">
+            <label class="bp-form-field__label">Password</label>
+            <input type="password" class="bp-form-field__input" placeholder="Enter password">
+            <div class="bp-form-field__error">Password must be at least 8 characters</div>
+        </div>
+        
+        <div class="bp-form-field">
+            <label class="bp-form-field__label">Message</label>
+            <textarea class="bp-form-field__input bp-form-field__textarea" placeholder="Enter your message"></textarea>
+            <div class="bp-form-field__help">Maximum 500 characters</div>
+        </div>
+        
+        <div class="bp-form-field">
+            <label class="bp-form-field__label">Country</label>
+            <select class="bp-form-field__input bp-form-field__select">
+                <option>Select a country</option>
+                <option>United States</option>
+                <option>Canada</option>
+                <option>United Kingdom</option>
+            </select>
+        </div>
+        
+        <div class="bp-form-actions">
+            <button class="bp-button bp-button--variant-ghost">Cancel</button>
+            <button class="bp-button bp-button--variant-primary">Submit</button>
+        </div>
+    </div>
+    
+    <!-- Icon Demo -->
+    <div class="demo-section">
+        <h2 class="demo-title">Icons</h2>
+        <p style="margin-bottom: 1.5rem; color: var(--bp-text-secondary);">BlogPro original icon collection with 20+ professional SVG icons</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1.5rem;">
+            <div style="text-align: center; padding: 1rem; border-radius: var(--bp-radius-md); background: var(--bp-bg-alt);">
+                <svg class="bp-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <use href="#bp-icon-save"></use>
+                </svg>
+                <div style="font-size: 0.75rem; margin-top: 0.5rem; font-weight: 500;">save</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; border-radius: var(--bp-radius-md); background: var(--bp-bg-alt);">
+                <svg class="bp-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <use href="#bp-icon-edit"></use>
+                </svg>
+                <div style="font-size: 0.75rem; margin-top: 0.5rem; font-weight: 500;">edit</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; border-radius: var(--bp-radius-md); background: var(--bp-bg-alt);">
+                <svg class="bp-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <use href="#bp-icon-delete"></use>
+                </svg>
+                <div style="font-size: 0.75rem; margin-top: 0.5rem; font-weight: 500;">delete</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; border-radius: var(--bp-radius-md); background: var(--bp-bg-alt);">
+                <svg class="bp-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <use href="#bp-icon-add"></use>
+                </svg>
+                <div style="font-size: 0.75rem; margin-top: 0.5rem; font-weight: 500;">add</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; border-radius: var(--bp-radius-md); background: var(--bp-bg-alt);">
+                <svg class="bp-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <use href="#bp-icon-search"></use>
+                </svg>
+                <div style="font-size: 0.75rem; margin-top: 0.5rem; font-weight: 500;">search</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; border-radius: var(--bp-radius-md); background: var(--bp-bg-alt);">
+                <svg class="bp-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <use href="#bp-icon-gear"></use>
+                </svg>
+                <div style="font-size: 0.75rem; margin-top: 0.5rem; font-weight: 500;">gear</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; border-radius: var(--bp-radius-md); background: var(--bp-bg-alt);">
+                <svg class="bp-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <use href="#bp-icon-sun"></use>
+                </svg>
+                <div style="font-size: 0.75rem; margin-top: 0.5rem; font-weight: 500;">sun</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; border-radius: var(--bp-radius-md); background: var(--bp-bg-alt);">
+                <svg class="bp-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <use href="#bp-icon-moon"></use>
+                </svg>
+                <div style="font-size: 0.75rem; margin-top: 0.5rem; font-weight: 500;">moon</div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 2rem; padding: 1rem; background: var(--bp-bg-alt); border-radius: var(--bp-radius-md);">
+            <h4 style="margin-bottom: 0.5rem;">Icon Buttons</h4>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button class="bp-icon-button bp-icon-button--primary bp-icon-button--sm">
+                    <svg class="bp-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <use href="#bp-icon-save"></use>
+                    </svg>
+                </button>
+                <button class="bp-icon-button bp-icon-button--secondary bp-icon-button--md">
+                    <svg class="bp-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <use href="#bp-icon-edit"></use>
+                    </svg>
+                </button>
+                <button class="bp-icon-button bp-icon-button--danger bp-icon-button--lg">
+                    <svg class="bp-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <use href="#bp-icon-delete"></use>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Card Demo -->
+    <div class="demo-section">
+        <h2 class="demo-title">Cards</h2>
+        <p style="margin-bottom: 1.5rem; color: var(--bp-text-secondary);">Minimalist card components with subtle styling</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+            <!-- Default Card -->
+            <div class="bp-card">
+                <div class="bp-card__header">
+                    <h3 class="bp-card__title">Default Card</h3>
+                    <p class="bp-card__subtitle">Simple card with minimal styling</p>
+                </div>
+                <div class="bp-card__body">
+                    <p style="margin: 0; color: var(--bp-text-secondary); font-size: var(--bp-text-sm);">This is a basic card component with clean, minimalist design. Perfect for displaying content in an organized way.</p>
+                </div>
+                <div class="bp-card__footer">
+                    <div class="bp-card__actions">
+                        <button class="bp-button bp-button--variant-ghost bp-button--size-sm">Cancel</button>
+                        <button class="bp-button bp-button--variant-primary bp-button--size-sm">Action</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Elevated Card -->
+            <div class="bp-card bp-card--elevated">
+                <div class="bp-card__header">
+                    <h3 class="bp-card__title">Elevated Card</h3>
+                    <p class="bp-card__subtitle">Card with enhanced shadow</p>
+                </div>
+                <div class="bp-card__body">
+                    <p style="margin: 0; color: var(--bp-text-secondary); font-size: var(--bp-text-sm);">This card has an elevated appearance with enhanced shadows for better visual hierarchy.</p>
+                </div>
+            </div>
+            
+            <!-- Interactive Card -->
+            <div class="bp-card bp-card--interactive">
+                <div class="bp-card__header">
+                    <h3 class="bp-card__title">Interactive Card</h3>
+                    <p class="bp-card__subtitle">Hover to see the effect</p>
+                </div>
+                <div class="bp-card__body">
+                    <p style="margin: 0; color: var(--bp-text-secondary); font-size: var(--bp-text-sm);">This card responds to hover interactions with smooth animations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Demo -->
+    <div class="demo-section">
+        <h2 class="demo-title">Modals</h2>
+        <p style="margin-bottom: 1.5rem; color: var(--bp-text-secondary);">Smooth modal dialogs with backdrop blur</p>
+        
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button id="modal-trigger-sm" class="bp-button bp-button--variant-outline bp-button--size-sm">Small Modal</button>
+            <button id="modal-trigger-md" class="bp-button bp-button--variant-secondary">Medium Modal</button>
+            <button id="modal-trigger-lg" class="bp-button bp-button--variant-primary">Large Modal</button>
+        </div>
+        
+        <!-- Modal Examples (Hidden by default) -->
+        <div id="modal-sm" class="bp-modal-backdrop" style="display: none;">
+            <div class="bp-modal bp-modal--sm">
+                <div class="bp-modal__header">
+                    <h2 class="bp-modal__title">Small Modal</h2>
+                    <button class="bp-modal__close" onclick="closeModal('modal-sm')">
+                        <svg class="bp-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <use href="#bp-icon-x"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="bp-modal__body">
+                    <p>This is a small modal dialog. Perfect for simple confirmations or quick actions.</p>
+                </div>
+                <div class="bp-modal__footer">
+                    <button class="bp-button bp-button--variant-ghost bp-button--size-sm" onclick="closeModal('modal-sm')">Cancel</button>
+                    <button class="bp-button bp-button--variant-primary bp-button--size-sm">Confirm</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="modal-md" class="bp-modal-backdrop" style="display: none;">
+            <div class="bp-modal bp-modal--md">
+                <div class="bp-modal__header">
+                    <h2 class="bp-modal__title">Medium Modal</h2>
+                    <button class="bp-modal__close" onclick="closeModal('modal-md')">
+                        <svg class="bp-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <use href="#bp-icon-x"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="bp-modal__body">
+                    <p>This is a medium-sized modal with more content space.</p>
+                    <div class="bp-form-field">
+                        <label class="bp-form-field__label">Your Name</label>
+                        <input type="text" class="bp-form-field__input" placeholder="Enter your name">
+                    </div>
+                    <div class="bp-form-field">
+                        <label class="bp-form-field__label">Email</label>
+                        <input type="email" class="bp-form-field__input" placeholder="Enter your email">
+                    </div>
+                </div>
+                <div class="bp-modal__footer">
+                    <button class="bp-button bp-button--variant-ghost" onclick="closeModal('modal-md')">Cancel</button>
+                    <button class="bp-button bp-button--variant-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="modal-lg" class="bp-modal-backdrop" style="display: none;">
+            <div class="bp-modal bp-modal--lg">
+                <div class="bp-modal__header">
+                    <h2 class="bp-modal__title">Large Modal</h2>
+                    <button class="bp-modal__close" onclick="closeModal('modal-lg')">
+                        <svg class="bp-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <use href="#bp-icon-x"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="bp-modal__body">
+                    <p>This is a large modal with plenty of space for complex content.</p>
+                    <div class="bp-card bp-card--flat" style="margin: 1rem 0;">
+                        <div class="bp-card__body">
+                            <h4 style="margin: 0 0 0.5rem 0;">Nested Card</h4>
+                            <p style="margin: 0; font-size: var(--bp-text-sm); color: var(--bp-text-secondary);">You can even nest other components inside modals.</p>
+                        </div>
+                    </div>
+                    <p>Large modals are perfect for complex forms, detailed content, or multi-step processes.</p>
+                </div>
+                <div class="bp-modal__footer">
+                    <button class="bp-button bp-button--variant-ghost" onclick="closeModal('modal-lg')">Close</button>
+                    <button class="bp-button bp-button--variant-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Layout Demo -->
+    <div class="demo-section">
+        <h2 class="demo-title">Layout System</h2>
+        <p style="margin-bottom: 1.5rem; color: var(--bp-text-secondary);">Responsive layout components with grid system</p>
+        
+        <h3 style="margin: 1rem 0;">Container Sizes</h3>
+        <div style="background: var(--bp-bg-alt); padding: 1rem; border-radius: var(--bp-radius-lg); margin-bottom: 2rem;">
+            <div class="bp-container bp-container--sm" style="background: var(--bp-primary-50); padding: 1rem; border-radius: var(--bp-radius-md); margin-bottom: 1rem;">
+                <p style="margin: 0; text-align: center; font-size: var(--bp-text-sm);">Small Container (640px)</p>
+            </div>
+            <div class="bp-container bp-container--md" style="background: var(--bp-primary-50); padding: 1rem; border-radius: var(--bp-radius-md); margin-bottom: 1rem;">
+                <p style="margin: 0; text-align: center; font-size: var(--bp-text-sm);">Medium Container (768px)</p>
+            </div>
+            <div class="bp-container bp-container--lg" style="background: var(--bp-primary-50); padding: 1rem; border-radius: var(--bp-radius-md);">
+                <p style="margin: 0; text-align: center; font-size: var(--bp-text-sm);">Large Container (1024px)</p>
+            </div>
+        </div>
+        
+        <h3 style="margin: 1rem 0;">Grid System</h3>
+        <div class="bp-grid bp-grid--cols-3 bp-grid--gap-md" style="margin-bottom: 2rem;">
+            <div class="bp-card bp-card--compact">
+                <div class="bp-card__body">
+                    <h4 style="margin: 0 0 0.5rem 0;">Grid Item 1</h4>
+                    <p style="margin: 0; font-size: var(--bp-text-sm); color: var(--bp-text-secondary);">3-column grid layout</p>
+                </div>
+            </div>
+            <div class="bp-card bp-card--compact">
+                <div class="bp-card__body">
+                    <h4 style="margin: 0 0 0.5rem 0;">Grid Item 2</h4>
+                    <p style="margin: 0; font-size: var(--bp-text-sm); color: var(--bp-text-secondary);">Responsive design</p>
+                </div>
+            </div>
+            <div class="bp-card bp-card--compact">
+                <div class="bp-card__body">
+                    <h4 style="margin: 0 0 0.5rem 0;">Grid Item 3</h4>
+                    <p style="margin: 0; font-size: var(--bp-text-sm); color: var(--bp-text-secondary);">Mobile-first approach</p>
+                </div>
+            </div>
+        </div>
+        
+        <h3 style="margin: 1rem 0;">Auto-fit Grid</h3>
+        <div class="bp-grid bp-grid--auto-fit bp-grid--gap-lg">
+            <div class="bp-card bp-card--flat">
+                <div class="bp-card__body">
+                    <h4 style="margin: 0 0 0.5rem 0;">Auto Item 1</h4>
+                    <p style="margin: 0; font-size: var(--bp-text-sm); color: var(--bp-text-secondary);">Automatically fits available space</p>
+                </div>
+            </div>
+            <div class="bp-card bp-card--flat">
+                <div class="bp-card__body">
+                    <h4 style="margin: 0 0 0.5rem 0;">Auto Item 2</h4>
+                    <p style="margin: 0; font-size: var(--bp-text-sm); color: var(--bp-text-secondary);">Minimum 250px width</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // Modal triggers
+        document.getElementById('modal-trigger-sm').addEventListener('click', () => openModal('modal-sm'));
+        document.getElementById('modal-trigger-md').addEventListener('click', () => openModal('modal-md'));
+        document.getElementById('modal-trigger-lg').addEventListener('click', () => openModal('modal-lg'));
+        
+        // Close modals on backdrop click
+        document.querySelectorAll('.bp-modal-backdrop').forEach(backdrop => {
+            backdrop.addEventListener('click', (e) => {
+                if (e.target === backdrop) {
+                    backdrop.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+        
+        // Close modals on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.bp-modal-backdrop').forEach(modal => {
+                    if (modal.style.display === 'flex') {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        });
+        
+        // Theme switcher functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('use');
+        const body = document.body;
+        
+        // Check for saved theme or default to light
+        const savedTheme = localStorage.getItem('bp-theme') || 'light';
+        
+        // Apply saved theme
+        if (savedTheme === 'dark') {
+            body.classList.add('dark');
+            themeIcon.setAttribute('href', '#bp-icon-moon');
+        }
+        
+        // Theme toggle handler
+        themeToggle.addEventListener('click', () => {
+            const isDark = body.classList.contains('dark');
+            
+            if (isDark) {
+                // Switch to light theme
+                body.classList.remove('dark');
+                themeIcon.setAttribute('href', '#bp-icon-sun');
+                localStorage.setItem('bp-theme', 'light');
+            } else {
+                // Switch to dark theme
+                body.classList.add('dark');
+                themeIcon.setAttribute('href', '#bp-icon-moon');
+                localStorage.setItem('bp-theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

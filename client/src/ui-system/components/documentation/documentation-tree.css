@@ -1,0 +1,119 @@
+/* Documentation Tree Component */
+.documentation-tree {
+  width: 100%;
+}
+
+.documentation-tree__header {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.documentation-tree__title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.documentation-tree__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.documentation-tree__category {
+  display: flex;
+  flex-direction: column;
+}
+
+.documentation-tree__category--level-0 {
+  margin-bottom: var(--space-3);
+}
+
+.documentation-tree__category--level-1 {
+  margin-left: var(--space-4);
+}
+
+.documentation-tree__category--level-2 {
+  margin-left: var(--space-8);
+}
+
+.documentation-tree__category-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-colors);
+  text-align: left;
+  width: 100%;
+}
+
+.documentation-tree__category-toggle:hover {
+  background: var(--bg-hover);
+}
+
+.documentation-tree__arrow {
+  transition: transform 0.2s ease;
+  color: var(--text-muted);
+}
+
+.documentation-tree__arrow--expanded {
+  transform: rotate(90deg);
+}
+
+.documentation-tree__category-name {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+}
+
+.documentation-tree__category-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  margin-left: var(--space-6);
+}
+
+.documentation-tree__document {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-colors);
+  text-align: left;
+  width: 100%;
+}
+
+.documentation-tree__document:hover {
+  background: var(--color-primary);
+  color: var(--primary-700);
+
+}
+
+.documentation-tree__document--active {
+  background: var(--bg-hover);
+  color: var(--primary-700);
+}
+
+
+
+.documentation-tree__document-title {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+}
+
+.documentation-tree__document-title:hover {
+  color: white;
+}
+

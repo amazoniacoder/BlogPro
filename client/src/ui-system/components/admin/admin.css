@@ -1,0 +1,251 @@
+/**
+ * BlogPro Admin Components Styles
+ * BEM Methodology: .admin-*
+ */
+
+
+.admin-sidebar--collapsed {
+  width: 64px;
+}
+
+.admin-sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  min-height: 64px;
+}
+
+.admin-sidebar__logo {
+  font-size: 18px;
+}
+
+.admin-sidebar__toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm, 0.125rem);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.admin-sidebar__toggle:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.admin-sidebar__nav {
+  flex: 1;
+  padding: 16px 0;
+  overflow-y: auto;
+}
+
+.admin-sidebar__item {
+  margin: 0 12px 4px;
+}
+
+.admin-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-md, 0.375rem);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s ease);
+  text-align: left;
+}
+
+.admin-sidebar__link:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.admin-sidebar__item--active .admin-sidebar__link {
+  background: var(--primary-100);
+  color: var(--primary-700);
+}
+
+.admin-sidebar__icon {
+  flex-shrink: 0;
+}
+
+.admin-sidebar__label {
+  flex: 1;
+  font-size: 14px;
+}
+
+.admin-sidebar__badge {
+  margin-left: auto;
+}
+
+.admin-sidebar__submenu {
+  margin-top: 4px;
+  padding-left: 32px;
+}
+
+.admin-sidebar__item--nested .admin-sidebar__link {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+/* Admin Header Styles */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 24px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-header__left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-header__menu-toggle {
+  display: none;
+}
+
+.admin-header__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.admin-header__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Admin Layout Styles */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.admin-layout__sidebar {
+  flex-shrink: 0;
+}
+
+.admin-layout__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-layout__header {
+  flex-shrink: 0;
+}
+
+.admin-layout__content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Admin Menu Styles */
+.admin-menu {
+  display: flex;
+  gap: 4px;
+}
+
+.admin-menu--vertical {
+  flex-direction: column;
+}
+
+.admin-menu--horizontal {
+  flex-direction: row;
+}
+
+.admin-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-md, 0.375rem);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s ease);
+  white-space: nowrap;
+}
+
+.admin-menu__item:hover:not(:disabled) {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.admin-menu__item--active {
+  background: var(--primary-100);
+  color: var(--primary-700);
+}
+
+.admin-menu__item--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-menu--pills .admin-menu__item {
+  border-radius: var(--radius-full, 50%);
+}
+
+.admin-menu--tabs .admin-menu__item {
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+}
+
+.admin-menu--tabs .admin-menu__item--active {
+  background: none;
+  border-bottom-color: var(--primary-600);
+  color: var(--primary-600);
+}
+
+.admin-menu__label {
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+  
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    order: 2;
+  }
+  
+  .admin-sidebar--collapsed {
+    display: none;
+  }
+  
+  .admin-layout__main {
+    order: 1;
+  }
+  
+  .admin-header__menu-toggle {
+    display: flex;
+  }
+  
+  .admin-layout__content {
+    padding: 16px;
+  }
+}

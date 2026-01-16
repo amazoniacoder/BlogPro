@@ -1,0 +1,47 @@
+/* BlogPro UI System - Admin CSS Variables */
+
+:root {
+  /* Spacing Scale */
+  --admin-space-xs: 0.25rem;
+  --admin-space-sm: 0.5rem;
+  --admin-space-md: 1rem;
+  --admin-space-lg: 1.5rem;
+  --admin-space-xl: 2rem;
+  --admin-space-2xl: 3rem;
+
+  /* Admin Colors */
+  --admin-primary: var(--color-primary);
+  --admin-primary-light: var(--color-primary-light);
+  --admin-primary-dark: var(--color-primary-dark);
+  --admin-bg-primary: var(--bg-primary);
+  --admin-bg-secondary: var(--bg-secondary);
+  --admin-bg-hover: var(--bg-hover);
+  --admin-text-primary: var(--text-primary);
+  --admin-text-secondary: var(--text-secondary);
+  --admin-border-color: var(--border-color);
+
+  /* Admin Shadows */
+  --admin-shadow-sm: var(--shadow-sm);
+  --admin-shadow-md: var(--shadow-md);
+  --admin-shadow-lg: var(--shadow-lg);
+
+  /* Admin Radius */
+  --admin-radius-sm: var(--radius-sm);
+  --admin-radius-md: var(--radius-md);
+  --admin-radius-lg: var(--radius-lg);
+
+  /* Admin Transitions */
+  --admin-transition-fast: var(--transition-fast);
+  --admin-transition-normal: var(--transition-normal);
+
+  /* Admin Typography */
+  --admin-font-size-xs: var(--font-size-xs);
+  --admin-font-size-sm: var(--font-size-sm);
+  --admin-font-size-base: var(--font-size-base);
+  --admin-font-size-lg: var(--font-size-lg);
+  --admin-font-size-xl: var(--font-size-xl);
+  --admin-font-size-2xl: var(--font-size-2xl);
+  --admin-font-weight-medium: var(--font-weight-medium);
+  --admin-font-weight-semibold: var(--font-weight-semibold);
+  --admin-font-weight-bold: var(--font-weight-bold);
+}

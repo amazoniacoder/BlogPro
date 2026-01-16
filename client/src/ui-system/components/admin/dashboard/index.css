@@ -1,0 +1,194 @@
+/* BlogPro UI System - Admin Dashboard */
+
+/* Dashboard Stats */
+.admin-dashboard__stats {
+  display: grid;
+  /* grid layout handled by .grid-auto-fit utility class */
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.admin-dashboard__stat {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.admin-dashboard__stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg-primary);
+}
+
+.admin-dashboard__stat--blog .admin-dashboard__stat-icon {
+  background: var(--color-primary);
+}
+
+.admin-dashboard__stat--media .admin-dashboard__stat-icon {
+  background: var(--color-success);
+}
+
+.admin-dashboard__stat--users .admin-dashboard__stat-icon {
+  background: var(--color-warning);
+}
+
+.admin-dashboard__stat-content {
+  flex: 1;
+}
+
+.admin-dashboard__stat-title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.admin-dashboard__stat-value {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+/* Quick Actions */
+.admin-dashboard__actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+}
+
+.admin-dashboard__action {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.admin-dashboard__action:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.admin-dashboard__action-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg-primary);
+}
+
+.admin-dashboard__action--blog .admin-dashboard__action-icon {
+  background: var(--color-primary);
+}
+
+.admin-dashboard__action--media .admin-dashboard__action-icon {
+  background: var(--color-success);
+}
+
+.admin-dashboard__action--users .admin-dashboard__action-icon {
+  background: var(--color-warning);
+}
+
+.admin-dashboard__action-content {
+  flex: 1;
+}
+
+.admin-dashboard__action-label {
+  display: block;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.admin-dashboard__action-description {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Recent Activity */
+.admin-dashboard__activity-table {
+  overflow-x: auto;
+}
+
+.admin-dashboard__activity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg-primary);
+}
+
+.admin-dashboard__activity-icon--blog {
+  background: var(--color-primary);
+}
+
+.admin-dashboard__activity-icon--media {
+  background: var(--color-success);
+}
+
+.admin-dashboard__activity-icon--user {
+  background: var(--color-warning);
+}
+
+/* Dashboard Row */
+.admin-dashboard__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+/* Chart Container */
+.admin-dashboard__chart-container {
+  height: 300px;
+  position: relative;
+}
+
+.admin-dashboard__doughnut-chart {
+  height: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .admin-dashboard__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard__stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-dashboard__actions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-dashboard__stat {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .admin-dashboard__action {
+    flex-direction: column;
+    text-align: center;
+  }
+}

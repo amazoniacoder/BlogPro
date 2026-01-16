@@ -1,0 +1,24 @@
+/**
+ * BlogPro Main Styles - Final Optimized Version
+ */
+
+/* Single UI System import - contains all components */
+@import '../ui-system/components/index.css';
+
+/* Essential base styles only */
+@import './base/reset.css';
+@import './base/variables.css';
+@import './base/breakpoints.css';
+
+/* Minimal global styles */
+body {
+  font-family: var(--bp-font-family, system-ui, sans-serif);
+  line-height: var(--bp-line-height, 1.5);
+  color: var(--bp-text-primary);
+  background: var(--bp-bg-primary);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--bp-primary-600);
+  outline-offset: 2px;
+}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogPro Icons - Part 2: User & Content</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f9fafb; padding: 2rem; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .header { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 2rem; text-align: center; }
+        .header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .content { padding: 2rem; }
+        .section { margin-bottom: 3rem; }
+        .section-title { font-size: 1.5rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }
+        .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .icon-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; text-align: center; transition: all 0.2s ease; }
+        .icon-card:hover { background: #f1f5f9; border-color: #10b981; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15); }
+        .icon-display { margin-bottom: 1rem; }
+        .icon-display svg { width: 48px; height: 48px; stroke: #10b981; margin-bottom: 0.5rem; }
+        .icon-name { font-weight: 600; color: #1f2937; margin-bottom: 0.5rem; }
+        .icon-description { font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem; }
+        .custom-badge { background: #10b981; color: white; font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 4px; margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👤 BlogPro Icons - User & Content</h1>
+            <p>Part 2: User Management and Content Icons</p>
+        </div>
+
+        <div class="content">
+            <!-- User Icons -->
+            <div class="section">
+                <h2 class="section-title">👥 User Icons</h2>
+                <div class="icon-grid">
+                    <!-- User -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="icon-name">User</div>
+                        <div class="icon-description">Single user profile</div>
+                    </div>
+
+                    <!-- Users -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Users</div>
+                        <div class="icon-description">Multiple users group</div>
+                    </div>
+
+                    <!-- Profile -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Profile</div>
+                        <div class="icon-description">User profile settings</div>
+                    </div>
+
+                    <!-- Login -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                <polyline points="10,17 15,12 10,7"></polyline>
+                                <line x1="15" y1="12" x2="3" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Login</div>
+                        <div class="icon-description">Sign in to site</div>
+                    </div>
+
+                    <!-- Logout -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16,17 21,12 16,7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Logout</div>
+                        <div class="icon-description">Sign out from site</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Icons -->
+            <div class="section">
+                <h2 class="section-title">📚 Content Icons</h2>
+                <div class="icon-grid">
+                    <!-- Book -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Book</div>
+                        <div class="icon-description">Single book or document</div>
+                    </div>
+
+                    <!-- Books -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Books</div>
+                        <div class="icon-description">Multiple books library</div>
+                    </div>
+
+                    <!-- Message -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Message</div>
+                        <div class="icon-description">Email envelope</div>
+                    </div>
+
+                    <!-- Comment -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Comment</div>
+                        <div class="icon-description">Chat bubble comment</div>
+                    </div>
+
+                    <!-- Pen -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                                <path d="M2 2l7.586 7.586"></path>
+                                <circle cx="11" cy="11" r="2"></circle>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Pen</div>
+                        <div class="icon-description">Fountain pen writing</div>
+                    </div>
+
+                    <!-- Key (Wrench) -->
+                    <div class="icon-card">
+                        <div class="custom-badge">BlogPro Original</div>
+                        <div class="icon-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                            </svg>
+                        </div>
+                        <div class="icon-name">Wrench</div>
+                        <div class="icon-description">Tools and configuration</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{
+  "name": "@blogpro/texteditor",
+  "version": "2.1.0",
+  "description": "Enterprise-ready text editor with plugin architecture, performance monitoring, and web workers",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest --run",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui",
+    "analyze": "npx webpack-bundle-analyzer dist/stats.json",
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "text-editor",
+    "contenteditable",
+    "react",
+    "typescript",
+    "google-docs",
+    "rich-text",
+    "plugin-architecture",
+    "performance-monitoring",
+    "web-workers",
+    "enterprise-ready",
+    "error-boundaries",
+    "lazy-loading"
+  ],
+  "author": "BlogPro Team",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.0.0",
+    "@types/react": "^18.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "jsdom": "^25.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0",
+    "webpack-bundle-analyzer": "^4.9.0"
+  },
+  "files": [
+    "components/",
+    "hooks/",
+    "services/",
+    "types/",
+    "utils/",
+    "constants/",
+    "index.ts",
+    "README.md"
+  ]
+}

@@ -1,0 +1,350 @@
+/**
+ * LinkManager Integration Tests
+ * Tests integration with LinkService and editor functionality
+ */
+
+import '../setup';
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { LinkManager } from '../../core/components/LinkManager';
+import { LinkService } from '../../core/services/LinkService';
+
+// Test globals
+declare global {
+  var describe: any;
+  var test: any;
+  var expect: any;
+  var beforeEach: any;
+  var vi: any;
+}
+
+// Mock LinkService
+vi.mock('../../core/services/LinkService', () => ({
+  LinkService: {
+    validateUrl: vi.fn(),
+    createLink: vi.fn(),
+    getLinkData: vi.fn(),
+    findLinkAtSelection: vi.fn(),
+    applyLink: vi.fn(),
+    removeLink: vi.fn(),
+    editLink: vi.fn()
+  }
+}));
+
+const mockedLinkService = vi.mocked(LinkService);
+
+describe('LinkManager Integration', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    
+    // Setup default mock implementations
+    mockedLinkService.validateUrl.mockImplementation((url: string) => {
+      if (url.includes('example.com') || url.includes('new.com') || url.includes('old.com')) {
+        return { isValid: true, normalizedUrl: url };
+      }
+      return { isValid: false, error: 'Invalid URL format' };
+    });
+    
+    mockedLinkService.findLinkAtSelection.mockReturnValue(null);
+  });
+
+  describe('Service Integration', () => {
+    test('integrates with LinkService for URL validation', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'https://example.com');
+      
+      expect(mockedLinkService.validateUrl).toHaveBeenCalledWith('https://example.com');
+    });
+
+    test('uses LinkService validation results', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      // Mock invalid URL
+      mockedLinkService.validateUrl.mockReturnValue({
+        isValid: false,
+        error: 'Invalid URL format'
+      });
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.type(urlInput, 'invalid-url');
+      
+      expect(screen.getByText('Invalid URL format')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /insert link/i })).toBeDisabled();
+    });
+
+    test('detects existing links for editing', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      // Mock existing link
+      const mockLink = document.createElement('a');
+      mockLink.href = 'https://existing.com';
+      mockLink.textContent = 'Existing Link';
+      mockLink.target = '_blank';
+      
+      mockedLinkService.findLinkAtSelection.mockReturnValue(mockLink);
+      mockedLinkService.getLinkData.mockReturnValue({
+        url: 'https://existing.com',
+        text: 'Existing Link',
+        target: '_blank'
+      });
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      expect(screen.getByText('Edit Link')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('https://existing.com')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('Existing Link')).toBeInTheDocument();
+      const targetSelect = screen.getByLabelText(/target/i);
+      expect(targetSelect).toHaveValue('_blank');
+    });
+
+    test('calls correct service method for new links', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      await user.type(screen.getByLabelText(/url/i), 'https://example.com');
+      await user.type(screen.getByLabelText(/link text/i), 'Test Link');
+      await user.click(screen.getByRole('button', { name: /insert link/i }));
+      
+      expect(mockOnLinkChange).toHaveBeenCalledWith('insertLink', {
+        url: 'https://example.com',
+        text: 'Test Link',
+        target: '_self'
+      });
+    });
+
+    test('calls correct service method for editing links', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      // Mock existing link
+      mockedLinkService.findLinkAtSelection.mockReturnValue(document.createElement('a'));
+      mockedLinkService.getLinkData.mockReturnValue({
+        url: 'https://old.com',
+        text: 'Old Link',
+        target: '_self'
+      });
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.clear(urlInput);
+      await user.type(urlInput, 'https://new.com');
+      
+      // Wait for validation to complete
+      await waitFor(() => {
+        const updateButton = screen.getByRole('button', { name: /update link/i });
+        expect(updateButton).not.toBeDisabled();
+      });
+      
+      await user.click(screen.getByRole('button', { name: /update link/i }));
+      
+      expect(mockOnLinkChange).toHaveBeenCalledWith('editLink', expect.objectContaining({
+        url: 'https://new.com'
+      }));
+    });
+
+    test('calls remove link service method', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      // Mock existing link
+      mockedLinkService.findLinkAtSelection.mockReturnValue(document.createElement('a'));
+      mockedLinkService.getLinkData.mockReturnValue({
+        url: 'https://example.com',
+        text: 'Test Link',
+        target: '_self'
+      });
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      await user.click(screen.getByRole('button'));
+      await user.click(screen.getByText(/remove link/i));
+      
+      expect(mockOnLinkChange).toHaveBeenCalledWith('removeLink');
+    });
+  });
+
+  describe('URL Normalization', () => {
+    test('uses normalized URL from service', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      mockedLinkService.validateUrl.mockReturnValue({
+        isValid: true,
+        normalizedUrl: 'https://example.com'
+      });
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      await user.type(screen.getByLabelText(/url/i), 'example.com');
+      await user.click(screen.getByRole('button', { name: /insert link/i }));
+      
+      expect(mockOnLinkChange).toHaveBeenCalledWith('insertLink', expect.objectContaining({
+        url: 'https://example.com'
+      }));
+    });
+
+    test('handles special URL types through service', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      mockedLinkService.validateUrl.mockReturnValue({
+        isValid: true,
+        normalizedUrl: 'mailto:test@example.com'
+      });
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      await user.type(screen.getByLabelText(/url/i), 'mailto:test@example.com');
+      await user.click(screen.getByRole('button', { name: /insert link/i }));
+      
+      expect(mockOnLinkChange).toHaveBeenCalledWith('insertLink', expect.objectContaining({
+        url: 'mailto:test@example.com'
+      }));
+    });
+  });
+
+  describe('Real-world Scenarios', () => {
+    test('handles complete link creation workflow', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      // Open panel
+      await user.click(screen.getByRole('button'));
+      
+      // Fill complete form
+      await user.type(screen.getByLabelText(/url/i), 'https://example.com');
+      await user.type(screen.getByLabelText(/link text/i), 'Example Site');
+      const targetSelect = screen.getByLabelText(/target/i) as HTMLSelectElement;
+      // Directly set the value instead of using selectOptions to avoid range.cloneRange issues
+      targetSelect.value = '_blank';
+      targetSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      
+      // Submit
+      await user.click(screen.getByRole('button', { name: /insert link/i }));
+      
+      expect(mockOnLinkChange).toHaveBeenCalledWith('insertLink', {
+        url: 'https://example.com',
+        text: 'Example Site',
+        target: '_blank'
+      });
+    });
+
+    test('handles link editing workflow', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      // Setup existing link
+      mockedLinkService.findLinkAtSelection.mockReturnValue(document.createElement('a'));
+      mockedLinkService.getLinkData.mockReturnValue({
+        url: 'https://old.com',
+        text: 'Old Site',
+        target: '_self'
+      });
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      // Open panel (should detect existing link)
+      await user.click(screen.getByRole('button'));
+      
+      // Verify edit mode
+      expect(screen.getByText('Edit Link')).toBeInTheDocument();
+      expect(screen.getByText(/remove link/i)).toBeInTheDocument();
+      
+      // Modify link
+      const urlInput = screen.getByLabelText(/url/i);
+      await user.clear(urlInput);
+      await user.type(urlInput, 'https://new.com');
+      
+      // Wait for validation to complete
+      await waitFor(() => {
+        const updateButton = screen.getByRole('button', { name: /update link/i });
+        expect(updateButton).not.toBeDisabled();
+      });
+      
+      // Update
+      await user.click(screen.getByRole('button', { name: /update link/i }));
+      
+      expect(mockOnLinkChange).toHaveBeenCalledWith('editLink', expect.objectContaining({
+        url: 'https://new.com',
+        text: 'Old Site',
+        target: '_self'
+      }));
+    });
+
+    test('handles validation errors gracefully', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      // Mock validation failure
+      mockedLinkService.validateUrl.mockReturnValue({
+        isValid: false,
+        error: 'Invalid URL format'
+      });
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      await user.click(screen.getByRole('button'));
+      await user.type(screen.getByLabelText(/url/i), 'invalid-url');
+      
+      // Try to submit
+      await user.click(screen.getByRole('button', { name: /insert link/i }));
+      
+      // Should not call onLinkChange
+      expect(mockOnLinkChange).not.toHaveBeenCalled();
+      
+      // Should show error
+      expect(screen.getByText('Invalid URL format')).toBeInTheDocument();
+    });
+  });
+
+  describe('Error Handling', () => {
+    test('handles service errors gracefully', async () => {
+      const user = userEvent.setup();
+      const mockOnLinkChange = vi.fn();
+      
+      // Mock service error
+      mockedLinkService.validateUrl.mockImplementation(() => {
+        throw new Error('Service error');
+      });
+      
+      render(<LinkManager onLinkChange={mockOnLinkChange} />);
+      
+      await user.click(screen.getByRole('button'));
+      
+      // Should not crash when service throws error
+      expect(() => {
+        user.type(screen.getByLabelText(/url/i), 'test');
+      }).not.toThrow();
+    });
+  });
+});

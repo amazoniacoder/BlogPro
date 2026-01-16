@@ -1,0 +1,503 @@
+/**
+ * Security Components Styles
+ * Styling for security dashboard and enhanced context menu
+ */
+
+/* Enhanced Context Menu */
+.enhanced-context-menu {
+  background: white;
+  border: 1px solid var(--border-color, #e9ecef);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  overflow: hidden;
+}
+
+.context-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--bg-secondary, #f8f9fa);
+  border-bottom: 1px solid var(--border-color, #e9ecef);
+}
+
+.context-menu-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-primary, #212529);
+}
+
+.context-menu-role {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  background: var(--primary-color, #007bff);
+  color: white;
+  border-radius: 12px;
+  text-transform: uppercase;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.context-menu-item:hover:not(.disabled) {
+  background: var(--bg-hover, #f8f9fa);
+}
+
+.context-menu-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.context-menu-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.context-menu-label {
+  font-size: 0.875rem;
+  color: var(--text-primary, #212529);
+}
+
+.context-menu-footer {
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-tertiary, #f1f3f4);
+  border-top: 1px solid var(--border-light, #f1f3f4);
+  text-align: center;
+}
+
+.context-menu-footer small {
+  color: var(--text-muted, #6c757d);
+  font-size: 0.75rem;
+}
+
+/* Security Dashboard */
+.security-dashboard {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.security-dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.security-dashboard-header h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary, #212529);
+}
+
+.security-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-color, #e9ecef);
+}
+
+.security-tab {
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #6c757d);
+  transition: all 0.2s ease;
+}
+
+.security-tab:hover {
+  color: var(--text-primary, #212529);
+  background: var(--bg-hover, #f8f9fa);
+}
+
+.security-tab.active {
+  color: var(--primary-color, #007bff);
+  border-bottom-color: var(--primary-color, #007bff);
+}
+
+.security-dashboard-content {
+  padding-top: 2rem;
+}
+
+/* Permissions Panel */
+.permissions-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.user-info,
+.permissions-info,
+.permission-matrix {
+  background: white;
+  border: 1px solid var(--border-color, #e9ecef);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.user-info h4,
+.permissions-info h4,
+.permission-matrix h4 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary, #212529);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.info-item label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted, #6c757d);
+  text-transform: uppercase;
+}
+
+.role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.role-badge.admin {
+  background: var(--danger-bg, #f8d7da);
+  color: var(--danger-text, #721c24);
+}
+
+.role-badge.editor {
+  background: var(--warning-bg, #fff3cd);
+  color: var(--warning-text, #856404);
+}
+
+.role-badge.user {
+  background: var(--info-bg, #d1ecf1);
+  color: var(--info-text, #0c5460);
+}
+
+.role-badge.anonymous {
+  background: var(--secondary-bg, #e2e3e5);
+  color: var(--secondary-text, #383d41);
+}
+
+.status-yes {
+  color: var(--success-color, #28a745);
+}
+
+.status-no {
+  color: var(--danger-color, #dc3545);
+}
+
+.permission-description {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary, #6c757d);
+  font-style: italic;
+}
+
+.available-actions h5 {
+  margin: 0 0 0.75rem 0;
+  color: var(--text-primary, #212529);
+}
+
+.actions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background: var(--bg-secondary, #f8f9fa);
+  border-radius: 4px;
+}
+
+.action-icon {
+  font-size: 0.875rem;
+}
+
+.action-name {
+  flex: 1;
+  font-size: 0.875rem;
+}
+
+.test-action-btn {
+  padding: 0.25rem 0.5rem;
+  background: var(--primary-color, #007bff);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.matrix-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.permission-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-light, #f1f3f4);
+}
+
+.permission-name {
+  font-size: 0.875rem;
+  color: var(--text-primary, #212529);
+  text-transform: capitalize;
+}
+
+.permission-status.allowed {
+  color: var(--success-color, #28a745);
+  font-weight: 500;
+}
+
+.permission-status.denied {
+  color: var(--danger-color, #dc3545);
+  font-weight: 500;
+}
+
+/* Audit Panel */
+.audit-panel {
+  background: white;
+  border: 1px solid var(--border-color, #e9ecef);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.audit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.audit-header h4 {
+  margin: 0;
+  color: var(--text-primary, #212529);
+}
+
+.audit-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.audit-actions button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.danger-btn {
+  color: var(--danger-color, #dc3545);
+  border-color: var(--danger-color, #dc3545);
+}
+
+.danger-btn:hover {
+  background: var(--danger-color, #dc3545);
+  color: white;
+}
+
+.audit-log {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color, #e9ecef);
+  border-radius: 4px;
+}
+
+.empty-log {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: var(--text-muted, #6c757d);
+}
+
+.empty-log span {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.audit-entry {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-light, #f1f3f4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.audit-entry.allowed {
+  background: var(--success-bg, #d4edda);
+}
+
+.audit-entry.denied {
+  background: var(--danger-bg, #f8d7da);
+}
+
+.audit-timestamp {
+  font-size: 0.75rem;
+  color: var(--text-muted, #6c757d);
+  min-width: 120px;
+}
+
+.audit-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.audit-user {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.audit-action,
+.audit-resource {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #6c757d);
+}
+
+.audit-result.success {
+  color: var(--success-color, #28a745);
+  font-weight: 500;
+}
+
+.audit-result.failure {
+  color: var(--danger-color, #dc3545);
+  font-weight: 500;
+}
+
+/* Settings Panel */
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.role-testing,
+.security-settings,
+.logout-section {
+  background: white;
+  border: 1px solid var(--border-color, #e9ecef);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.role-testing h4,
+.security-settings h4,
+.logout-section h4 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary, #212529);
+}
+
+.role-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.role-buttons button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.role-buttons button.active {
+  background: var(--primary-color, #007bff);
+  color: white;
+  border-color: var(--primary-color, #007bff);
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-light, #f8f9fa);
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.status-enabled {
+  color: var(--success-color, #28a745);
+  font-weight: 500;
+}
+
+.logout-btn {
+  padding: 0.75rem 1.5rem;
+  background: var(--danger-color, #dc3545);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.logout-btn:hover {
+  background: var(--danger-dark, #c82333);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .security-dashboard {
+    padding: 1rem;
+  }
+  
+  .security-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .audit-entry {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .role-buttons {
+    flex-direction: column;
+  }
+  
+  .role-buttons button {
+    width: 100%;
+  }
+}

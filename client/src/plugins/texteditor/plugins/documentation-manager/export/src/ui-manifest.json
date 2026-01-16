@@ -1,0 +1,48 @@
+{
+  "name": "documentation-manager",
+  "version": "1.0.0",
+  "description": "BlogPro Documentation Manager Plugin",
+  "uiSystem": {
+    "version": "^1.0.0",
+    "dependencies": {
+      "tokens": [
+        "colors",
+        "spacing", 
+        "typography",
+        "effects"
+      ],
+      "components": [
+        "button",
+        "form",
+        "card",
+        "modal"
+      ],
+      "icons": [
+        "save",
+        "edit",
+        "delete",
+        "add",
+        "search",
+        "gear",
+        "book",
+        "image",
+        "x"
+      ],
+      "patterns": [
+        "forms",
+        "navigation"
+      ]
+    }
+  },
+  "customStyles": {
+    "layouts": [
+      "docs-layout.css",
+      "admin-layout.css"
+    ],
+    "themes": [
+      "docs-theme.css"
+    ]
+  },
+  "buildTarget": "es2020",
+  "moduleType": "esm"
+}

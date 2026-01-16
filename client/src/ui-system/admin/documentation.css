@@ -1,0 +1,63 @@
+/* BlogPro UI System - Admin Documentation Page */
+
+/* Documentation Page Container */
+.admin-documentation {
+  padding: var(--space-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.documentation-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.documentation-filters__selector {
+  flex: 1;
+}
+
+.admin-documentation__loading,
+.admin-documentation__error {
+  text-align: center;
+  padding: var(--space-3xl);
+  color: var(--text-secondary);
+}
+
+/* Page-level loading and error states */
+.admin-documentation__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl);
+  gap: var(--space-md);
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.admin-documentation__error {
+  text-align: center;
+  padding: var(--space-3xl);
+  color: var(--color-error);
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-error);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-documentation {
+    padding: var(--space-md);
+    top: 60px;
+    position: relative;
+  }
+  
+  .documentation-filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-md);
+  }
+}

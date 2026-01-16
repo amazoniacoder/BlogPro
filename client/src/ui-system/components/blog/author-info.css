@@ -1,0 +1,100 @@
+/**
+ * BlogPro Author Info Component Styles
+ * BEM Methodology: .author-info
+ */
+
+.author-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.author-info__content {
+  flex: 1;
+}
+
+.author-info__details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.author-info__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-info__text {
+  flex: 1;
+}
+
+.author-info__name {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.author-info__bio {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.author-info__comment-btn {
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .author-info {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .author-info__comment-btn {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .author-info__details {
+    justify-content: center;
+  }
+}
+
+/* Compact Layout for Footer */
+.author-info--compact {
+  flex-direction: row;
+  align-items: center;
+  background: transparent;
+}
+
+.author-info--compact .author-info__content {
+  flex: 1;
+}
+
+.author-info--compact .author-info__details {
+  margin-bottom: 0;
+}
+
+.author-info--compact .author-info__comment-btn {
+  margin-left: 1rem;
+  flex-shrink: 0;
+}
+
+/* Dark Mode Support */
+.dark .author-info {
+  background: var(--bg-tertiary);
+}
+
+.dark .author-info--compact {
+  background: transparent;
+}

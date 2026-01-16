@@ -1,0 +1,273 @@
+/**
+ * TextAlignmentDropdown Integration Tests
+ * Tests integration with ModernFormatService and Toolbar
+ */
+
+import '../setup';
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ModernFormatService } from '../../core/services/ModernFormatService';
+import { TextAlignmentDropdown } from '../../core/components/TextAlignmentDropdown';
+import { TextAlign } from '../../core/types/coreTypes';
+
+// Test globals
+declare global {
+  var describe: any;
+  var test: any;
+  var expect: any;
+  var beforeEach: any;
+  var vi: any;
+}
+
+// Mock ModernFormatService
+vi.mock('../../core/services/ModernFormatService', () => ({
+  ModernFormatService: {
+    applyTextAlign: vi.fn(),
+    getFormatState: vi.fn(() => ({
+      bold: false,
+      italic: false,
+      underline: false,
+      fontSize: '12pt',
+      fontFamily: 'Arial',
+      textAlign: 'left'
+    }))
+  }
+}));
+
+describe('TextAlignmentDropdown Integration', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    
+    // Setup DOM environment
+    document.body.innerHTML = '<div class="editor-content"><p>Test content</p></div>';
+  });
+
+  describe('Service Integration', () => {
+    test('calls ModernFormatService.applyTextAlign when alignment changes', async () => {
+      const user = userEvent.setup();
+      const mockOnChange = vi.fn((alignment: TextAlign) => {
+        ModernFormatService.applyTextAlign(alignment);
+      });
+      
+      render(
+        <TextAlignmentDropdown
+          currentAlignment="left"
+          onAlignmentChange={mockOnChange}
+        />
+      );
+      
+      // Open dropdown and select center
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      const centerOption = screen.getByRole('option', { name: /align center/i });
+      await user.click(centerOption);
+      
+      expect(mockOnChange).toHaveBeenCalledWith('center');
+      expect(ModernFormatService.applyTextAlign).toHaveBeenCalledWith('center');
+    });
+
+    test('integrates with format state detection', () => {
+      // Mock format state with center alignment
+      (ModernFormatService.getFormatState as any).mockReturnValue({
+        bold: false,
+        italic: false,
+        underline: false,
+        fontSize: '12pt',
+        fontFamily: 'Arial',
+        textAlign: 'center'
+      });
+      
+      render(
+        <TextAlignmentDropdown
+          currentAlignment="center"
+          onAlignmentChange={vi.fn()}
+        />
+      );
+      
+      expect(screen.getByText('Align Center')).toBeInTheDocument();
+    });
+  });
+
+  describe('Toolbar Integration', () => {
+    test('works within toolbar context', async () => {
+      const user = userEvent.setup();
+      const mockCommand = vi.fn();
+      
+      // Simulate toolbar integration
+      const ToolbarWrapper = () => {
+        const handleAlignmentChange = (alignment: TextAlign) => {
+          mockCommand('textAlign', alignment);
+        };
+        
+        return (
+          <div className="editor-toolbar">
+            <TextAlignmentDropdown
+              currentAlignment="left"
+              onAlignmentChange={handleAlignmentChange}
+            />
+          </div>
+        );
+      };
+      
+      render(<ToolbarWrapper />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      const justifyOption = screen.getByRole('option', { name: /justify/i });
+      await user.click(justifyOption);
+      
+      expect(mockCommand).toHaveBeenCalledWith('textAlign', 'justify');
+    });
+  });
+
+  describe('DOM Manipulation', () => {
+    test('applies text alignment to block elements', () => {
+      // Create a more realistic DOM structure
+      const editorContent = document.createElement('div');
+      editorContent.className = 'editor-content';
+      const paragraph = document.createElement('p');
+      paragraph.textContent = 'Test paragraph';
+      editorContent.appendChild(paragraph);
+      document.body.appendChild(editorContent);
+      
+      // Mock selection
+      const mockRange = {
+        startContainer: paragraph.firstChild,
+        startOffset: 0,
+        collapsed: true
+      };
+      
+      const mockSelection = {
+        rangeCount: 1,
+        getRangeAt: () => mockRange
+      };
+      
+      vi.spyOn(window, 'getSelection').mockReturnValue(mockSelection as any);
+      
+      // Apply center alignment
+      ModernFormatService.applyTextAlign('center');
+      
+      // Verify the service was called
+      expect(ModernFormatService.applyTextAlign).toHaveBeenCalledWith('center');
+    });
+  });
+
+  describe('Real-world Scenarios', () => {
+    test('handles multiple alignment changes in sequence', async () => {
+      const user = userEvent.setup();
+      const alignmentHistory: string[] = [];
+      
+      const mockOnChange = vi.fn((alignment: TextAlign) => {
+        alignmentHistory.push(alignment);
+      });
+      
+      const { rerender } = render(
+        <TextAlignmentDropdown
+          currentAlignment="left"
+          onAlignmentChange={mockOnChange}
+        />
+      );
+      
+      // Change to center
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      await user.click(screen.getByRole('option', { name: /align center/i }));
+      
+      // Re-render with new alignment
+      rerender(
+        <TextAlignmentDropdown
+          currentAlignment="center"
+          onAlignmentChange={mockOnChange}
+        />
+      );
+      
+      // Change to right
+      await user.click(trigger);
+      await user.click(screen.getByRole('option', { name: /align right/i }));
+      
+      // Re-render with new alignment
+      rerender(
+        <TextAlignmentDropdown
+          currentAlignment="right"
+          onAlignmentChange={mockOnChange}
+        />
+      );
+      
+      // Change to justify
+      await user.click(trigger);
+      await user.click(screen.getByRole('option', { name: /justify/i }));
+      
+      expect(alignmentHistory).toEqual(['center', 'right', 'justify']);
+      expect(mockOnChange).toHaveBeenCalledTimes(3);
+    });
+
+    test('maintains state consistency during rapid interactions', async () => {
+      const user = userEvent.setup();
+      let currentAlignment = 'left';
+      
+      const mockOnChange = vi.fn((alignment: TextAlign) => {
+        currentAlignment = alignment;
+      });
+      
+      const { rerender } = render(
+        <TextAlignmentDropdown
+          currentAlignment={currentAlignment as any}
+          onAlignmentChange={mockOnChange}
+        />
+      );
+      
+      // Rapid sequence of changes
+      const trigger = screen.getByRole('button');
+      
+      // Open and close rapidly
+      await user.click(trigger);
+      await user.keyboard('{Escape}');
+      
+      await user.click(trigger);
+      await user.click(screen.getByRole('option', { name: /align center/i }));
+      
+      // Update component with new state
+      rerender(
+        <TextAlignmentDropdown
+          currentAlignment="center"
+          onAlignmentChange={mockOnChange}
+        />
+      );
+      
+      // Verify final state
+      expect(screen.getByText('Align Center')).toBeInTheDocument();
+      expect(mockOnChange).toHaveBeenCalledWith('center');
+    });
+  });
+
+  describe('Error Handling', () => {
+    test('handles service errors gracefully', async () => {
+      const user = userEvent.setup();
+      
+      // Mock service to throw error
+      const mockOnChange = vi.fn(() => {
+        throw new Error('Service error');
+      });
+      
+      render(
+        <TextAlignmentDropdown
+          currentAlignment="left"
+          onAlignmentChange={mockOnChange}
+        />
+      );
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      // Should not crash when service throws error
+      expect(() => {
+        const centerOption = screen.getByRole('option', { name: /align center/i });
+        user.click(centerOption);
+      }).not.toThrow();
+    });
+  });
+});

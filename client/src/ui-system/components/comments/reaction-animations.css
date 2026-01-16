@@ -1,0 +1,97 @@
+/* Reaction Button Animations */
+.reaction-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.reaction-button:hover {
+  background: var(--color-background-hover);
+  border-color: var(--color-border-hover);
+}
+
+.reaction-button--active {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.reaction-button--animating {
+  transform: scale(1.1);
+}
+
+.reaction-button__icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.reaction-button__pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 0.6s ease-out;
+}
+
+.reaction-button__count {
+  font-weight: 500;
+  min-width: 12px;
+  text-align: center;
+}
+
+/* Floating Reaction Animation */
+.floating-reaction {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1000;
+  animation: float-up 1s ease-out forwards;
+}
+
+.floating-reaction--like {
+  color: var(--color-success);
+}
+
+.floating-reaction--dislike {
+  color: var(--color-error);
+}
+
+/* Keyframe Animations */
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-40px) scale(0.8);
+    opacity: 0;
+  }
+}

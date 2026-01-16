@@ -1,0 +1,21 @@
+{
+  "title": "Blog",
+  "categories": "Categories",
+  "allPosts": "All Posts",
+  "noPosts": "No blog posts found in this category.",
+  "readMore": "Read More",
+  "publishedOn": "Published on",
+  "author": "Author",
+  "tags": "Tags",
+  "relatedPosts": "Related Posts",
+  "backToBlog": "Back to Blog",
+  "searchPlaceholder": "Search blog posts...",
+  "filterByCategory": "Filter by category",
+  "filterByStatus": "Filter by status",
+  "published": "Published",
+  "draft": "Draft",
+  "archived": "Archived",
+  "reset": "Reset",
+  "noResults": "No results found",
+  "metaDescription": "Read our latest blog posts about technology, design, and development."
+}

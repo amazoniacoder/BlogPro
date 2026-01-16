@@ -1,0 +1,330 @@
+/* BlogPro UI System - Plugin Bundle */
+
+/* Token: colors */
+/**
+ * BlogPro Design System - Color Tokens
+ * Centralized color definitions for consistent theming
+ */
+
+:root {
+  /* Minimalist Brand Colors - Subtle and refined */
+  --bp-primary-50: #fafafa;
+  --bp-primary-100: #f5f5f5;
+  --bp-primary-200: #e5e5e5;
+  --bp-primary-300: #d4d4d4;
+  --bp-primary-400: #a3a3a3;
+  --bp-primary-500: #737373;
+  --bp-primary-600: #525252;
+  --bp-primary-700: #404040;
+  --bp-primary-800: #262626;
+  --bp-primary-900: #171717;
+
+  /* Semantic Colors - Muted and pleasant */
+  --bp-success-50: #f7fdf7;
+  --bp-success-500: #22c55e;
+  --bp-success-600: #16a34a;
+  --bp-success-900: #14532d;
+
+  --bp-error-50: #fef7f7;
+  --bp-error-500: #f87171;
+  --bp-error-600: #ef4444;
+  --bp-error-900: #7f1d1d;
+
+  --bp-warning-50: #fffdf7;
+  --bp-warning-500: #fbbf24;
+  --bp-warning-600: #f59e0b;
+  --bp-warning-900: #78350f;
+
+  /* Ultra-minimal Neutral Colors */
+  --bp-gray-50: #fdfdfd;
+  --bp-gray-100: #fafafa;
+  --bp-gray-200: #f4f4f5;
+  --bp-gray-300: #e4e4e7;
+  --bp-gray-400: #a1a1aa;
+  --bp-gray-500: #71717a;
+  --bp-gray-600: #52525b;
+  --bp-gray-700: #3f3f46;
+  --bp-gray-800: #27272a;
+  --bp-gray-900: #18181b;
+
+  /* Minimalist Text Colors */
+  --bp-text-primary: var(--bp-gray-800);
+  --bp-text-secondary: var(--bp-gray-600);
+  --bp-text-muted: var(--bp-gray-500);
+  --bp-text-inverse: #ffffff;
+
+  /* Clean Background Colors */
+  --bp-bg-primary: #ffffff;
+  --bp-bg-secondary: var(--bp-gray-50);
+  --bp-bg-alt: var(--bp-gray-100);
+  --bp-bg-hover: var(--bp-gray-100);
+
+  /* Subtle Border Colors */
+  --bp-border-color: var(--bp-gray-200);
+  --bp-border-hover: var(--bp-gray-300);
+  --bp-border-focus: var(--bp-primary-500);
+
+  /* Minimalist Component Colors */
+  --bp-button-primary-bg: var(--bp-gray-900);
+  --bp-button-primary-hover: var(--bp-gray-800);
+  --bp-button-primary-text: #ffffff;
+
+  --bp-input-bg: var(--bp-bg-primary);
+  --bp-input-border: var(--bp-border-color);
+  --bp-input-focus: var(--bp-gray-400);
+}
+
+/* Minimalist Dark Theme - Low contrast, pleasant tones */
+.dark {
+  --bp-text-primary: #e4e4e7;
+  --bp-text-secondary: #a1a1aa;
+  --bp-text-muted: #71717a;
+  --bp-text-inverse: var(--bp-gray-900);
+
+  --bp-bg-primary: #0c0c0d;
+  --bp-bg-secondary: #111113;
+  --bp-bg-alt: #18181b;
+  --bp-bg-hover: #1f1f23;
+
+  --bp-border-color: #27272a;
+  --bp-border-hover: #3f3f46;
+  --bp-border-focus: #71717a;
+
+  --bp-button-primary-bg: #fafafa;
+  --bp-button-primary-hover: #e4e4e7;
+  --bp-button-primary-text: var(--bp-gray-900);
+
+  --bp-input-bg: var(--bp-bg-primary);
+  --bp-input-border: var(--bp-border-color);
+  --bp-input-focus: var(--bp-border-focus);
+}
+
+/* Token: spacing */
+/**
+ * BlogPro Design System - Spacing Tokens
+ * Consistent spacing scale for layouts and components
+ */
+
+:root {
+  /* Base Spacing Scale (4px base unit) */
+  --bp-space-0: 0;
+  --bp-space-1: 0.25rem;   /* 4px */
+  --bp-space-2: 0.5rem;    /* 8px */
+  --bp-space-3: 0.75rem;   /* 12px */
+  --bp-space-4: 1rem;      /* 16px */
+  --bp-space-5: 1.25rem;   /* 20px */
+  --bp-space-6: 1.5rem;    /* 24px */
+  --bp-space-8: 2rem;      /* 32px */
+  --bp-space-10: 2.5rem;   /* 40px */
+  --bp-space-12: 3rem;     /* 48px */
+  --bp-space-16: 4rem;     /* 64px */
+  --bp-space-20: 5rem;     /* 80px */
+  --bp-space-24: 6rem;     /* 96px */
+
+  /* Rounded Border Radius - More organic feel */
+  --bp-radius-none: 0;
+  --bp-radius-sm: 0.25rem;    /* 4px */
+  --bp-radius-md: 0.75rem;    /* 12px - More rounded */
+  --bp-radius-lg: 1rem;       /* 16px - More rounded */
+  --bp-radius-xl: 1.5rem;     /* 24px - More rounded */
+  --bp-radius-full: 9999px;
+
+  /* Compact Component Spacing */
+  --bp-button-padding-x: var(--bp-space-3);
+  --bp-button-padding-y: var(--bp-space-2);
+  --bp-button-padding: var(--bp-button-padding-y) var(--bp-button-padding-x);
+
+  --bp-input-padding-x: var(--bp-space-3);
+  --bp-input-padding-y: var(--bp-space-2);
+  --bp-input-padding: var(--bp-input-padding-y) var(--bp-input-padding-x);
+
+  --bp-card-padding: var(--bp-space-6);
+  --bp-modal-padding: var(--bp-space-8);
+
+  /* Layout Spacing */
+  --bp-container-padding: var(--bp-space-4);
+  --bp-section-spacing: var(--bp-space-16);
+  --bp-component-gap: var(--bp-space-4);
+
+  /* Mobile-optimized spacing */
+  --bp-mobile-padding: var(--bp-space-3);
+  --bp-mobile-gap: var(--bp-space-2);
+  --bp-mobile-section: var(--bp-space-8);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  :root {
+    --bp-container-padding: var(--bp-mobile-padding);
+    --bp-component-gap: var(--bp-mobile-gap);
+    --bp-section-spacing: var(--bp-mobile-section);
+    
+    /* Slightly larger touch targets on mobile */
+    --bp-button-padding: var(--bp-space-3) var(--bp-space-4);
+    --bp-input-padding: var(--bp-space-3) var(--bp-space-3);
+  }
+  
+  .bp-button {
+    min-height: 36px; /* Larger touch target */
+  }
+  
+  .bp-form-field__input {
+    min-height: 36px; /* Larger touch target */
+  }
+  
+  .bp-icon-button--md {
+    min-width: 36px;
+    min-height: 36px;
+    padding: var(--bp-space-2);
+  }
+}
+
+/* Token: typography */
+/**
+ * BlogPro Design System - Typography Tokens
+ * Font families, sizes, weights, and line heights
+ */
+
+:root {
+  /* Font Families */
+  --bp-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --bp-font-serif: Georgia, 'Times New Roman', Times, serif;
+  --bp-font-mono: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+
+  /* Font Sizes */
+  --bp-text-xs: 0.75rem;     /* 12px */
+  --bp-text-sm: 0.875rem;    /* 14px */
+  --bp-text-base: 1rem;      /* 16px */
+  --bp-text-lg: 1.125rem;    /* 18px */
+  --bp-text-xl: 1.25rem;     /* 20px */
+  --bp-text-2xl: 1.5rem;     /* 24px */
+  --bp-text-3xl: 1.875rem;   /* 30px */
+  --bp-text-4xl: 2.25rem;    /* 36px */
+  --bp-text-5xl: 3rem;       /* 48px */
+
+  /* Font Weights */
+  --bp-font-light: 300;
+  --bp-font-normal: 400;
+  --bp-font-medium: 500;
+  --bp-font-semibold: 600;
+  --bp-font-bold: 700;
+
+  /* Line Heights */
+  --bp-leading-tight: 1.25;
+  --bp-leading-normal: 1.5;
+  --bp-leading-relaxed: 1.625;
+  --bp-leading-loose: 2;
+
+  /* Component Typography */
+  --bp-button-font-size: var(--bp-text-base);
+  --bp-button-font-weight: var(--bp-font-medium);
+  --bp-button-line-height: var(--bp-leading-normal);
+
+  --bp-input-font-size: var(--bp-text-base);
+  --bp-input-font-weight: var(--bp-font-normal);
+  --bp-input-line-height: var(--bp-leading-normal);
+
+  --bp-heading-font-weight: var(--bp-font-semibold);
+  --bp-heading-line-height: var(--bp-leading-tight);
+
+  /* Letter Spacing */
+  --bp-tracking-tight: -0.025em;
+  --bp-tracking-normal: 0;
+  --bp-tracking-wide: 0.025em;
+}
+
+/* Token: effects */
+/**
+ * BlogPro Design System - Effects Tokens
+ * Shadows, transitions, and visual effects
+ */
+
+:root {
+  /* Shadows */
+  --bp-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --bp-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --bp-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --bp-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --bp-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --bp-shadow-outline: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  --bp-shadow-none: none;
+
+  /* Transitions */
+  --bp-transition-fast: 0.15s ease;
+  --bp-transition-base: 0.25s ease;
+  --bp-transition-slow: 0.4s ease;
+
+  /* Transition Properties */
+  --bp-transition-colors: color, background-color, border-color;
+  --bp-transition-transform: transform;
+  --bp-transition-opacity: opacity;
+  --bp-transition-all: all;
+
+  /* Component-specific Effects */
+  --bp-button-shadow: var(--bp-shadow-sm);
+  --bp-button-shadow-hover: var(--bp-shadow-md);
+  --bp-button-transition: var(--bp-transition-colors) var(--bp-transition-base), 
+                          var(--bp-transition-transform) var(--bp-transition-base),
+                          box-shadow var(--bp-transition-base);
+
+  --bp-card-shadow: var(--bp-shadow-md);
+  --bp-card-shadow-hover: var(--bp-shadow-lg);
+
+  --bp-modal-shadow: var(--bp-shadow-xl);
+  --bp-input-shadow-focus: var(--bp-shadow-outline);
+
+  /* Subtle Gradients */
+  --bp-gradient-light: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+  --bp-gradient-subtle: linear-gradient(135deg, #fafafa 0%, #f4f4f5 100%);
+  --bp-gradient-primary: linear-gradient(135deg, var(--bp-gray-900) 0%, var(--bp-gray-800) 100%);
+
+  /* Z-index Scale */
+  --bp-z-dropdown: 1000;
+  --bp-z-sticky: 1020;
+  --bp-z-fixed: 1030;
+  --bp-z-modal-backdrop: 1040;
+  --bp-z-modal: 1050;
+  --bp-z-popover: 1060;
+  --bp-z-tooltip: 1070;
+  --bp-z-toast: 1080;
+}
+
+/* Dark theme gradients */
+.dark {
+  --bp-gradient-light: linear-gradient(135deg, #0c0c0d 0%, #111113 100%);
+  --bp-gradient-subtle: linear-gradient(135deg, #111113 0%, #18181b 100%);
+  --bp-gradient-primary: linear-gradient(135deg, #fafafa 0%, #e4e4e7 100%);
+}
+
+/* Component: button */
+/**
+ * BlogPro Button Component
+ * CSS entry point for button system
+ */
+
+@import './button.css';
+
+/* Component: form */
+/**
+ * BlogPro Form Components
+ * CSS entry point for form system
+ */
+
+@import './form.css';
+
+/* Component: card */
+/**
+ * BlogPro Card Component
+ * CSS entry point for card system
+ */
+
+@import './card.css';
+
+/* Component: modal */
+/**
+ * BlogPro Modal Component
+ * CSS entry point for modal system
+ */
+
+@import './modal.css';
+

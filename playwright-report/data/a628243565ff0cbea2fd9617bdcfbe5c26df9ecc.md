@@ -1,0 +1,86 @@
+# Page snapshot
+
+```yaml
+- banner:
+  - link "BlogPro":
+    - /url: /
+  - link "Главная":
+    - /url: /
+  - link "О нас":
+    - /url: /about
+  - link "Блог":
+    - /url: /blog
+  - link "Контакты":
+    - /url: /contact
+  - button "Toggle sliding menu":
+    - img
+- main:
+  - heading "Your Web Design & Development Partner" [level=1]
+  - paragraph: We create beautiful, functional websites that help your business grow.
+  - link "Read Our Blog":
+    - /url: /blog
+  - link "Get in Touch":
+    - /url: /contact
+  - heading "Latest Blog Posts" [level=2]
+  - paragraph: No blog posts available at the moment. Check back soon!
+  - link "Contact Us":
+    - /url: /contact
+  - heading "Ready to Start Your Project?" [level=2]
+  - paragraph: Let's discuss how we can help bring your vision to life and create a website that drives results for your business.
+  - link "Get in Touch":
+    - /url: /contact
+- contentinfo:
+  - heading "WebDesignStudio" [level=3]
+  - paragraph: Creating beautiful, functional websites that help businesses grow.
+  - link "YouTube":
+    - /url: "#"
+    - img
+  - link "Telegram":
+    - /url: "#"
+    - img
+  - link "VK":
+    - /url: "#"
+    - img
+  - heading "Services" [level=4]
+  - list:
+    - listitem:
+      - link "Web Design":
+        - /url: /services/web-design
+    - listitem:
+      - link "Web Development":
+        - /url: /services/web-development
+    - listitem:
+      - link "E-Commerce":
+        - /url: /services/e-commerce
+    - listitem:
+      - link "SEO":
+        - /url: /services/seo
+  - heading "Company" [level=4]
+  - list:
+    - listitem:
+      - link "About Us":
+        - /url: /about
+    - listitem:
+      - link "Portfolio":
+        - /url: /portfolio
+    - listitem:
+      - link "Blog":
+        - /url: /blog
+    - listitem:
+      - link "Contact":
+        - /url: /contact
+  - heading "Contact" [level=4]
+  - paragraph: 123 Web Street
+  - paragraph: Design City, DC 12345
+  - paragraph:
+    - link "info@webdesignstudio.com":
+      - /url: mailto:info@webdesignstudio.com
+  - paragraph:
+    - link "(555) 123-4567":
+      - /url: tel:+15551234567
+  - paragraph: © 2025 WebDesignStudio. All rights reserved.
+  - link "Privacy Policy":
+    - /url: /privacy
+  - link "Terms of Service":
+    - /url: /terms
+```

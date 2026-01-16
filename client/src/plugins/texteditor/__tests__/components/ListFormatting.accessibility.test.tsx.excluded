@@ -1,0 +1,338 @@
+/**
+ * ListFormatting Accessibility Tests
+ * WCAG 2.1 AA compliance validation
+ */
+
+import '../setup';
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ListFormatting } from '../../core/components/ListFormatting';
+import { ListState } from '../../core/services/ListService';
+
+// Test globals
+declare global {
+  var describe: any;
+  var test: any;
+  var expect: any;
+  var beforeEach: any;
+}
+
+describe('ListFormatting Accessibility', () => {
+  const defaultListState: ListState = {
+    isInList: false,
+    listType: null,
+    nestingLevel: 0
+  };
+
+  const bulletListState: ListState = {
+    isInList: true,
+    listType: 'bullet',
+    nestingLevel: 1
+  };
+
+  const defaultProps = {
+    listState: defaultListState,
+    onListChange: vi.fn()
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('WCAG 2.1 AA Compliance', () => {
+    test('renders with proper semantic structure', () => {
+      render(<ListFormatting {...defaultProps} />);
+      
+      // Check for proper button role
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      expect(trigger).toBeInTheDocument();
+      expect(trigger).toHaveAttribute('type', 'button');
+    });
+
+    test('maintains semantic structure when open', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      // Check for proper listbox and options
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      const options = screen.getAllByRole('option');
+      expect(options.length).toBeGreaterThan(0);
+    });
+
+    test('maintains accessibility when disabled', () => {
+      render(<ListFormatting {...defaultProps} disabled />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      expect(trigger).toBeDisabled();
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    });
+  });
+
+  describe('Keyboard Navigation', () => {
+    test('trigger is keyboard accessible', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      
+      // Focus trigger directly
+      trigger.focus();
+      expect(trigger).toHaveFocus();
+      
+      // Space should open dropdown
+      await user.keyboard(' ');
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+    });
+
+    test('Enter key opens dropdown', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      trigger.focus();
+      
+      await user.keyboard('{Enter}');
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+    });
+
+    test('Escape key closes dropdown', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      
+      await user.keyboard('{Escape}');
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+
+    test('nesting controls are keyboard accessible', () => {
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const increaseButton = screen.getByLabelText('Increase list indentation');
+      const decreaseButton = screen.getByLabelText('Decrease list indentation');
+      
+      // Focus controls
+      increaseButton.focus();
+      expect(increaseButton).toHaveFocus();
+      
+      decreaseButton.focus();
+      expect(decreaseButton).toHaveFocus();
+    });
+
+    test('list options are keyboard accessible', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const options = screen.getAllByRole('option');
+      const firstOption = options[0];
+      
+      if (firstOption) {
+        firstOption.focus();
+        expect(firstOption).toHaveFocus();
+      }
+    });
+  });
+
+  describe('Screen Reader Support', () => {
+    test('has descriptive aria-label for default state', () => {
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      expect(trigger).toHaveAttribute('aria-label', 'Lists: Lists');
+    });
+
+    test('has descriptive aria-label for bullet list state', () => {
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      expect(trigger).toHaveAttribute('aria-label', 'Lists: Bullet List');
+    });
+
+    test('has descriptive aria-label for numbered list state', () => {
+      const numberedListState: ListState = {
+        isInList: true,
+        listType: 'numbered',
+        nestingLevel: 1
+      };
+      
+      render(<ListFormatting {...defaultProps} listState={numberedListState} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      expect(trigger).toHaveAttribute('aria-label', 'Lists: Numbered List');
+    });
+
+    test('indicates dropdown state with aria-expanded', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      
+      // Initially closed
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      
+      // Open dropdown
+      await user.click(trigger);
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    test('indicates dropdown type with aria-haspopup', () => {
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      expect(trigger).toHaveAttribute('aria-haspopup', 'listbox');
+    });
+
+    test('list panel has proper listbox role', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const panel = screen.getByRole('listbox');
+      expect(panel).toHaveAttribute('role', 'listbox');
+      expect(panel).toHaveAttribute('aria-label', 'List formatting options');
+    });
+
+    test('list options have proper labels and selection state', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const bulletOption = screen.getByRole('option', { name: /bullet list/i });
+      expect(bulletOption).toHaveAttribute('aria-selected', 'true');
+      expect(bulletOption).toHaveAttribute('aria-label');
+      
+      const numberedOption = screen.getByRole('option', { name: /numbered list/i });
+      expect(numberedOption).toHaveAttribute('aria-selected', 'false');
+    });
+
+    test('nesting controls have proper labels', () => {
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const increaseButton = screen.getByLabelText('Increase list indentation');
+      expect(increaseButton).toHaveAttribute('aria-label', 'Increase list indentation');
+      expect(increaseButton).toHaveAttribute('title', 'Increase Indent (Tab)');
+      
+      const decreaseButton = screen.getByLabelText('Decrease list indentation');
+      expect(decreaseButton).toHaveAttribute('aria-label', 'Decrease list indentation');
+      expect(decreaseButton).toHaveAttribute('title', 'Decrease Indent (Shift+Tab)');
+    });
+  });
+
+  describe('Focus Management', () => {
+    test('maintains focus on trigger when dropdown closes', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      // Close with Escape
+      await user.keyboard('{Escape}');
+      
+      // Focus should return to trigger
+      expect(trigger).toHaveFocus();
+    });
+
+    test('list options can receive focus', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const bulletOption = screen.getByRole('option', { name: /bullet list/i });
+      bulletOption.focus();
+      expect(bulletOption).toHaveFocus();
+    });
+
+    test('nesting controls maintain focus properly', () => {
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const increaseButton = screen.getByLabelText('Increase list indentation');
+      const decreaseButton = screen.getByLabelText('Decrease list indentation');
+      
+      // Focus controls individually
+      increaseButton.focus();
+      expect(increaseButton).toHaveFocus();
+      
+      decreaseButton.focus();
+      expect(decreaseButton).toHaveFocus();
+    });
+  });
+
+  describe('Touch Accessibility', () => {
+    test('has adequate touch target size for trigger', () => {
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      const rect = trigger.getBoundingClientRect();
+      
+      // Component uses 32px height, which is acceptable for toolbar buttons
+      expect(rect.height).toBeGreaterThanOrEqual(28);
+      expect(rect.width).toBeGreaterThanOrEqual(80);
+    });
+
+    test('nesting controls have adequate touch target size', () => {
+      render(<ListFormatting {...defaultProps} listState={bulletListState} />);
+      
+      const increaseButton = screen.getByLabelText('Increase list indentation');
+      const decreaseButton = screen.getByLabelText('Decrease list indentation');
+      
+      const increaseRect = increaseButton.getBoundingClientRect();
+      const decreaseRect = decreaseButton.getBoundingClientRect();
+      
+      expect(increaseRect.height).toBeGreaterThanOrEqual(20);
+      expect(increaseRect.width).toBeGreaterThanOrEqual(20);
+      expect(decreaseRect.height).toBeGreaterThanOrEqual(20);
+      expect(decreaseRect.width).toBeGreaterThanOrEqual(20);
+    });
+
+    test('list options have adequate touch target size', async () => {
+      const user = userEvent.setup();
+      render(<ListFormatting {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      await user.click(trigger);
+      
+      const options = screen.getAllByRole('option');
+      
+      options.forEach(option => {
+        const rect = option.getBoundingClientRect();
+        expect(rect.height).toBeGreaterThanOrEqual(32); // Adequate for touch
+      });
+    });
+  });
+
+  describe('Error States', () => {
+    test('provides accessible error feedback for invalid states', () => {
+      const invalidState = {
+        isInList: true,
+        listType: null,
+        nestingLevel: -1
+      } as ListState;
+      
+      render(<ListFormatting {...defaultProps} listState={invalidState} />);
+      
+      // Component should handle invalid state gracefully
+      const trigger = screen.getByRole('button', { name: /lists:/i });
+      expect(trigger).toBeVisible();
+      expect(trigger).toBeInTheDocument();
+    });
+  });
+});

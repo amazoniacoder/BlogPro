@@ -1,0 +1,62 @@
+/* Admin Categories Page Styles */
+
+.admin-categories {
+  padding: 2rem;
+}
+
+.admin-categories__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-categories__title-section {
+  flex: 1;
+}
+
+.admin-categories__title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.admin-categories__description {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.admin-categories__content {
+  width: 100%;
+}
+
+.admin-categories__loading,
+.admin-categories__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+}
+
+.admin-categories__loading p,
+.admin-categories__error p {
+  margin: 1rem 0;
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 768px) {
+  .admin-categories {
+    padding: 1rem;
+  }
+  
+  .admin-categories__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}

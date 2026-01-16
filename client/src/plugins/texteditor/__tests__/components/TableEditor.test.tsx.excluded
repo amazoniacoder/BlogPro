@@ -1,0 +1,380 @@
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, test, expect, beforeEach, vi } from 'vitest';
+import TableEditor from '../../core/components/TableEditor';
+
+// Mock window.getSelection with proper Range mock
+const mockRange = {
+  cloneRange: vi.fn(() => mockRange),
+  deleteContents: vi.fn(),
+  insertNode: vi.fn(),
+  setStartAfter: vi.fn(),
+  collapse: vi.fn(),
+  removeAllRanges: vi.fn(),
+  addRange: vi.fn()
+};
+
+const mockSelection = {
+  rangeCount: 1,
+  getRangeAt: vi.fn(() => mockRange),
+  removeAllRanges: vi.fn(),
+  addRange: vi.fn()
+};
+
+Object.defineProperty(window, 'getSelection', {
+  writable: true,
+  value: vi.fn(() => mockSelection)
+});
+
+// Mock document.querySelector for editor focus
+Object.defineProperty(document, 'querySelector', {
+  writable: true,
+  value: vi.fn((selector) => {
+    if (selector === '.editor-content') {
+      return { focus: vi.fn() };
+    }
+    return null;
+  })
+});
+
+describe('TableEditor Component', () => {
+  const mockOnCommand = vi.fn();
+  
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('Component Rendering', () => {
+    test('renders trigger button with correct attributes', () => {
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      const button = screen.getByRole('button', { name: 'Insert table' });
+      expect(button).toBeInTheDocument();
+      expect(button).toHaveAttribute('aria-label', 'Insert table');
+      expect(button).toHaveAttribute('title', 'Insert table');
+      expect(button).toHaveTextContent('Table');
+    });
+
+    test('renders disabled state correctly', () => {
+      render(<TableEditor onCommand={mockOnCommand} disabled />);
+      
+      const button = screen.getByRole('button', { name: 'Insert table' });
+      expect(button).toBeDisabled();
+    });
+  });
+
+  describe('Panel Interaction', () => {
+    test('opens panel when trigger button clicked', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      const button = screen.getByRole('button', { name: 'Insert table' });
+      await user.click(button);
+      
+      // Check for panel content based on actual component structure
+      expect(screen.getByText('Quick Insert')).toBeInTheDocument();
+      expect(screen.getByText('Custom Table')).toBeInTheDocument();
+      expect(screen.getByText('Click to insert table')).toBeInTheDocument();
+    });
+
+    test('closes panel when clicking outside', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      // Open panel
+      const button = screen.getByRole('button', { name: 'Insert table' });
+      await user.click(button);
+      expect(screen.getByText('Quick Insert')).toBeInTheDocument();
+      
+      // Click outside (simulate mousedown event)
+      fireEvent.mouseDown(document.body);
+      
+      await waitFor(() => {
+        expect(screen.queryByText('Quick Insert')).not.toBeInTheDocument();
+      });
+    });
+
+    test('saves selection when opening panel', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      // Verify selection methods were called
+      expect(window.getSelection).toHaveBeenCalled();
+      expect(mockSelection.getRangeAt).toHaveBeenCalledWith(0);
+      expect(mockRange.cloneRange).toHaveBeenCalled();
+    });
+  });
+
+  describe('Quick Grid Selector', () => {
+    test('renders 5x5 grid with correct number of cells', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      const gridCells = document.querySelectorAll('.table-editor__grid-cell');
+      expect(gridCells).toHaveLength(25); // 5x5 = 25 cells
+    });
+
+    test('grid functionality is available', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      // Verify grid section is present
+      expect(screen.getByText('Click to insert table')).toBeInTheDocument();
+    });
+  });
+
+  describe('Form Controls', () => {
+    test('renders all form elements with correct labels', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      // Check all form elements exist
+      expect(screen.getByLabelText('Rows')).toBeInTheDocument();
+      expect(screen.getByLabelText('Columns')).toBeInTheDocument();
+      expect(screen.getByLabelText('Include header row')).toBeInTheDocument();
+      expect(screen.getByLabelText('Border Style')).toBeInTheDocument();
+      expect(screen.getByLabelText('Alignment')).toBeInTheDocument();
+    });
+
+    test('form has correct default values', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      expect(screen.getByLabelText('Rows')).toHaveValue(3);
+      expect(screen.getByLabelText('Columns')).toHaveValue(3);
+      expect(screen.getByLabelText('Include header row')).toBeChecked();
+      expect(screen.getByLabelText('Border Style')).toHaveValue('solid');
+      expect(screen.getByLabelText('Alignment')).toHaveValue('left');
+    });
+
+    test('input validation constrains values correctly', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      const rowsInput = screen.getByLabelText('Rows');
+      const columnsInput = screen.getByLabelText('Columns');
+      
+      // Test rows constraints (1-20)
+      fireEvent.change(rowsInput, { target: { value: '0' } });
+      expect(rowsInput).toHaveValue(1); // Constrained to minimum
+      
+      fireEvent.change(rowsInput, { target: { value: '25' } });
+      expect(rowsInput).toHaveValue(20); // Constrained to maximum
+      
+      // Test columns constraints (1-10)
+      fireEvent.change(columnsInput, { target: { value: '0' } });
+      expect(columnsInput).toHaveValue(1); // Constrained to minimum
+      
+      fireEvent.change(columnsInput, { target: { value: '15' } });
+      expect(columnsInput).toHaveValue(10); // Constrained to maximum
+    });
+
+    test('checkbox toggles correctly', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      const checkbox = screen.getByLabelText('Include header row');
+      expect(checkbox).toBeChecked();
+      
+      await user.click(checkbox);
+      expect(checkbox).not.toBeChecked();
+    });
+
+    test('select elements change values correctly', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      const borderSelect = screen.getByLabelText('Border Style');
+      const alignmentSelect = screen.getByLabelText('Alignment');
+      
+      // Use fireEvent instead of user.selectOptions to avoid Range issues
+      fireEvent.change(borderSelect, { target: { value: 'dashed' } });
+      expect(borderSelect).toHaveValue('dashed');
+      
+      fireEvent.change(alignmentSelect, { target: { value: 'center' } });
+      expect(alignmentSelect).toHaveValue('center');
+    });
+  });
+
+  describe('Table Creation', () => {
+    test('creates table with custom form settings', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      // Modify form values
+      fireEvent.change(screen.getByLabelText('Rows'), { target: { value: '4' } });
+      fireEvent.change(screen.getByLabelText('Columns'), { target: { value: '3' } });
+      await user.click(screen.getByLabelText('Include header row')); // Uncheck
+      await user.selectOptions(screen.getByLabelText('Border Style'), 'dashed');
+      await user.selectOptions(screen.getByLabelText('Alignment'), 'center');
+      
+      // Click Insert Table button
+      const insertButton = screen.getByRole('button', { name: 'Insert Table' });
+      await user.click(insertButton);
+      
+      expect(mockOnCommand).toHaveBeenCalledWith('insertTable', {
+        rows: 4,
+        columns: 3,
+        hasHeader: false,
+        borderStyle: 'dashed',
+        alignment: 'center'
+      });
+    });
+
+    test('handles form submission with valid values', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      const insertButton = screen.getByRole('button', { name: 'Insert Table' });
+      await user.click(insertButton);
+      
+      expect(mockOnCommand).toHaveBeenCalledWith('insertTable', {
+        rows: 3,
+        columns: 3,
+        hasHeader: true,
+        borderStyle: 'solid',
+        alignment: 'left'
+      });
+    });
+
+    test('enforces input constraints', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      const rowsInput = screen.getByLabelText('Rows');
+      const columnsInput = screen.getByLabelText('Columns');
+      
+      expect(rowsInput).toHaveAttribute('min', '1');
+      expect(rowsInput).toHaveAttribute('max', '20');
+      expect(columnsInput).toHaveAttribute('min', '1');
+      expect(columnsInput).toHaveAttribute('max', '10');
+    });
+
+    test('resets form and closes panel after successful creation', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      // Modify form
+      fireEvent.change(screen.getByLabelText('Rows'), { target: { value: '5' } });
+      
+      // Create table
+      const insertButton = screen.getByRole('button', { name: 'Insert Table' });
+      await user.click(insertButton);
+      
+      // Panel should close
+      await waitFor(() => {
+        expect(screen.queryByText('Quick Insert')).not.toBeInTheDocument();
+      });
+    });
+
+    test('closes panel after successful creation', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      const insertButton = screen.getByRole('button', { name: 'Insert Table' });
+      await user.click(insertButton);
+      
+      await waitFor(() => {
+        expect(screen.queryByText('Quick Insert')).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Error Handling', () => {
+    test('handles selection errors gracefully', async () => {
+      const user = userEvent.setup();
+      
+      // Mock selection error
+      mockRange.cloneRange.mockImplementation(() => {
+        throw new Error('Selection error');
+      });
+      
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      // Should still open panel without crashing
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      expect(screen.getByText('Quick Insert')).toBeInTheDocument();
+    });
+
+    test('handles table creation without errors', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      const insertButton = screen.getByRole('button', { name: 'Insert Table' });
+      
+      expect(() => user.click(insertButton)).not.toThrow();
+    });
+
+    test('maintains form state during session', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      // Verify default values are present
+      expect(screen.getByLabelText('Rows')).toHaveValue(3);
+      expect(screen.getByLabelText('Columns')).toHaveValue(3);
+      expect(screen.getByLabelText('Include header row')).toBeChecked();
+    });
+  });
+
+  describe('Accessibility', () => {
+    test('supports keyboard navigation', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      const button = screen.getByRole('button', { name: 'Insert table' });
+      
+      // Focus and activate with keyboard
+      button.focus();
+      await user.keyboard('{Enter}');
+      
+      // Panel should open
+      expect(screen.getByText('Quick Insert')).toBeInTheDocument();
+    });
+
+    test('has proper focus management', async () => {
+      const user = userEvent.setup();
+      render(<TableEditor onCommand={mockOnCommand} />);
+      
+      await user.click(screen.getByRole('button', { name: 'Insert table' }));
+      
+      // Tab through form elements
+      await user.keyboard('{Tab}');
+      expect(screen.getByLabelText('Rows')).toHaveFocus();
+      
+      await user.keyboard('{Tab}');
+      expect(screen.getByLabelText('Columns')).toHaveFocus();
+    });
+  });
+});

@@ -1,0 +1,233 @@
+/**
+ * Error and Status Page Components
+ * 404, unauthorized, verify-email pages
+ */
+
+.not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: var(--space-8);
+}
+
+.not-found__content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.not-found__icon {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto var(--space-6);
+  color: var(--text-muted);
+}
+
+.not-found__illustration {
+  width: 200px;
+  height: 150px;
+  margin: 0 auto var(--space-6);
+  background: var(--bg-alt);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.not-found__title {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  margin: 0 0 var(--space-4);
+  color: var(--text-primary);
+}
+
+.not-found__subtitle {
+  font-size: var(--text-xl);
+  font-weight: var(--font-medium);
+  margin: 0 0 var(--space-3);
+  color: var(--text-secondary);
+}
+
+.not-found__description {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 var(--space-8);
+  color: var(--text-secondary);
+}
+
+.not-found__actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.not-found__button {
+  min-width: 140px;
+}
+
+/* Unauthorized Page */
+.unauthorized {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: var(--space-8);
+}
+
+.unauthorized__content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.unauthorized__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-6);
+  color: var(--error-500);
+}
+
+.unauthorized__illustration {
+  width: 160px;
+  height: 120px;
+  margin: 0 auto var(--space-6);
+  background: var(--error-50);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--error-500);
+}
+
+.unauthorized__title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  margin: 0 0 var(--space-4);
+  color: var(--error-600);
+}
+
+.unauthorized__subtitle {
+  font-size: var(--text-lg);
+  margin: 0 0 var(--space-3);
+  color: var(--text-secondary);
+}
+
+.unauthorized__description {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 var(--space-6);
+  color: var(--text-secondary);
+}
+
+.unauthorized__user-info {
+  padding: var(--space-4);
+  background: var(--bg-alt);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.unauthorized__actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.unauthorized__button {
+  min-width: 120px;
+}
+
+/* Email Verification */
+.verify-email {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: var(--space-8);
+}
+
+.verify-email__container {
+  text-align: center;
+  max-width: 400px;
+}
+
+.verify-email__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.verify-email__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.verify-email__error {
+  padding: var(--space-6);
+  background: var(--error-50);
+  border: 1px solid var(--error-200);
+  border-radius: var(--radius-lg);
+  color: var(--error-700);
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  color: var(--success-500);
+}
+
+/* Confetti Animation */
+.confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--primary-500);
+  animation: confetti-fall 3s linear infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .not-found__title,
+  .unauthorized__title {
+    font-size: var(--text-2xl);
+  }
+  
+  .not-found__actions,
+  .unauthorized__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .not-found__button,
+  .unauthorized__button {
+    width: 100%;
+    max-width: 200px;
+  }
+}

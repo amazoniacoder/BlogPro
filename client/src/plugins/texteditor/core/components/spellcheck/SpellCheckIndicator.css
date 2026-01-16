@@ -1,0 +1,66 @@
+/* Spell Check Indicator Styles */
+.spell-check-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #666;
+}
+
+.spell-check-indicator__status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.spell-check-indicator__icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.spell-check-indicator__text {
+  white-space: nowrap;
+}
+
+/* Status-specific styles */
+.spell-check-indicator--checking {
+  color: #2196f3;
+}
+
+.spell-check-indicator--checking .spell-check-indicator__icon {
+  animation: spin 1s linear infinite;
+}
+
+.spell-check-indicator--clean {
+  color: #4caf50;
+}
+
+.spell-check-indicator--errors {
+  color: #ff9800;
+}
+
+.spell-check-indicator--disabled {
+  color: #999;
+  opacity: 0.7;
+}
+
+/* Toggle button */
+.spell-check-indicator__toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  transition: background-color 0.2s;
+}
+
+.spell-check-indicator__toggle:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

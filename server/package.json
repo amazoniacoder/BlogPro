@@ -1,0 +1,17 @@
+{
+  "name": "blogpro-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Blog and Contact focused server for BlogPro",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development tsx --watch index.ts",
+    "build": "esbuild index.ts --platform=node --packages=external --bundle --format=esm --outdir=../dist",
+    "start": "cross-env NODE_ENV=production node ../dist/index.js",
+    "migrate": "tsx db/migrations/migrate.ts",
+    "seed": "tsx db/seeds/seed.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

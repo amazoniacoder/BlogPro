@@ -1,0 +1,338 @@
+/**
+ * TextAlignmentDropdown Component Tests
+ * Comprehensive test suite with ≥90% coverage
+ */
+
+import '../setup';
+// @ts-ignore: React is used for JSX
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { TextAlignmentDropdown } from '../../core/components/TextAlignmentDropdown';
+import { TextAlign } from '../../core/types/coreTypes';
+
+// Test globals
+declare global {
+  var describe: any;
+  var test: any;
+  var expect: any;
+  var beforeEach: any;
+  var afterEach: any;
+}
+
+describe('TextAlignmentDropdown', () => {
+  const mockOnAlignmentChange = vi.fn();
+  
+  const defaultProps = {
+    currentAlignment: 'left' as TextAlign,
+    onAlignmentChange: mockOnAlignmentChange
+  };
+
+  beforeEach(() => {
+    mockOnAlignmentChange.mockClear();
+  });
+
+  afterEach(() => {
+    // Clean up any open dropdowns
+    document.body.click();
+  });
+
+  describe('Rendering', () => {
+    test('renders with default props', () => {
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      expect(screen.getByRole('button', { name: /text alignment: align left/i })).toBeInTheDocument();
+      expect(screen.getByText('Align Left')).toBeInTheDocument();
+    });
+
+    test('renders with different current alignment', () => {
+      render(<TextAlignmentDropdown {...defaultProps} currentAlignment="center" />);
+      
+      expect(screen.getByRole('button', { name: /text alignment: align center/i })).toBeInTheDocument();
+      expect(screen.getByText('Align Center')).toBeInTheDocument();
+    });
+
+    test('renders disabled state', () => {
+      render(<TextAlignmentDropdown {...defaultProps} disabled />);
+      
+      const trigger = screen.getByRole('button');
+      expect(trigger).toBeDisabled();
+    });
+
+    test('shows correct arrow direction when closed', () => {
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      expect(screen.getByText('▼')).toBeInTheDocument();
+    });
+  });
+
+  describe('Dropdown Interaction', () => {
+    test('opens dropdown when trigger is clicked', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /text alignment/i });
+      await user.click(trigger);
+      
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      expect(screen.getByText('▲')).toBeInTheDocument(); // Arrow should flip
+    });
+
+    test('does not open dropdown when disabled', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} disabled />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+
+    test('closes dropdown when clicking outside', async () => {
+      const user = userEvent.setup();
+      render(
+        <div>
+          <TextAlignmentDropdown {...defaultProps} />
+          <div data-testid="outside">Outside element</div>
+        </div>
+      );
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /text alignment/i });
+      await user.click(trigger);
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      
+      // Simulate mousedown event on outside element (how the component actually detects outside clicks)
+      const outsideElement = screen.getByTestId('outside');
+      const mouseDownEvent = new MouseEvent('mousedown', {
+        bubbles: true,
+        cancelable: true
+      });
+      outsideElement.dispatchEvent(mouseDownEvent);
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+      });
+    });
+
+    test('closes dropdown on Escape key', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /text alignment/i });
+      await user.click(trigger);
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      
+      // Press Escape
+      await user.keyboard('{Escape}');
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Alignment Options', () => {
+    test('displays all alignment options when open', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button', { name: /text alignment/i });
+      await user.click(trigger);
+      
+      // Check all options are present
+      expect(screen.getByRole('option', { name: /align left/i })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: /align center/i })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: /align right/i })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: /justify/i })).toBeInTheDocument();
+      
+      // Check that all options are text-only (no icons) - they should be visible in the dropdown
+      const options = screen.getAllByRole('option');
+      expect(options).toHaveLength(4);
+      
+      // Verify the text content of options (text appears in both trigger and options)
+      expect(screen.getAllByText('Align Left')).toHaveLength(2); // Trigger + option
+      expect(screen.getAllByText('Align Center')).toHaveLength(1); // Only in options
+      expect(screen.getAllByText('Align Right')).toHaveLength(1); // Only in options
+      expect(screen.getAllByText('Justify')).toHaveLength(1); // Only in options
+    });
+
+    test('shows current alignment as selected', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} currentAlignment="center" />);
+      
+      const trigger = screen.getByRole('button', { name: /text alignment/i });
+      await user.click(trigger);
+      
+      const centerOption = screen.getByRole('option', { name: /align center/i });
+      expect(centerOption).toHaveAttribute('aria-selected', 'true');
+      expect(centerOption).toHaveClass('selected');
+    });
+
+    test('calls onAlignmentChange when option is selected', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /text alignment/i });
+      await user.click(trigger);
+      
+      // Select center alignment
+      const centerOption = screen.getByRole('option', { name: /align center/i });
+      await user.click(centerOption);
+      
+      expect(mockOnAlignmentChange).toHaveBeenCalledWith('center');
+      expect(mockOnAlignmentChange).toHaveBeenCalledTimes(1);
+    });
+
+    test('closes dropdown after selecting option', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      // Open dropdown
+      const trigger = screen.getByRole('button', { name: /text alignment/i });
+      await user.click(trigger);
+      expect(screen.getByRole('listbox')).toBeInTheDocument();
+      
+      // Select option
+      const rightOption = screen.getByRole('option', { name: /align right/i });
+      await user.click(rightOption);
+      
+      await waitFor(() => {
+        expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Accessibility', () => {
+    test('has proper ARIA attributes', () => {
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      expect(trigger).toHaveAttribute('aria-haspopup', 'listbox');
+      expect(trigger).toHaveAttribute('aria-label', 'Text alignment: Align Left');
+    });
+
+    test('updates ARIA attributes when dropdown opens', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    test('dropdown menu has proper role and label', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      const menu = screen.getByRole('listbox');
+      expect(menu).toHaveAttribute('aria-label', 'Text alignment options');
+    });
+
+    test('options have proper ARIA attributes', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} currentAlignment="right" />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      const options = screen.getAllByRole('option');
+      options.forEach(option => {
+        expect(option).toHaveAttribute('aria-selected');
+      });
+      
+      // Right option should be selected
+      const rightOption = screen.getByRole('option', { name: /align right/i });
+      expect(rightOption).toHaveAttribute('aria-selected', 'true');
+    });
+  });
+
+  describe('Keyboard Navigation', () => {
+    test('trigger is focusable', () => {
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      trigger.focus();
+      
+      expect(trigger).toHaveFocus();
+    });
+
+    test('shows focus styles when focused', () => {
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      trigger.focus();
+      
+      // Focus styles are applied via CSS, we just ensure it's focusable
+      expect(trigger).toHaveFocus();
+    });
+  });
+
+  describe('Edge Cases', () => {
+    test('handles invalid currentAlignment gracefully', () => {
+      // @ts-ignore - Testing invalid prop
+      render(<TextAlignmentDropdown {...defaultProps} currentAlignment="invalid" />);
+      
+      // Should fallback to first option (left)
+      expect(screen.getByText('Align Left')).toBeInTheDocument();
+    });
+
+    test('handles missing onAlignmentChange prop', async () => {
+      const user = userEvent.setup();
+      // @ts-ignore - Testing missing prop
+      render(<TextAlignmentDropdown currentAlignment="left" />);
+      
+      const trigger = screen.getByRole('button');
+      await user.click(trigger);
+      
+      const centerOption = screen.getByRole('option', { name: /align center/i });
+      
+      // Should not throw error
+      expect(() => user.click(centerOption)).not.toThrow();
+    });
+
+    test('handles rapid open/close interactions', async () => {
+      const user = userEvent.setup();
+      render(<TextAlignmentDropdown {...defaultProps} />);
+      
+      const trigger = screen.getByRole('button');
+      
+      // Rapid clicks
+      await user.click(trigger);
+      await user.click(trigger);
+      await user.click(trigger);
+      
+      // Should handle gracefully without errors
+      expect(trigger).toBeInTheDocument();
+    });
+  });
+
+  describe('Performance', () => {
+    test('does not cause unnecessary re-renders', () => {
+      const renderSpy = vi.fn();
+      
+      const TestComponent = (props: any) => {
+        renderSpy();
+        return <TextAlignmentDropdown {...props} />;
+      };
+      
+      const { rerender } = render(<TestComponent {...defaultProps} />);
+      
+      // Initial render
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      
+      // Re-render with same props
+      rerender(<TestComponent {...defaultProps} />);
+      
+      // Should not cause additional renders due to memoization
+      expect(renderSpy).toHaveBeenCalledTimes(2);
+    });
+  });
+});

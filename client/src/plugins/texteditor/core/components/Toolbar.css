@@ -1,0 +1,133 @@
+.editor-toolbar {
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.toolbar-group {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  flex-wrap: wrap;
+}
+
+.toolbar-button {
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+}
+
+.toolbar-button:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.toolbar-button:active {
+  background: #e5e7eb;
+  transform: translateY(1px);
+}
+
+.toolbar-button.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #2563eb;
+}
+
+.toolbar-button.active:hover {
+  background: #2563eb;
+}
+
+.button-icon {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.toolbar-separator {
+  width: 1px;
+  height: 24px;
+  background: #d1d5db;
+  margin: 0 4px;
+}
+
+
+
+.toolbar-select {
+  padding: 4px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: white;
+  font-size: 13px;
+  cursor: pointer;
+  min-width: 60px;
+}
+
+.toolbar-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.save-button {
+  background: #10b981;
+  color: white;
+  border-color: #059669;
+  font-weight: 600;
+}
+
+.save-button:hover {
+  background: #059669;
+  border-color: #047857;
+}
+
+/* Right-aligned toolbar group */
+.toolbar-group--right {
+  margin-left: auto;
+}
+
+.fullscreen-button {
+  background: #6b7280;
+  color: white;
+  border-color: #4b5563;
+  font-size: 16px;
+}
+
+.fullscreen-button:hover {
+  background: #4b5563;
+  border-color: #374151;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .editor-toolbar {
+    padding: 6px 8px;
+    gap: 4px;
+  }
+  
+  .toolbar-button {
+    padding: 4px 6px;
+    min-width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .toolbar-separator {
+    height: 20px;
+  }
+}

@@ -1,0 +1,132 @@
+/**
+ * Blog System Components
+ * Blog listing, grid, and filtering
+ */
+
+.blog {
+  padding: var(--space-8) 0;
+}
+
+.blog__container {
+  max-width: var(--container-max-width, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--container-padding, 1rem);
+}
+
+.blog__title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  text-align: center;
+  margin: 0 0 var(--space-8);
+  color: var(--text-primary);
+}
+
+.blog__filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  padding: var(--space-4);
+  background: var(--bg-alt);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.blog__filter-toggle {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  transition: var(--transition-colors);
+}
+
+.blog__filter-toggle:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.blog__sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.blog__sidebar-overlay--open {
+  display: block;
+}
+
+.blog__loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: var(--text-secondary);
+}
+
+.blog__error {
+  text-align: center;
+  padding: var(--space-8);
+  color: var(--error-600);
+  background: var(--error-50);
+  border: 1px solid var(--error-200);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
+}
+
+.blog__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--space-6);
+}
+
+.blog__empty {
+  text-align: center;
+  padding: var(--space-12);
+  color: var(--text-secondary);
+}
+
+.blog__empty-message {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-4);
+}
+
+.blog__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-8);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .blog__grid,
+  .blog-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  
+  .blog__filter {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  
+  .blog__filter-toggle {
+    display: block;
+  }
+  
+  .blog__title {
+    font-size: var(--text-2xl);
+  }
+}

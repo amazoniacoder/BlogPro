@@ -1,0 +1,35 @@
+{
+  "name": "documentation-manager",
+  "version": "1.0.0",
+  "export": {
+    "includeUISystem": true,
+    "bundleStrategy": "minimal",
+    "target": "standalone",
+    "customizations": {
+      "themes": ["docs-theme"],
+      "brandColors": {
+        "primary": "#2563eb",
+        "accent": "#7c3aed"
+      },
+      "customCSS": [
+        "styles/docs-layout.css",
+        "styles/admin-layout.css"
+      ]
+    },
+    "optimization": {
+      "minifyCSS": true,
+      "treeshakeIcons": true,
+      "compressBundle": true
+    },
+    "compatibility": {
+      "browsers": ["chrome >= 90", "firefox >= 88", "safari >= 14"],
+      "nodeVersion": ">=16.0.0"
+    }
+  },
+  "metadata": {
+    "author": "BlogPro Team",
+    "license": "MIT",
+    "repository": "https://github.com/blogpro/documentation-manager",
+    "keywords": ["documentation", "plugin", "blogpro", "ui-system"]
+  }
+}

@@ -1,0 +1,34 @@
+/**
+ * Search Toggle Component - Header Slide Menu
+ * Matches old version exactly
+ */
+
+.search-toggle {
+  position: relative;
+}
+
+.search-toggle__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+}
+
+.search-toggle__button:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.search-toggle__button:focus {
+  outline: none;
+}
+
+/* Search dropdown and input styles moved to dedicated files */

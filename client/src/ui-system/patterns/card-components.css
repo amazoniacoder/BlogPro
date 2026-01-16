@@ -1,0 +1,62 @@
+/* Card Components - BEM Methodology */
+
+/* Blog Card Styles - moved to patterns/blog-card.css to avoid duplicates */
+
+/* Feature Card Styles - removed duplicates, using patterns/feature-card.css */
+
+/* Pricing Card Styles - removed duplicates, using patterns/pricing-card.css */
+
+/* Team Card Styles - removed duplicates, using patterns/team-card.css */
+
+/* Testimonial Card Styles */
+.testimonial-card {
+  padding: 24px;
+}
+
+.testimonial-card__quote {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.testimonial-card__quote-icon {
+  color: var(--primary-600);
+  margin-bottom: 12px;
+}
+
+.testimonial-card__text {
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.testimonial-card__rating {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.testimonial-card__star {
+  color: var(--border-color);
+}
+
+.testimonial-card__star--filled {
+  color: var(--warning-600);
+}
+
+.testimonial-card__author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonial-card__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.testimonial-card__name {
+  margin-bottom: 4px;
+}
