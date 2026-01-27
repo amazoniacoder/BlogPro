@@ -93,7 +93,8 @@ class WebSocketService {
   private establishConnection(): void {
     const wsUrl = import.meta.env.VITE_WS_URL || 'wss://blogpro.tech';
     const fullWsUrl = wsUrl.endsWith('/ws') ? wsUrl : `${wsUrl}/ws`;
-    console.log(`Connecting to WebSocket at: ${fullWsUrl}`);
+    console.log(`🔌 Connecting to WebSocket at: ${fullWsUrl}`);
+    console.log(`🔌 Environment VITE_WS_URL:`, import.meta.env.VITE_WS_URL);
     
     websocketHealthMonitor.recordConnectionAttempt();
     
@@ -101,7 +102,7 @@ class WebSocketService {
       this.socket = new WebSocket(fullWsUrl);
       
       this.socket.onopen = () => {
-        console.log('✅ WebSocket connected successfully');
+        console.log('✅ WebSocket connected successfully to:', fullWsUrl);
         this.connectionState = 'connected';
         this.reconnectAttempts = 0;
         websocketHealthMonitor.recordSuccessfulConnection();
@@ -112,11 +113,13 @@ class WebSocketService {
       this.socket.onmessage = (event) => {
         try {
           const message = JSON.parse(event.data);
+          console.log('📨 WebSocket message received:', message.type, message);
           // Log analytics, user, product, and comment updates
           if (message.type === 'user_updated' || message.type === 'analytics_updated' || message.type === 'visitor_count_updated' ||
               message.type === 'product_created' || message.type === 'product_updated' || message.type === 'product_deleted' ||
               message.type === 'category_created' || message.type === 'category_updated' || message.type === 'category_deleted' ||
-              message.type === 'comment_created' || message.type === 'comment_updated' || message.type === 'comment_deleted' || message.type === 'comment_approved') {
+              message.type === 'comment_created' || message.type === 'comment_updated' || message.type === 'comment_deleted' || message.type === 'comment_approved' ||
+              message.type === 'blog_updated' || message.type === 'blog_deleted' || message.type === 'blog_created') {
             console.log('📨 WebSocket:', message.type, message.data);
           }
           this.notifyListeners(message.type, message.data);

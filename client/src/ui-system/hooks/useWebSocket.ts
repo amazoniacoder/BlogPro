@@ -1,3 +1,5 @@
+import React from 'react';
+import { WebSocketProvider as FullWebSocketProvider } from '@/contexts/websocket-context';
 import websocketService from '@/services/websocket-service';
 
 interface WebSocketContextType {
@@ -6,7 +8,11 @@ interface WebSocketContextType {
 }
 
 export function WebSocketProvider({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <FullWebSocketProvider>
+      {children}
+    </FullWebSocketProvider>
+  );
 }
 
 export function useWebSocket(): WebSocketContextType {
