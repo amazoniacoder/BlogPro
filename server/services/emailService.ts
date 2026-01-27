@@ -38,7 +38,7 @@ export class EmailService {
         smtpPort: parseInt(settingsObj.smtpPort || process.env.SMTP_PORT || '587'),
         smtpUser: settingsObj.smtpUser || process.env.SMTP_USER,
         smtpPass: settingsObj.smtpPass || process.env.SMTP_PASS,
-        recipientEmail: settingsObj.contactRecipientEmail || 'admin@blogpro.com'
+        recipientEmail: settingsObj.contactRecipientEmail || 'genavinogradov@gmail.com'
       };
     } catch (error) {
       console.error('Failed to load email settings:', error);
@@ -47,7 +47,7 @@ export class EmailService {
         smtpPort: parseInt(process.env.SMTP_PORT || '587'),
         smtpUser: process.env.SMTP_USER,
         smtpPass: process.env.SMTP_PASS,
-        recipientEmail: 'admin@blogpro.com'
+        recipientEmail: 'genavinogradov@gmail.com'
       };
     }
   }

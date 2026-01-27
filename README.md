@@ -121,15 +121,9 @@ BlogPro uses JWT token-based authentication:
 
 ### Default Admin Account
 
-```
-Username: admin
-Password: admin123
-Email: admin@blogpro.local
-```
+The administrator account is created automatically when the server is first started.
 
 **Note**: Database uses the `username` field instead of `login` to identify the user.
-
-*The administrator account is created automatically when the server is first started*
 
 ## Search functionality
 

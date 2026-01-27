@@ -11,7 +11,7 @@ export async function ensureAdminUserExists(): Promise<void> {
     const existingAdmin = await db
       .select()
       .from(users)
-      .where(or(eq(users.username, 'admin'), eq(users.email, 'admin@blogpro.local')));
+      .where(or(eq(users.username, 'Gena'), eq(users.email, 'genavinogradov@gmail.com')));
 
     if (existingAdmin.length > 0) {
       console.log('✅ Admin user already exists');
@@ -19,14 +19,14 @@ export async function ensureAdminUserExists(): Promise<void> {
     }
 
     // Create admin user
-    const hashedPassword = await bcrypt.hash('admin123', 10);
+    const hashedPassword = await bcrypt.hash('H76&9j_+867#$', 10);
     
     await db
       .insert(users)
       .values({
         id: crypto.randomUUID(),
-        username: 'admin',
-        email: 'admin@blogpro.local',
+        username: 'Gena',
+        email: 'genavinogradov@gmail.com',
         password: hashedPassword,
         firstName: 'Admin',
         lastName: 'User',
@@ -38,9 +38,9 @@ export async function ensureAdminUserExists(): Promise<void> {
       });
 
     console.log('✅ Admin user created successfully');
-    console.log('   Login: admin');
-    console.log('   Password: admin123');
-    console.log('   Email: admin@blogpro.local');
+    console.log('   Login: Gena');
+    console.log('   Password: H76&9j_+867#$');
+    console.log('   Email: genavinogradov@gmail.com');
   } catch (error) {
     console.error('❌ Failed to create admin user:', error);
   }

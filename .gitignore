@@ -116,3 +116,6 @@ reports/
 SERVER_DEPLOY_COMMANDS.md
 *.env
 .env.*
+
+# Documentation with sensitive data
+docs/
