@@ -326,24 +326,24 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .header {
+  .documentation-manager-plugin .header {
     padding: 0 1rem;
   }
   
-  .nav {
+  .documentation-manager-plugin .nav {
     display: none;
   }
   
-  .main {
+  .documentation-manager-plugin .main {
     flex-direction: column;
   }
   
-  .sidebar {
+  .documentation-manager-plugin .sidebar {
     width: 100%;
     order: 2;
   }
   
-  .content {
+  .documentation-manager-plugin .content {
     max-width: 100%;
     padding: 1rem;
   }
