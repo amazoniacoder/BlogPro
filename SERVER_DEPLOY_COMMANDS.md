@@ -34,9 +34,32 @@ npm run build:server
 
 ## 6. Настройка окружения:
 ```bash
-cp .env.production .env
-# Отредактируйте .env если нужно изменить настройки БД
-nano .env
+# Создание .env файла
+cat > .env << 'EOF'
+NODE_ENV=production
+PORT=5000
+
+# Database
+DATABASE_URL=postgres://postgres:12345@localhost:5432/porto1
+
+# Security
+SESSION_SECRET=8f3a9b2c5d7e1f4a6b8c9d0e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a
+JWT_SECRET=1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b
+
+# Email
+SMTP_HOST=smtp.yandex.ru
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=amazoniacoder@yandex.ru
+SMTP_PASS=kvwvegerqlinnmqu
+
+# Domain
+DOMAIN=blogpro.tech
+PUBLIC_URL=https://blogpro.tech
+
+# Redis (optional)
+REDIS_URL=redis://localhost:6379
+EOF
 ```
 
 ## 7. Настройка Nginx:
