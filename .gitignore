@@ -112,6 +112,7 @@ reports/
 *.tar.gz
 *.zip
 
-# Local development files
-cookies.txt
-*.local.*
+# Добавляем файлы с секретными данными в .gitignore
+SERVER_DEPLOY_COMMANDS.md
+*.env
+.env.*
