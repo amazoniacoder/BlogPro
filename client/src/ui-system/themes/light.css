@@ -31,10 +31,12 @@
   
   /* Component Backgrounds */
   --card-bg: #ffffff;
-  --header-bg: #ffffff;
   --footer-bg: #f8fafc;
   --sidebar-bg: #ffffff;
   --modal-bg: #ffffff;
+  
+  /* Header text color for dark background */
+  --header-text: #ffffff;
   
   /* Input Colors */
   --input-bg: #ffffff;

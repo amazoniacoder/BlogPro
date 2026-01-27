@@ -66,15 +66,28 @@ sudo cp /etc/letsencrypt/live/blogpro.tech/privkey.pem ./ssl/key.pem
 Create `/etc/nginx/sites-available/blogpro.tech`:
 
 ```nginx
+# HTTP редирект на HTTPS
 server {
     listen 80;
     server_name blogpro.tech www.blogpro.tech;
-    return 301 https://$server_name$request_uri;
+    return 301 https://blogpro.tech$request_uri;
 }
 
+# HTTPS редирект с www на основной домен
 server {
     listen 443 ssl http2;
-    server_name blogpro.tech www.blogpro.tech;
+    server_name www.blogpro.tech;
+    
+    ssl_certificate /etc/letsencrypt/live/blogpro.tech/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/blogpro.tech/privkey.pem;
+    
+    return 301 https://blogpro.tech$request_uri;
+}
+
+# Основной сервер (без www)
+server {
+    listen 443 ssl http2;
+    server_name blogpro.tech;
 
     ssl_certificate /etc/letsencrypt/live/blogpro.tech/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/blogpro.tech/privkey.pem;

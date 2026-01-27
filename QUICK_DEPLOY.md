@@ -67,9 +67,36 @@ pm2 startup
 Создайте файл `/etc/nginx/sites-available/blogpro.tech`:
 
 ```nginx
+# HTTP редирект на HTTPS
 server {
     listen 80;
     server_name blogpro.tech www.blogpro.tech;
+    return 301 https://blogpro.tech$request_uri;
+}
+
+# HTTPS редирект с www на основной домен
+server {
+    listen 443 ssl http2;
+    server_name www.blogpro.tech;
+    
+    ssl_certificate /etc/letsencrypt/live/blogpro.tech/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/blogpro.tech/privkey.pem;
+    
+    return 301 https://blogpro.tech$request_uri;
+}
+
+# Основной сервер (без www)
+server {
+    listen 443 ssl http2;
+    server_name blogpro.tech;
+
+    ssl_certificate /etc/letsencrypt/live/blogpro.tech/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/blogpro.tech/privkey.pem;
+
+    # SSL конфигурация
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
     
     client_max_body_size 50M;
 

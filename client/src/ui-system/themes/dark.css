@@ -36,6 +36,9 @@
   --sidebar-bg: #1e293b;
   --modal-bg: #1e293b;
   
+  /* Header text color */
+  --header-text: #f1f5f9;
+  
   /* Input Colors */
   --input-bg: #334155;
   --input-border: #475569;

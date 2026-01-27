@@ -79,6 +79,23 @@ button,
 [type="submit"] {
   -webkit-appearance: button;
   appearance: button;
+  cursor: pointer;
+}
+
+/* Global cursor pointer for interactive elements */
+a,
+button,
+[role="button"],
+[tabindex="0"],
+label,
+select,
+input[type="checkbox"],
+input[type="radio"],
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+.clickable {
+  cursor: pointer;
 }
 
 /* Lists */
