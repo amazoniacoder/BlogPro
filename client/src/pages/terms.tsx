@@ -5,104 +5,104 @@ const TermsPage: React.FC = () => {
   const { t } = useTranslation('terms');
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="prose prose-lg mx-auto">
-        <h1 className="text-3xl font-bold mb-8">{t('title')}</h1>
-        
-        <div className="text-sm text-gray-600 mb-8">
-          <p>{t('lastUpdated')}: {t('date')}</p>
+    <div className="legal-page">
+      <div className="legal-page__container">
+        <div className="legal-page__content">
+          <h1 className="legal-page__title">{t('title')}</h1>
+          
+          <div className="legal-page__meta">
+            <p>{t('lastUpdated')}: {t('date')}</p>
+          </div>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('acceptance.title')}</h2>
+            <p className="legal-page__text">{t('acceptance.content')}</p>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('services.title')}</h2>
+            <p className="legal-page__text">{t('services.content')}</p>
+            <ul className="legal-page__list">
+              <li>{t('services.blog')}</li>
+              <li>{t('services.products')}</li>
+              <li>{t('services.documentation')}</li>
+              <li>{t('services.analytics')}</li>
+            </ul>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('userAccounts.title')}</h2>
+            <p className="legal-page__text">{t('userAccounts.content')}</p>
+            <ul className="legal-page__list">
+              <li>{t('userAccounts.accurate')}</li>
+              <li>{t('userAccounts.secure')}</li>
+              <li>{t('userAccounts.responsible')}</li>
+            </ul>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('conduct.title')}</h2>
+            <p className="legal-page__text">{t('conduct.intro')}</p>
+            <ul className="legal-page__list">
+              <li>{t('conduct.illegal')}</li>
+              <li>{t('conduct.harmful')}</li>
+              <li>{t('conduct.spam')}</li>
+              <li>{t('conduct.copyright')}</li>
+              <li>{t('conduct.privacy')}</li>
+            </ul>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('content.title')}</h2>
+            <p className="legal-page__text">{t('content.ownership')}</p>
+            <p className="legal-page__text">{t('content.license')}</p>
+            <p className="legal-page__text">{t('content.responsibility')}</p>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('intellectual.title')}</h2>
+            <p className="legal-page__text">{t('intellectual.content')}</p>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('privacy.title')}</h2>
+            <p className="legal-page__text">{t('privacy.content')}</p>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('termination.title')}</h2>
+            <p className="legal-page__text">{t('termination.content')}</p>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('disclaimer.title')}</h2>
+            <p className="legal-page__text">{t('disclaimer.content')}</p>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('limitation.title')}</h2>
+            <p className="legal-page__text">{t('limitation.content')}</p>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('governing.title')}</h2>
+            <p className="legal-page__text">{t('governing.content')}</p>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('changes.title')}</h2>
+            <p className="legal-page__text">{t('changes.content')}</p>
+          </section>
+
+          <section className="legal-page__section">
+            <h2 className="legal-page__heading">{t('contact.title')}</h2>
+            <p className="legal-page__text">{t('contact.content')}</p>
+            <div className="legal-page__contact">
+              <p><strong>{t('contact.email')}</strong>: genavinogradov@gmail.com</p>
+              <p><strong>{t('contact.website')}</strong>: https://blogpro.tech</p>
+            </div>
+          </section>
         </div>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('acceptance.title')}</h2>
-          <p className="mb-4">{t('acceptance.content')}</p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('services.title')}</h2>
-          <p className="mb-4">{t('services.content')}</p>
-          <ul className="list-disc pl-6 mb-4">
-            <li>{t('services.blog')}</li>
-            <li>{t('services.products')}</li>
-            <li>{t('services.documentation')}</li>
-            <li>{t('services.analytics')}</li>
-          </ul>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('userAccounts.title')}</h2>
-          <p className="mb-4">{t('userAccounts.content')}</p>
-          <ul className="list-disc pl-6 mb-4">
-            <li>{t('userAccounts.accurate')}</li>
-            <li>{t('userAccounts.secure')}</li>
-            <li>{t('userAccounts.responsible')}</li>
-          </ul>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('conduct.title')}</h2>
-          <p className="mb-4">{t('conduct.intro')}</p>
-          <ul className="list-disc pl-6 mb-4">
-            <li>{t('conduct.illegal')}</li>
-            <li>{t('conduct.harmful')}</li>
-            <li>{t('conduct.spam')}</li>
-            <li>{t('conduct.copyright')}</li>
-            <li>{t('conduct.privacy')}</li>
-          </ul>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('content.title')}</h2>
-          <p className="mb-4">{t('content.ownership')}</p>
-          <p className="mb-4">{t('content.license')}</p>
-          <p className="mb-4">{t('content.responsibility')}</p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('intellectual.title')}</h2>
-          <p className="mb-4">{t('intellectual.content')}</p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('privacy.title')}</h2>
-          <p className="mb-4">{t('privacy.content')}</p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('termination.title')}</h2>
-          <p className="mb-4">{t('termination.content')}</p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('disclaimer.title')}</h2>
-          <p className="mb-4">{t('disclaimer.content')}</p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('limitation.title')}</h2>
-          <p className="mb-4">{t('limitation.content')}</p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('governing.title')}</h2>
-          <p className="mb-4">{t('governing.content')}</p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('changes.title')}</h2>
-          <p className="mb-4">{t('changes.content')}</p>
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('contact.title')}</h2>
-          <p className="mb-4">{t('contact.content')}</p>
-          <p className="mb-2">
-            <strong>{t('contact.email')}</strong>: genavinogradov@gmail.com
-          </p>
-          <p className="mb-2">
-            <strong>{t('contact.website')}</strong>: https://blogpro.tech
-          </p>
-        </section>
       </div>
     </div>
   );

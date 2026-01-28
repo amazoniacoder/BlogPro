@@ -523,6 +523,32 @@
   flex-shrink: 0;
 }
 
+.admin-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.admin-button:active {
+  transform: translateY(0);
+}
+
+.admin-button--primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.admin-button--secondary:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--color-primary);
+}
+
+.admin-button--edit:hover {
+  opacity: 0.9;
+}
+
+.admin-button--delete:hover {
+  opacity: 0.9;
+}
+
 .admin-button--primary {
   background-color: var(--color-primary);
   color: var(--bg-primary);
@@ -570,8 +596,9 @@
   text-align: left;
 }
 
-.category-tree-selector__trigger:hover {
-  border-color: var(--color-primary);
+.category-tree-selector__toggle:hover {
+  border-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-sm);
 }
 
 .category-tree-selector {
@@ -639,6 +666,11 @@
   height: 16px;
   border-radius: 2px;
   transition: all var(--transition-fast);
+}
+
+.category-tree-selector__toggle:hover {
+  background-color: var(--bg-hover);
+  color: var(--color-primary);
 }
 
 .category-tree-selector__name {
@@ -786,6 +818,8 @@
 }
 
 .admin-modal__close:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .admin-modal__body {
