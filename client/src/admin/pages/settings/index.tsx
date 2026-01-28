@@ -13,7 +13,6 @@ import {
   SettingsContact,
   SettingsMailings,
   SettingsApi,
-  SettingsCssAnalyzer,
   SettingsStateManager,
   useSettingsState
 } from "@/ui-system/components/admin/settings";
@@ -32,7 +31,6 @@ const SettingsPageContent = () => {
     { id: "notifications", label: t('admin:notifications', { defaultValue: 'Notifications' }), icon: 'bell' as IconName },
     { id: "contact", label: t('admin:contact', { defaultValue: 'Contact' }), icon: 'users' as IconName },
     { id: "mailings", label: t('admin:mailings', { defaultValue: 'Mailings' }), icon: 'share' as IconName },
-    { id: "css-analyzer", label: t('admin:cssAnalyzer', { defaultValue: 'CSS Analyzer' }), icon: 'wrench' as IconName },
     { id: "api", label: t('admin:api', { defaultValue: 'API' }), icon: 'puzzle' as IconName }
   ];
 
@@ -84,10 +82,6 @@ const SettingsPageContent = () => {
           <SettingsMailings onSave={handleSaveSettings} />
         </AdminTabPanel>
         
-        <AdminTabPanel id="css-analyzer">
-          <SettingsCssAnalyzer />
-        </AdminTabPanel>
-        
         <AdminTabPanel id="api">
           <SettingsApi onSave={handleSaveSettings} />
         </AdminTabPanel>
@@ -98,10 +92,28 @@ const SettingsPageContent = () => {
 
 const SettingsPage = () => {
   const handleSaveAll = async (data: Record<string, any>) => {
-    // Implement actual save logic here
-    console.log('Saving all settings:', data);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      console.log('Saving all settings:', data);
+      
+      // Отправляем настройки на сервер
+      const response = await fetch('/api/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        body: JSON.stringify(data)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to save settings');
+      }
+      
+      console.log('Settings saved successfully');
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      throw error;
+    }
   };
 
   return (

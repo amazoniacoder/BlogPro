@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import SettingsFormSection from './SettingsFormSection';
 import SettingsFormField from './SettingsFormField';
+import { useSettingsState } from './SettingsStateManager';
 
 interface SettingsContactProps {
   onSave: (settings: any) => void;
@@ -9,6 +10,8 @@ interface SettingsContactProps {
 
 const SettingsContact: React.FC<SettingsContactProps> = ({ onSave }) => {
   const { t } = useTranslation(['admin', 'common']);
+  const { state, updateTabData } = useSettingsState();
+  
   const [settings, setSettings] = useState({
     contactFormEnabled: true,
     requireCaptcha: true,
@@ -21,17 +24,32 @@ const SettingsContact: React.FC<SettingsContactProps> = ({ onSave }) => {
     responseTime: '24'
   });
 
+  // Load settings from state when available
+  useEffect(() => {
+    if (state.tabData.contact) {
+      setSettings(prev => ({
+        ...prev,
+        ...state.tabData.contact
+      }));
+    }
+  }, [state.tabData.contact]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, type, value } = e.target;
-    setSettings(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
-    }));
+    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    
+    const newSettings = {
+      ...settings,
+      [name]: newValue
+    };
+    
+    setSettings(newSettings);
+    updateTabData('contact', newSettings);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(settings);
+    onSave({ contact: settings });
   };
 
   return (

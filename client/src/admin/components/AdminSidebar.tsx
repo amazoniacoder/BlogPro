@@ -96,7 +96,7 @@ export const AdminSidebar = ({
               <span className="admin-sidebar__icon">
                 <Icon name="book" size={24} />
               </span>
-              <span className="admin-sidebar__text">Документация</span>
+              <span className="admin-sidebar__text">{t('admin:documentation')}</span>
             </a>
           </li>
 
@@ -112,7 +112,7 @@ export const AdminSidebar = ({
               <span className="admin-sidebar__icon">
                 <Icon name="chart" size={24} />
               </span>
-              <span className="admin-sidebar__text">Analytics</span>
+              <span className="admin-sidebar__text">{t('admin:analytics')}</span>
             </a>
           </li>
           <li
@@ -158,7 +158,7 @@ export const AdminSidebar = ({
               <span className="admin-sidebar__icon">
                 <Icon name="reply" size={24} />
               </span>
-              <span className="admin-sidebar__text">Comments</span>
+              <span className="admin-sidebar__text">{t('admin:comments')}</span>
             </a>
           </li>
 
@@ -174,7 +174,7 @@ export const AdminSidebar = ({
               <span className="admin-sidebar__icon">
                 <Icon name="shopping-cart" size={24} />
               </span>
-              <span className="admin-sidebar__text">Shop</span>
+              <span className="admin-sidebar__text">{t('admin:shop')}</span>
             </a>
           </li>
 
@@ -190,7 +190,7 @@ export const AdminSidebar = ({
               <span className="admin-sidebar__icon">
                 <Icon name="gear" size={24} />
               </span>
-              <span className="admin-sidebar__text">Редактор сайта</span>
+              <span className="admin-sidebar__text">{t('admin:siteEditor')}</span>
             </a>
           </li>
 

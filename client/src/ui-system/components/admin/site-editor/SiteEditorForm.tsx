@@ -117,7 +117,15 @@ const SiteEditorForm: React.FC<SiteEditorFormProps> = ({
               onChange={(e) => setFormData(prev => ({ ...prev, url: e.target.value }))}
               className="site-editor-form__input"
               placeholder="/about, https://example.com"
+              list="common-urls"
             />
+            <datalist id="common-urls">
+              <option value="/">Главная</option>
+              <option value="/about">О нас</option>
+              <option value="/blog">Блог</option>
+              <option value="/products">Продукты</option>
+              <option value="/contact">Контакты</option>
+            </datalist>
           </div>
 
           <div className="site-editor-form__group">

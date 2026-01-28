@@ -147,7 +147,7 @@ export function CommentsManager() {
     
     return (
       <Badge variant={variants[status as keyof typeof variants] as any}>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
+        {status && status.charAt ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unknown'}
       </Badge>
     );
   };

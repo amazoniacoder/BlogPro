@@ -29,7 +29,8 @@ router.get('/', authenticateToken, requireAdmin, async (req: Request, res: Respo
         u.username,
         u.first_name,
         u.last_name,
-        bp.title as post_title
+        bp.title as post_title,
+        COALESCE(c.status, 'pending') as status
       FROM comments c
       LEFT JOIN users u ON c.user_id = u.id
       LEFT JOIN blog_posts bp ON c.post_id = bp.id

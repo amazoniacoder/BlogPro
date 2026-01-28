@@ -47,7 +47,7 @@ export const securityHeadersMiddleware = (_req: Request, res: Response, next: Ne
     "default-src 'self'; " +
     "style-src 'self' 'unsafe-inline'; " +
     "script-src 'self'; " +
-    "img-src 'self' data: https:; " +
+    "img-src 'self' data: https: blob:; " +
     "connect-src 'self' ws: wss:; " +
     "font-src 'self'; " +
     "object-src 'none'; " +

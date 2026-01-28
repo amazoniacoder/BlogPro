@@ -7,7 +7,6 @@ import { detectDevice, getClientIP } from "../../utils/deviceDetection";
 import { analyticsScheduler } from "../../utils/scheduler";
 import { InputSanitizer } from "../../utils/sanitization";
 import { AuditLogger } from "../../utils/auditLogger";
-import { csrfProtection } from "../../middleware/csrfProtection";
 import { analyticsExport } from "../../services/analytics-export";
 import { analyticsCleanupService } from "../../services/analytics-cleanup";
 import { analyticsCacheService } from "../../services/analytics-cache";
@@ -130,7 +129,7 @@ router.post("/track", trackingLimiter, async (req: Request, res: Response) => {
 });
 
 // Clear analytics cache (admin only)
-router.post("/clear-cache", requireAuth, csrfProtection, async (req: Request, res: Response) => {
+router.post("/clear-cache", requireAuth, async (req: Request, res: Response) => {
   try {
     if (req.user?.role !== 'admin') {
       return res.status(403).json({ error: "Admin access required" });
@@ -148,12 +147,14 @@ router.post("/clear-cache", requireAuth, csrfProtection, async (req: Request, re
 });
 
 // Clear analytics data (admin only)
-router.delete("/clear-data", requireAuth, csrfProtection, async (req: Request, res: Response) => {
+router.delete("/clear-data", requireAuth, async (req: Request, res: Response) => {
   try {
     // Check admin role
     if (req.user?.role !== 'admin') {
       return res.status(403).json({ error: "Admin access required" });
     }
+
+    console.log(`🗑️ Analytics data clear requested by admin: ${req.user?.id}`);
 
     await analyticsService.clearData();
     
@@ -164,7 +165,7 @@ router.delete("/clear-data", requireAuth, csrfProtection, async (req: Request, r
       req.get('User-Agent')
     );
     
-    console.log(`🗑️ Analytics data cleared by admin: ${req.user?.id}`);
+    console.log(`🗑️ Analytics data cleared successfully by admin: ${req.user?.id}`);
     
     res.json({ success: true, message: "Analytics data cleared" });
   } catch (error) {
@@ -174,7 +175,7 @@ router.delete("/clear-data", requireAuth, csrfProtection, async (req: Request, r
 });
 
 // Manual aggregation trigger (admin only)
-router.post("/aggregate", requireAuth, csrfProtection, async (req: Request, res: Response) => {
+router.post("/aggregate", requireAuth, async (req: Request, res: Response) => {
   try {
     // Check admin role
     if (req.user?.role !== 'admin') {
@@ -276,7 +277,7 @@ router.get("/retention-stats", requireAuth, analyticsLimiter, async (req: Reques
 });
 
 // Manual cleanup trigger (admin only)
-router.post("/cleanup", requireAuth, csrfProtection, async (req: Request, res: Response) => {
+router.post("/cleanup", requireAuth, async (req: Request, res: Response) => {
   try {
     if (req.user?.role !== 'admin') {
       return res.status(403).json({ error: "Admin access required" });

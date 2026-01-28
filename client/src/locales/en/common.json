@@ -46,5 +46,8 @@
   "textSize": "Text Size",
   "decreaseFontSize": "Decrease font size",
   "resetFontSize": "Reset font size",
-  "increaseFontSize": "Increase font size"
+  "increaseFontSize": "Increase font size",
+  "success": "Success",
+  "warning": "Warning",
+  "info": "Information"
 }

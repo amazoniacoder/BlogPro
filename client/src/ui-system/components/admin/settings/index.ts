@@ -7,7 +7,6 @@ export { default as SettingsNotifications } from './SettingsNotifications';
 export { default as SettingsContact } from './SettingsContact';
 export { default as SettingsMailings } from './SettingsMailings';
 export { default as SettingsApi } from './SettingsApi';
-export { default as SettingsCssAnalyzer } from './SettingsCssAnalyzer';
 export { default as SettingsFormSection } from './SettingsFormSection';
 export { default as SettingsFormField } from './SettingsFormField';
 export { default as SettingsUnsavedChanges } from './SettingsUnsavedChanges';

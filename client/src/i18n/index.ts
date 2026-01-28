@@ -9,6 +9,7 @@ import enNav from '../locales/en/nav.json';
 import enForms from '../locales/en/forms.json';
 import enBlog from '../locales/en/blog.json';
 import enErrors from '../locales/en/errors.json';
+import enAdmin from '../locales/en/admin.json';
 
 import ruCommon from '../locales/ru/common.json';
 import ruAuth from '../locales/ru/auth.json';
@@ -16,6 +17,7 @@ import ruNav from '../locales/ru/nav.json';
 import ruForms from '../locales/ru/forms.json';
 import ruBlog from '../locales/ru/blog.json';
 import ruErrors from '../locales/ru/errors.json';
+import ruAdmin from '../locales/ru/admin.json';
 
 i18n
   .use(LanguageDetector)
@@ -25,7 +27,7 @@ i18n
     fallbackLng: 'ru',
     debug: process.env.NODE_ENV === 'development',
     
-    ns: ['common', 'auth', 'nav', 'forms', 'blog', 'errors'],
+    ns: ['common', 'auth', 'nav', 'forms', 'blog', 'errors', 'admin'],
     defaultNS: 'common',
     
     resources: {
@@ -35,7 +37,8 @@ i18n
         nav: enNav,
         forms: enForms,
         blog: enBlog,
-        errors: enErrors
+        errors: enErrors,
+        admin: enAdmin
       },
       ru: {
         common: ruCommon,
@@ -43,7 +46,8 @@ i18n
         nav: ruNav,
         forms: ruForms,
         blog: ruBlog,
-        errors: ruErrors
+        errors: ruErrors,
+        admin: ruAdmin
       }
     },
     

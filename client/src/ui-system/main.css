@@ -9,6 +9,7 @@
 @import './components/comments/comments.css';
 @import './components/comments/comment-list.css';
 @import './components/admin/comments/comments-admin.css';
+@import './components/notifications/notifications.css';
 
 /* Variables are imported from ./base/variables.css via ./index.css */
 

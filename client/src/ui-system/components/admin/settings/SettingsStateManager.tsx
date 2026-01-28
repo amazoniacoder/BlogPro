@@ -83,6 +83,56 @@ export const SettingsStateManager: React.FC<SettingsStateManagerProps> = ({
   const [state, dispatch] = useReducer(settingsReducer, initialState);
   const { showSuccess, showError } = useToast();
 
+  // Load existing settings on mount
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const response = await fetch('/api/settings/admin', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          }
+        });
+        
+        if (response.ok) {
+          const settings = await response.json();
+          console.log('Loaded settings:', settings);
+          
+          // Organize settings by tabs
+          const tabData: Record<string, any> = {
+            contact: {
+              contactEmail: settings.contactEmail || '',
+              phoneNumber: settings.phoneNumber || '',
+              address: settings.address || '',
+              businessHours: settings.businessHours || '',
+              contactFormEnabled: settings.contactFormEnabled === 'true',
+              requireCaptcha: settings.requireCaptcha === 'true',
+              autoReply: settings.autoReply === 'true',
+              autoReplyMessage: settings.autoReplyMessage || '',
+              responseTime: settings.responseTime || '24'
+            },
+            general: {
+              siteTitle: settings.siteTitle || '',
+              siteDescription: settings.siteDescription || '',
+              siteKeywords: settings.siteKeywords || ''
+            }
+          };
+          
+          // Update state with loaded settings
+          Object.entries(tabData).forEach(([tab, data]) => {
+            dispatch({ type: 'SET_TAB_DATA', payload: { tab, data } });
+          });
+          
+          // Mark as saved since we just loaded from server
+          dispatch({ type: 'MARK_SAVED' });
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      }
+    };
+    
+    loadSettings();
+  }, []);
+
   // Auto-save functionality
   useEffect(() => {
     if (!state.hasUnsavedChanges || state.isAutoSaving) return;

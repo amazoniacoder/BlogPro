@@ -46,5 +46,8 @@
   "textSize": "Размер текста",
   "decreaseFontSize": "Уменьшить шрифт",
   "resetFontSize": "Сбросить размер шрифта",
-  "increaseFontSize": "Увеличить шрифт"
+  "increaseFontSize": "Увеличить шрифт",
+  "success": "Успешно",
+  "warning": "Предупреждение",
+  "info": "Информация"
 }

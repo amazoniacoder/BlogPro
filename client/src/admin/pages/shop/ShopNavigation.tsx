@@ -3,6 +3,7 @@ import { Icon } from '../../../ui-system/icons/components';
 
 const shopMenuItems = [
   { path: '/admin/shop/dashboard', label: 'Dashboard', icon: 'chart' as const },
+  { path: '/admin/products', label: 'Продукты', icon: 'shopping-cart' as const },
   { path: '/admin/shop/orders', label: 'Orders', icon: 'file' as const },
   { path: '/admin/shop/inventory', label: 'Inventory', icon: 'folder' as const },
   { path: '/admin/shop/payments', label: 'Payments', icon: 'credit-card' as const },
@@ -32,7 +33,12 @@ export const ShopNavigation: React.FC<ShopNavigationProps> = ({
               href={item.path}
               onClick={(e) => {
                 e.preventDefault();
-                onNavigate?.(item.path);
+                if (item.path.startsWith('/admin/products')) {
+                  // Переход на внешний маршрут
+                  window.location.href = item.path;
+                } else {
+                  onNavigate?.(item.path);
+                }
               }}
               className={`shop-navigation__link ${
                 activePath === item.path ? 'shop-navigation__link--active' : ''
