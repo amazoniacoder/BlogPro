@@ -13,17 +13,17 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  border: none;
+  border: none !important;
   background: transparent;
   cursor: pointer;
   border-radius: 50%;
   transition: all 0.2s ease;
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
 }
 
 .search-toggle:hover {
   background-color: var(--bg-hover);
-  color: var(--color-primary);
+  color: var(--color-primary) !important;
   transform: translateY(-2px);
 }
 
@@ -56,12 +56,12 @@
   cursor: pointer;
   border-radius: 50%;
   transition: all 0.2s ease;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .search-toggle__button:hover {
   background-color: var(--bg-hover);
-  color: var(--text-primary);
+  color: var(--color-primary);
   transform: translateY(-2px);
 }
 
