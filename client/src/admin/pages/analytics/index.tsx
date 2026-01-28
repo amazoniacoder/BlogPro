@@ -13,7 +13,7 @@ import websocketService from '@/services/websocket-service';
 const AnalyticsPage: React.FC = () => {
   const [period, setPeriod] = useState(7);
   const { data, loading, error, refetch } = useAnalyticsData(period);
-  const { showToastSuccess, showToastError, showModalError } = useNotifications();
+  const { showToastSuccess, showModalError } = useNotifications();
 
   // Connect WebSocket for analytics updates
   useEffect(() => {

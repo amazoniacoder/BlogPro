@@ -154,7 +154,7 @@ export const useNotifications = () => {
 // Global notification functions for use outside React components
 let globalNotificationContext: NotificationContextType | null = null;
 
-export const setGlobalNotificationContext = (context: NotificationContextType) => {
+export const setGlobalNotificationContext = (context: NotificationContextType | null) => {
   globalNotificationContext = context;
 };
 

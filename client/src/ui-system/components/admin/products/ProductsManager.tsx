@@ -10,9 +10,8 @@ import '../products.css';
 
 export const ProductsManager: React.FC = () => {
   const { products, loading, error, createProduct, updateProduct, deleteProduct, fetchProducts } = useProducts();
-  const { categories, fetchCategories } = useProductCategories();
-  const { showToastSuccess, showToastError, showModalError } = useNotifications();
-  const { categories, fetchCategories } = useProductCategories();
+  const { categories: productCategories, fetchCategories } = useProductCategories();
+  const { showToastSuccess, showModalError } = useNotifications();
 
   useEffect(() => {
     // Connect WebSocket for real-time updates
@@ -42,7 +41,7 @@ export const ProductsManager: React.FC = () => {
       websocketService.unsubscribe('category_updated', handleCategoryChange);
       websocketService.unsubscribe('category_deleted', handleCategoryChange);
     };
-  }, [fetchProducts, fetchCategories]);
+  }, []);
   
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -130,7 +129,7 @@ export const ProductsManager: React.FC = () => {
         <div className="products-manager__form">
           <ProductForm
             product={editingProduct}
-            categories={categories}
+            categories={productCategories}
             onSubmit={editingProduct ? handleUpdate : handleCreate}
             onCancel={handleCancel}
           />

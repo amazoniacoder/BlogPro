@@ -19,7 +19,7 @@ const SettingsPage = lazy(() => import("./pages/settings/index.tsx"));
 const DocumentationPage = lazy(() => import("./pages/documentation/index.tsx"));
 const SiteEditorPage = lazy(() => import("./pages/site-editor/index.tsx"));
 const ShopPage = lazy(() => import("./pages/shop/ShopPage.tsx"));
-const ProductsPage = lazy(() => import("./pages/products/index.tsx"));
+
 const CommentsPage = lazy(() => import("./pages/comments/index.tsx"));
 
 const AdminRoutes: React.FC = () => {
@@ -69,9 +69,7 @@ const AdminRoutes: React.FC = () => {
       <Route path="/admin/shop" nest>
         <ShopPage />
       </Route>
-      <Route path="/admin/products">
-        <ProductsPage />
-      </Route>
+
       <Route>
         <div>Admin page not found</div>
       </Route>
