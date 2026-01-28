@@ -18,12 +18,12 @@
   cursor: pointer;
   border-radius: 50%;
   transition: all 0.2s ease;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .search-toggle:hover {
   background-color: var(--bg-hover);
-  color: var(--text-primary);
+  color: var(--color-primary);
   transform: translateY(-2px);
 }
 
