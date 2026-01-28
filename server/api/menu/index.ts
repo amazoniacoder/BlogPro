@@ -62,14 +62,9 @@ router.post('/', requireAdmin, async (req, res) => {
   try {
     const menuItem = await menuService.create(req.body);
     
-    // Emit WebSocket event for real-time updates
     if (req.app.locals.io) {
       req.app.locals.io.emit('menuCreated', menuItem);
     }
-    
-    // Also broadcast using WebSocket service
-    const { broadcastToAll } = require('../../websocket');
-    broadcastToAll('menu_updated', { menuItem, type: 'create' });
     
     res.status(201).json(menuItem);
   } catch (error) {
@@ -87,14 +82,10 @@ router.put('/:id', requireAdmin, async (req, res) => {
     
     const menuItem = await menuService.update(id, req.body);
     
-    // Emit WebSocket event for real-time updates
+    // Simple WebSocket emit (no external dependencies)
     if (req.app.locals.io) {
       req.app.locals.io.emit('menuUpdated', menuItem);
     }
-    
-    // Also broadcast using WebSocket service
-    const { broadcastToAll } = require('../../websocket');
-    broadcastToAll('menu_updated', { menuItem, type: 'update' });
     
     res.json(menuItem);
   } catch (error) {
@@ -112,14 +103,9 @@ router.delete('/:id', requireAdmin, async (req, res) => {
     
     const success = await menuService.delete(id);
     if (success) {
-      // Emit WebSocket event for real-time updates
       if (req.app.locals.io) {
         req.app.locals.io.emit('menuDeleted', { id });
       }
-      
-      // Also broadcast using WebSocket service
-      const { broadcastToAll } = require('../../websocket');
-      broadcastToAll('menu_updated', { menuItemId: id, type: 'delete' });
       
       res.json({ message: 'Menu item deleted successfully' });
     } else {

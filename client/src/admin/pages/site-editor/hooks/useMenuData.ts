@@ -54,7 +54,15 @@ export const useMenuData = () => {
       const updatedItem = await menuApi.updateMenuItem(id, { is_active: isActive });
       dispatch({ type: 'MENU/UPDATE_SUCCESS', payload: updatedItem });
       
-      // WebSocket event will be sent by server automatically
+      // Force refresh menu data to ensure sync
+      setTimeout(() => {
+        fetchMenuItems();
+      }, 100);
+      
+      // Dispatch custom event for frontend header
+      window.dispatchEvent(new CustomEvent('menu_updated', { 
+        detail: { menuItem: updatedItem, type: 'toggle_active' } 
+      }));
     } catch (err) {
       dispatch({ type: 'MENU/OPERATION_FAILURE', error: 'Ошибка изменения статуса пункта меню' });
       throw err;
