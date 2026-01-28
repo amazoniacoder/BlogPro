@@ -11,6 +11,7 @@
 @import './components/admin/comments/comments-admin.css';
 @import './components/notifications/notifications.css';
 @import './patterns/legal-page.css';
+@import './patterns/cookie-banner.css';
 
 /* Variables are imported from ./base/variables.css via ./index.css */
 

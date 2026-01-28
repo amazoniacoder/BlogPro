@@ -12,6 +12,7 @@ import enErrors from '../locales/en/errors.json';
 import enAdmin from '../locales/en/admin.json';
 import enPrivacy from '../locales/en/privacy.json';
 import enTerms from '../locales/en/terms.json';
+import enCookies from '../locales/en/cookies.json';
 
 import ruCommon from '../locales/ru/common.json';
 import ruAuth from '../locales/ru/auth.json';
@@ -22,6 +23,7 @@ import ruErrors from '../locales/ru/errors.json';
 import ruAdmin from '../locales/ru/admin.json';
 import ruPrivacy from '../locales/ru/privacy.json';
 import ruTerms from '../locales/ru/terms.json';
+import ruCookies from '../locales/ru/cookies.json';
 
 i18n
   .use(LanguageDetector)
@@ -31,7 +33,7 @@ i18n
     fallbackLng: 'ru',
     debug: process.env.NODE_ENV === 'development',
     
-    ns: ['common', 'auth', 'nav', 'forms', 'blog', 'errors', 'admin', 'privacy', 'terms'],
+    ns: ['common', 'auth', 'nav', 'forms', 'blog', 'errors', 'admin', 'privacy', 'terms', 'cookies'],
     defaultNS: 'common',
     
     resources: {
@@ -44,7 +46,8 @@ i18n
         errors: enErrors,
         admin: enAdmin,
         privacy: enPrivacy,
-        terms: enTerms
+        terms: enTerms,
+        cookies: enCookies
       },
       ru: {
         common: ruCommon,
@@ -55,7 +58,8 @@ i18n
         errors: ruErrors,
         admin: ruAdmin,
         privacy: ruPrivacy,
-        terms: ruTerms
+        terms: ruTerms,
+        cookies: ruCookies
       }
     },
     

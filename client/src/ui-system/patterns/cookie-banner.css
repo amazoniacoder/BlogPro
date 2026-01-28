@@ -1,0 +1,318 @@
+/* Cookie Banner Styles */
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  animation: slideUp 0.4s ease-out;
+}
+
+.cookie-banner__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+}
+
+.cookie-banner__container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem 1rem;
+}
+
+.cookie-banner__content {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px 16px 0 0;
+  padding: 2rem;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.cookie-banner__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cookie-banner__icon {
+  font-size: 2rem;
+  animation: bounce 2s infinite;
+}
+
+.cookie-banner__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.cookie-banner__description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.cookie-banner__settings {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.cookie-banner__category {
+  margin-bottom: 1.5rem;
+}
+
+.cookie-banner__category:last-child {
+  margin-bottom: 0;
+}
+
+.cookie-banner__category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.cookie-banner__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cookie-banner__checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.cookie-banner__checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.2s ease;
+  background: var(--bg-primary);
+}
+
+.cookie-banner__checkbox input[type="checkbox"]:checked + .cookie-banner__checkmark {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.cookie-banner__checkbox input[type="checkbox"]:checked + .cookie-banner__checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.cookie-banner__checkbox input[type="checkbox"]:disabled + .cookie-banner__checkmark {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  opacity: 0.6;
+}
+
+.cookie-banner__label {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.cookie-banner__required {
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.cookie-banner__category-desc {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+  padding-left: 2.75rem;
+}
+
+.cookie-banner__links {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cookie-banner__link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.cookie-banner__link:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.cookie-banner__actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.cookie-banner__button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cookie-banner__button--primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.cookie-banner__button--primary:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.cookie-banner__button--secondary {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.cookie-banner__button--secondary:hover {
+  background: var(--bg-hover);
+  border-color: var(--color-primary);
+}
+
+.cookie-banner__button--outline {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.cookie-banner__button--outline:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Dark Theme Support */
+.dark .cookie-banner__content {
+  background: var(--bg-primary);
+  border-color: var(--border-color);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.dark .cookie-banner__settings {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .cookie-banner__container {
+    padding: 0 0.5rem 0.5rem;
+  }
+
+  .cookie-banner__content {
+    padding: 1.5rem;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .cookie-banner__header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .cookie-banner__title {
+    font-size: 1.25rem;
+  }
+
+  .cookie-banner__actions {
+    flex-direction: column;
+  }
+
+  .cookie-banner__button {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .cookie-banner__links {
+    justify-content: center;
+  }
+
+  .cookie-banner__category-desc {
+    padding-left: 0;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cookie-banner__content {
+    padding: 1rem;
+  }
+
+  .cookie-banner__settings {
+    padding: 1rem;
+  }
+
+  .cookie-banner__category-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

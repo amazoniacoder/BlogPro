@@ -12,6 +12,7 @@ import { Layout } from '@/ui-system/components/layout';
 import { ProtectedRoute } from './components/common/protected-route';
 import { UpdateNotification } from '@/ui-system/components/feedback';
 import ScrollToTop from './components/ScrollToTop';
+import CookieBanner from './components/common/CookieBanner';
 
 
 // Direct import for immediate loading
@@ -83,6 +84,7 @@ function App() {
                       <Layout>
                         <ScrollToTop />
                         <UpdateNotification className="app__notification" />
+                        <CookieBanner />
                         <Switch>
                           <Route path="/">
                             <HomePage />
