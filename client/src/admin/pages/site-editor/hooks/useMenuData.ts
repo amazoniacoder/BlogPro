@@ -54,10 +54,7 @@ export const useMenuData = () => {
       const updatedItem = await menuApi.updateMenuItem(id, { is_active: isActive });
       dispatch({ type: 'MENU/UPDATE_SUCCESS', payload: updatedItem });
       
-      // Broadcast menu update event for frontend
-      window.dispatchEvent(new CustomEvent('menu_updated', { 
-        detail: { menuItem: updatedItem, type: 'toggle_active' } 
-      }));
+      // WebSocket event will be sent by server automatically
     } catch (err) {
       dispatch({ type: 'MENU/OPERATION_FAILURE', error: 'Ошибка изменения статуса пункта меню' });
       throw err;
@@ -81,22 +78,22 @@ export const useMenuData = () => {
   useEffect(() => {
     if (!connected) return;
     
-    // Existing menu events
+    // WebSocket events from server
+    websocketService.subscribe('menu_updated', fetchMenuItems);
     websocketService.subscribe('menuUpdated', fetchMenuItems);
     websocketService.subscribe('menuCreated', fetchMenuItems);
     websocketService.subscribe('menuDeleted', fetchMenuItems);
     
     // Documentation-specific events for menu synchronization
     websocketService.subscribe('documentation_deleted', fetchMenuItems);
-    websocketService.subscribe('menu_updated', fetchMenuItems);
     websocketService.subscribe('category_menu_updated', fetchMenuItems);
     
     return () => {
+      websocketService.unsubscribe('menu_updated', fetchMenuItems);
       websocketService.unsubscribe('menuUpdated', fetchMenuItems);
       websocketService.unsubscribe('menuCreated', fetchMenuItems);
       websocketService.unsubscribe('menuDeleted', fetchMenuItems);
       websocketService.unsubscribe('documentation_deleted', fetchMenuItems);
-      websocketService.unsubscribe('menu_updated', fetchMenuItems);
       websocketService.unsubscribe('category_menu_updated', fetchMenuItems);
     };
   }, [connected, fetchMenuItems]);

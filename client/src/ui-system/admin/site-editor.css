@@ -208,17 +208,14 @@
   font-size: 0.625rem;
   font-weight: 500;
   text-transform: uppercase;
-  padding: 0.125rem 0.375rem;
-  border-radius: 15px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
   border: none;
-  background: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: fit-content;
-  width: auto;
+  display: inline-block;
+  width: fit-content;
+  white-space: nowrap;
 }
 
 .site-editor-tree-item__status:hover {

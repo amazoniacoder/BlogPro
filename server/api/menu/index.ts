@@ -67,6 +67,10 @@ router.post('/', requireAdmin, async (req, res) => {
       req.app.locals.io.emit('menuCreated', menuItem);
     }
     
+    // Also broadcast using WebSocket service
+    const { broadcastToAll } = require('../../websocket');
+    broadcastToAll('menu_updated', { menuItem, type: 'create' });
+    
     res.status(201).json(menuItem);
   } catch (error) {
     console.error('Error creating menu item:', error);
@@ -88,6 +92,10 @@ router.put('/:id', requireAdmin, async (req, res) => {
       req.app.locals.io.emit('menuUpdated', menuItem);
     }
     
+    // Also broadcast using WebSocket service
+    const { broadcastToAll } = require('../../websocket');
+    broadcastToAll('menu_updated', { menuItem, type: 'update' });
+    
     res.json(menuItem);
   } catch (error) {
     console.error('Error updating menu item:', error);
@@ -108,6 +116,10 @@ router.delete('/:id', requireAdmin, async (req, res) => {
       if (req.app.locals.io) {
         req.app.locals.io.emit('menuDeleted', { id });
       }
+      
+      // Also broadcast using WebSocket service
+      const { broadcastToAll } = require('../../websocket');
+      broadcastToAll('menu_updated', { menuItemId: id, type: 'delete' });
       
       res.json({ message: 'Menu item deleted successfully' });
     } else {

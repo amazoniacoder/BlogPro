@@ -24,6 +24,16 @@ const AppHeader = () => {
   const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
   const [originalMenuItems, setOriginalMenuItems] = useState<MenuItem[]>([]);
 
+  // Convert API menu items to NavigationItems
+  const convertToNavigationItems = (menuItems: MenuItem[]): NavigationItem[] => {
+    return menuItems.map((item, index) => ({
+      id: item.id.toString(),
+      label: item.title,
+      href: item.url || '#',
+      priority: item.order_index || index + 1
+    }));
+  };
+
 
   // Set up header scroll effect
   useEffect(() => {
@@ -35,23 +45,36 @@ const AppHeader = () => {
   useEffect(() => {
     const setupNavigation = async () => {
       try {
-        // Try to fetch menu structure from API for future extensibility
+        // Fetch menu structure from API
         const items = await menuApi.getMenuTree();
         setOriginalMenuItems(items || []);
+        
+        // Convert API items to NavigationItems
+        if (items && items.length > 0) {
+          const navItems = convertToNavigationItems(items);
+          setNavigationItems(navItems);
+        } else {
+          // Fallback to static menu if API fails
+          setNavigationItems([
+            { id: '1', label: t('home'), href: '/', priority: 1 },
+            { id: '2', label: t('about'), href: '/about', priority: 2 },
+            { id: '3', label: t('blog'), href: '/blog', priority: 3 },
+            { id: '4', label: t('products'), href: '/products', priority: 4 },
+            { id: '5', label: t('contact'), href: '/contact', priority: 5 }
+          ]);
+        }
       } catch (err) {
-        // API failed, but we'll still use translated menu
+        // API failed, use translated static menu
         setOriginalMenuItems([]);
+        setNavigationItems([
+          { id: '1', label: t('home'), href: '/', priority: 1 },
+          { id: '2', label: t('about'), href: '/about', priority: 2 },
+          { id: '3', label: t('blog'), href: '/blog', priority: 3 },
+          { id: '4', label: t('products'), href: '/products', priority: 4 },
+          { id: '5', label: t('contact'), href: '/contact', priority: 5 }
+        ]);
       }
     };
-    
-    // Set navigation items immediately (no loading state)
-    setNavigationItems([
-      { id: '1', label: t('home'), href: '/', priority: 1 },
-      { id: '2', label: t('about'), href: '/about', priority: 2 },
-      { id: '3', label: t('blog'), href: '/blog', priority: 3 },
-      { id: '4', label: t('products'), href: '/products', priority: 4 },
-      { id: '5', label: t('contact'), href: '/contact', priority: 5 }
-    ]);
     
     setupNavigation();
   }, [t]);
@@ -62,13 +85,19 @@ const AppHeader = () => {
       try {
         const items = await menuApi.getMenuTree();
         setOriginalMenuItems(items || []);
+        
+        // Update navigation items when menu changes
+        if (items && items.length > 0) {
+          const navItems = convertToNavigationItems(items);
+          setNavigationItems(navItems);
+        }
       } catch (err) {
         console.error('Failed to update menu:', err);
       }
     };
 
-    // Listen for WebSocket events
-    const events = ['menuUpdated', 'menuCreated', 'menuDeleted', 'menu_updated'];
+    // Listen for custom events (fallback)
+    const events = ['menu_updated'];
     events.forEach(event => {
       window.addEventListener(event, handleMenuUpdate);
     });
