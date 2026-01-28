@@ -8,6 +8,7 @@ interface SiteEditorTreeItemProps {
   level: number;
   onEdit: (item: MenuItem) => void;
   onDelete: (id: number) => void;
+  onToggleActive?: (id: number, isActive: boolean) => void;
   onToggle?: (id: number, expanded: boolean) => void;
   onSelect?: (id: number, selected: boolean) => void;
   isSelected?: boolean;
@@ -19,6 +20,7 @@ const SiteEditorTreeItem: React.FC<SiteEditorTreeItemProps> = ({
   level,
   onEdit,
   onDelete,
+  onToggleActive,
   onToggle,
   onSelect,
   isSelected = false,
@@ -66,6 +68,12 @@ const SiteEditorTreeItem: React.FC<SiteEditorTreeItemProps> = ({
   }, [isExpanded, isAnimating, item.id, onToggle]);
 
 
+
+  // Handle active status toggle
+  const handleToggleActive = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    onToggleActive?.(item.id, !item.is_active);
+  }, [item.id, item.is_active, onToggleActive]);
 
   // Keyboard navigation
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
@@ -179,9 +187,13 @@ const SiteEditorTreeItem: React.FC<SiteEditorTreeItemProps> = ({
             {item.url && (
               <div className="site-editor-tree-item__url">{item.url}</div>
             )}
-            <div className={`site-editor-tree-item__status ${getStatusClass()}`}>
+            <button 
+              className={`site-editor-tree-item__status ${getStatusClass()}`}
+              onClick={handleToggleActive}
+              title={item.is_active ? t('admin:clickToDeactivate') : t('admin:clickToActivate')}
+            >
               {item.is_active ? t('admin:active') : t('admin:inactive')}
-            </div>
+            </button>
           </div>
         </div>
 
@@ -216,6 +228,7 @@ const SiteEditorTreeItem: React.FC<SiteEditorTreeItemProps> = ({
               level={level + 1}
               onEdit={onEdit}
               onDelete={onDelete}
+              onToggleActive={onToggleActive}
               onToggle={onToggle}
               onSelect={onSelect}
               isSelected={isSelected}

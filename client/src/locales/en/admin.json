@@ -55,5 +55,10 @@
   
   "adminPanel": "Admin Panel",
   "welcome": "Welcome",
-  "logout": "Logout"
+  "logout": "Logout",
+  
+  "active": "Active",
+  "inactive": "Inactive",
+  "clickToActivate": "Click to activate",
+  "clickToDeactivate": "Click to deactivate"
 }

@@ -55,5 +55,10 @@
   
   "adminPanel": "Панель администратора",
   "welcome": "Добро пожаловать",
-  "logout": "Выйти"
+  "logout": "Выйти",
+  
+  "active": "Активно",
+  "inactive": "Неактивно",
+  "clickToActivate": "Нажмите для активации",
+  "clickToDeactivate": "Нажмите для деактивации"
 }

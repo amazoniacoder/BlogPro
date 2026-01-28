@@ -49,6 +49,21 @@ export const useMenuData = () => {
     }
   };
 
+  const toggleMenuItemActive = async (id: number, isActive: boolean) => {
+    try {
+      const updatedItem = await menuApi.updateMenuItem(id, { is_active: isActive });
+      dispatch({ type: 'MENU/UPDATE_SUCCESS', payload: updatedItem });
+      
+      // Broadcast menu update event for frontend
+      window.dispatchEvent(new CustomEvent('menu_updated', { 
+        detail: { menuItem: updatedItem, type: 'toggle_active' } 
+      }));
+    } catch (err) {
+      dispatch({ type: 'MENU/OPERATION_FAILURE', error: 'Ошибка изменения статуса пункта меню' });
+      throw err;
+    }
+  };
+
   const reorderMenuItems = async (items: { id: number; order_index: number; parent_id?: number }[]) => {
     try {
       await menuApi.reorderMenuItems(items);
@@ -92,6 +107,7 @@ export const useMenuData = () => {
     createMenuItem,
     updateMenuItem,
     deleteMenuItem,
+    toggleMenuItemActive,
     reorderMenuItems,
     refetch: fetchMenuItems
   };

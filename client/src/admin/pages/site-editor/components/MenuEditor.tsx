@@ -12,7 +12,7 @@ import type { MenuItem } from '../../../../types/menu';
 
 export const MenuEditor: React.FC = () => {
   const { t } = useTranslation(['admin', 'common']);
-  const { menuItems, loading, error, createMenuItem, updateMenuItem, deleteMenuItem } = useMenuData();
+  const { menuItems, loading, error, createMenuItem, updateMenuItem, deleteMenuItem, toggleMenuItemActive } = useMenuData();
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -165,6 +165,7 @@ export const MenuEditor: React.FC = () => {
               items={menuItems}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onToggleActive={toggleMenuItemActive}
               selectedItems={selectedItems}
               onSelectionChange={setSelectedItems}
             />

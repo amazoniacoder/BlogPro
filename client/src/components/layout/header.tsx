@@ -56,6 +56,30 @@ const AppHeader = () => {
     setupNavigation();
   }, [t]);
 
+  // Listen for menu updates via WebSocket
+  useEffect(() => {
+    const handleMenuUpdate = async () => {
+      try {
+        const items = await menuApi.getMenuTree();
+        setOriginalMenuItems(items || []);
+      } catch (err) {
+        console.error('Failed to update menu:', err);
+      }
+    };
+
+    // Listen for WebSocket events
+    const events = ['menuUpdated', 'menuCreated', 'menuDeleted', 'menu_updated'];
+    events.forEach(event => {
+      window.addEventListener(event, handleMenuUpdate);
+    });
+
+    return () => {
+      events.forEach(event => {
+        window.removeEventListener(event, handleMenuUpdate);
+      });
+    };
+  }, []);
+
   const handleLogout = async () => {
     try {
       await logout();

@@ -4,7 +4,7 @@ import { ThemeProvider } from 'next-themes';
 import { AuthProvider } from './store/auth-context';
 import { CartProvider } from './store/cart-context';
 import { FontSizeProvider } from '@/ui-system/components/accessibility';
-import { ToastProvider } from '@/ui-system/components/feedback';
+import { NotificationProvider } from '@/ui-system/components/feedback';
 import { SettingsProvider } from './store/settings-context';
 import { ColorThemeProvider } from '@/ui-system/components/theme';
 import { WebSocketProvider } from '@/ui-system/hooks/useWebSocket';
@@ -54,7 +54,7 @@ function App() {
       <ThemeProvider attribute="class">
         <ColorThemeProvider>
           <FontSizeProvider>
-            <ToastProvider>
+            <NotificationProvider>
               <SettingsProvider>
                 <WebSocketProvider>
                   <AuthProvider>
@@ -129,7 +129,7 @@ function App() {
                   </AuthProvider>
                 </WebSocketProvider>
               </SettingsProvider>
-            </ToastProvider>
+            </NotificationProvider>
           </FontSizeProvider>
         </ColorThemeProvider>
       </ThemeProvider>

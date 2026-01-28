@@ -7,6 +7,7 @@ interface SiteEditorTreeProps {
   items: MenuItem[];
   onEdit: (item: MenuItem) => void;
   onDelete: (id: number) => void;
+  onToggleActive?: (id: number, isActive: boolean) => void;
   selectedItems?: number[];
   onSelectionChange?: (selectedIds: number[]) => void;
 }
@@ -15,6 +16,7 @@ const SiteEditorTree: React.FC<SiteEditorTreeProps> = ({
   items,
   onEdit,
   onDelete,
+  onToggleActive,
   selectedItems = [],
   onSelectionChange
 }) => {
@@ -58,6 +60,7 @@ const SiteEditorTree: React.FC<SiteEditorTreeProps> = ({
           level={0}
           onEdit={onEdit}
           onDelete={onDelete}
+          onToggleActive={onToggleActive}
           onSelect={handleSelect}
           isSelected={selectedItems.includes(item.id)}
         />
