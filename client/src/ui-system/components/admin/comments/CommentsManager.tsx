@@ -6,6 +6,7 @@ import { Card } from '@/ui-system/components/card';
 import { Heading, Text } from '@/ui-system/components/typography';
 import { Stack } from '@/ui-system/components/utility';
 import { Icon } from '@/ui-system/icons/components';
+import { useNotifications } from '@/ui-system/components/feedback';
 
 interface Comment {
   id: number;
@@ -36,6 +37,7 @@ export function CommentsManager() {
     status: 'all'
   });
   const [loading, setLoading] = useState(true);
+  const { showToastSuccess, showToastError, showModalError } = useNotifications();
   
   useEffect(() => {
     loadComments();
@@ -60,6 +62,7 @@ export function CommentsManager() {
       }
     } catch (error) {
       console.error('Error loading comments:', error);
+      showModalError('Failed to load comments', 'Loading Error');
     } finally {
       setLoading(false);
     }
@@ -79,6 +82,7 @@ export function CommentsManager() {
       }
     } catch (error) {
       console.error('Error loading stats:', error);
+      showToastError('Failed to load comment statistics');
     }
   };
   
@@ -96,8 +100,10 @@ export function CommentsManager() {
           ? { ...comment, status: 'approved' as const }
           : comment
       ));
+      showToastSuccess('Comment approved successfully');
     } catch (error) {
       console.error('Error approving comment:', error);
+      showModalError('Failed to approve comment', 'Approval Error');
     }
   };
   
@@ -115,8 +121,10 @@ export function CommentsManager() {
           ? { ...comment, status: 'rejected' as const }
           : comment
       ));
+      showToastSuccess('Comment rejected successfully');
     } catch (error) {
       console.error('Error rejecting comment:', error);
+      showModalError('Failed to reject comment', 'Rejection Error');
     }
   };
   
@@ -132,8 +140,10 @@ export function CommentsManager() {
       });
       
       setComments(prev => prev.filter(comment => comment.id !== commentId));
+      showToastSuccess('Comment deleted successfully');
     } catch (error) {
       console.error('Error deleting comment:', error);
+      showModalError('Failed to delete comment', 'Deletion Error');
     }
   };
   

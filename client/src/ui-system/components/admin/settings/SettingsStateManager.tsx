@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotifications } from '@/ui-system/components/feedback';
 
 interface SettingsState {
   activeTab: string;
@@ -81,7 +81,7 @@ export const SettingsStateManager: React.FC<SettingsStateManagerProps> = ({
   autoSaveDelay = 3000
 }) => {
   const [state, dispatch] = useReducer(settingsReducer, initialState);
-  const { showSuccess, showError } = useToast();
+  const { showToastSuccess, showToastError } = useNotifications();
 
   // Load existing settings on mount
   useEffect(() => {
@@ -163,7 +163,7 @@ export const SettingsStateManager: React.FC<SettingsStateManagerProps> = ({
           await onSave(state.tabData);
           dispatch({ type: 'MARK_SAVED' });
         } catch (error) {
-          showError('Failed to save changes');
+          showToastError('Failed to save changes');
           return false;
         }
       } else if (!shouldContinue) {
@@ -173,7 +173,7 @@ export const SettingsStateManager: React.FC<SettingsStateManagerProps> = ({
     
     dispatch({ type: 'SET_ACTIVE_TAB', payload: tab });
     return true;
-  }, [state.hasUnsavedChanges, state.tabData, onSave, showError]);
+  }, [state.hasUnsavedChanges, state.tabData, onSave, showToastError]);
 
   const updateTabData = useCallback((tab: string, data: any) => {
     dispatch({ type: 'SET_TAB_DATA', payload: { tab, data } });
@@ -185,12 +185,12 @@ export const SettingsStateManager: React.FC<SettingsStateManagerProps> = ({
     try {
       await onSave(state.tabData);
       dispatch({ type: 'MARK_SAVED' });
-      showSuccess('Settings saved successfully');
+      showToastSuccess('Settings saved successfully');
     } catch (error) {
-      showError('Failed to save settings');
+      showToastError('Failed to save settings');
       throw error;
     }
-  }, [onSave, state.tabData, state.hasUnsavedChanges, showSuccess, showError]);
+  }, [onSave, state.tabData, state.hasUnsavedChanges, showToastSuccess, showToastError]);
 
   const discardChanges = useCallback(() => {
     dispatch({ type: 'SET_UNSAVED_CHANGES', payload: false });

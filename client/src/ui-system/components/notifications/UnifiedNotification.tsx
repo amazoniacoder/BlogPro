@@ -1,6 +1,6 @@
 /**
  * Unified Notification Component
- * Centralized notification system with consistent styling
+ * Centralized notification system with consistent styling and theme support
  */
 
 import React, { useEffect, useState } from 'react';
@@ -13,15 +13,17 @@ export interface NotificationProps {
   duration?: number;
   onClose?: () => void;
   autoClose?: boolean;
+  modal?: boolean; // For important actions
 }
 
 export const UnifiedNotification: React.FC<NotificationProps> = ({
   type,
   title,
   message,
-  duration = 5000,
+  duration = 4000,
   onClose,
-  autoClose = true
+  autoClose = true,
+  modal = false
 }) => {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -41,6 +43,12 @@ export const UnifiedNotification: React.FC<NotificationProps> = ({
     setTimeout(() => onClose?.(), 300);
   };
 
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget && modal) {
+      handleClose();
+    }
+  };
+
   const getIcon = () => {
     switch (type) {
       case 'success': return 'check';
@@ -51,8 +59,15 @@ export const UnifiedNotification: React.FC<NotificationProps> = ({
     }
   };
 
-  return (
-    <div className={`notification notification--${type} ${isVisible ? 'notification--visible' : 'notification--hidden'}`}>
+  const notificationClasses = [
+    'notification',
+    `notification--${type}`,
+    modal ? 'notification--modal' : 'notification--toast',
+    isVisible ? 'notification--visible' : 'notification--hidden'
+  ].join(' ');
+
+  const content = (
+    <div className={notificationClasses}>
       <div className="notification__content">
         <div className="notification__icon">
           <Icon name={getIcon()} size={20} />
@@ -71,6 +86,20 @@ export const UnifiedNotification: React.FC<NotificationProps> = ({
       </div>
     </div>
   );
+
+  if (modal) {
+    return (
+      <>
+        <div 
+          className={`notification-overlay ${isVisible ? 'notification-overlay--visible' : ''}`}
+          onClick={handleOverlayClick}
+        />
+        {content}
+      </>
+    );
+  }
+
+  return content;
 };
 
 export default UnifiedNotification;

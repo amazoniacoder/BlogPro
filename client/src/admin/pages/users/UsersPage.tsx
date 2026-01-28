@@ -1,11 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { UsersControlBar, UsersTable, UsersForm, UsersActions } from "@/ui-system/components/admin/users";
+import { useNotifications } from "@/ui-system/components/feedback";
 
 import { useUsersData } from "./hooks/useUsersData";
 import DeleteConfirmationModal from "@/components/common/delete-confirmation";
 import { ErrorDisplay } from "@/ui-system/components/feedback";
-import { useToast } from "@/ui-system/components/feedback";
 
 
 const UsersPage: React.FC = () => {
@@ -19,7 +19,7 @@ const UsersPage: React.FC = () => {
     updateUser,
     verifyEmail,
   } = useUsersData();
-  const { showSuccess, showError } = useToast();
+  const { showToastSuccess, showToastError, showModalError } = useNotifications();
 
   // Initialize editor based on state
   if (!state.editor.isOpen && state.editor.mode === 'create') {
@@ -35,17 +35,17 @@ const UsersPage: React.FC = () => {
       try {
         const result = await deleteUser(state.userToDelete);
         if (result.success) {
-          showSuccess(t('admin:userDeleted', { defaultValue: 'Пользователь успешно удален' }));
+          showToastSuccess(t('admin:userDeleted', { defaultValue: 'Пользователь успешно удален' }));
           // No need for manual refresh - WebSocket and immediate state update handle this
         } else {
-          showError(result.error || "Failed to delete user");
+          showModalError(result.error || "Failed to delete user", 'Delete Failed');
         }
       } catch (error) {
         console.error('Delete operation failed:', error);
         if (error instanceof Error && error.message.includes('500')) {
-          showError('Cannot delete user: Server error (500). User may have associated data.');
+          showModalError('Cannot delete user: Server error (500). User may have associated data.', 'Server Error');
         } else {
-          showError('Failed to delete user: ' + (error instanceof Error ? error.message : 'Unknown error'));
+          showModalError('Failed to delete user: ' + (error instanceof Error ? error.message : 'Unknown error'), 'Delete Failed');
         }
       }
       dispatch({ type: "USERS/HIDE_DELETE_MODAL" });
@@ -68,7 +68,7 @@ const UsersPage: React.FC = () => {
       console.log('User lastName:', user.lastName);
       dispatch({ type: "EDITOR/OPEN", user, mode: 'edit' });
     } else {
-      showError("User not found");
+      showToastError("User not found");
     }
   };
 
@@ -85,16 +85,16 @@ const UsersPage: React.FC = () => {
       
       if (state.editor.mode === 'create') {
         await createUser(apiData);
-        showSuccess(t('admin:userCreated', { defaultValue: 'Пользователь успешно создан' }));
+        showToastSuccess(t('admin:userCreated', { defaultValue: 'Пользователь успешно создан' }));
       } else if (state.editor.mode === 'edit' && state.editor.currentUser) {
         await updateUser(state.editor.currentUser.id, apiData);
-        showSuccess(t('admin:userUpdated', { defaultValue: 'Пользователь успешно обновлен' }));
+        showToastSuccess(t('admin:userUpdated', { defaultValue: 'Пользователь успешно обновлен' }));
       }
       
       dispatch({ type: "EDITOR/CLOSE" });
     } catch (error) {
       console.error("Error saving user:", error);
-      showError(`Failed to ${state.editor.mode === 'create' ? 'create' : 'update'} user`);
+      showModalError(`Failed to ${state.editor.mode === 'create' ? 'create' : 'update'} user`, 'Save Failed');
     }
   };
 
@@ -103,10 +103,10 @@ const UsersPage: React.FC = () => {
       for (const userId of userIds) {
         await deleteUser(userId);
       }
-      showSuccess(t('admin:usersDeleted', { count: userIds.length, defaultValue: 'Пользователи удалены ({{count}})' }));
+      showToastSuccess(t('admin:usersDeleted', { count: userIds.length, defaultValue: 'Пользователи удалены ({{count}})' }));
       dispatch({ type: 'USERS/CLEAR_SELECTION' });
     } catch (error) {
-      showError('Failed to delete users');
+      showModalError('Failed to delete users', 'Bulk Delete Failed');
     }
   };
 
@@ -115,10 +115,10 @@ const UsersPage: React.FC = () => {
       for (const userId of userIds) {
         await updateUserStatus(userId, status);
       }
-      showSuccess(t('admin:usersStatusUpdated', { count: userIds.length, defaultValue: 'Статус пользователей обновлен ({{count}})' }));
+      showToastSuccess(t('admin:usersStatusUpdated', { count: userIds.length, defaultValue: 'Статус пользователей обновлен ({{count}})' }));
       dispatch({ type: 'USERS/CLEAR_SELECTION' });
     } catch (error) {
-      showError('Failed to update user status');
+      showModalError('Failed to update user status', 'Status Update Failed');
     }
   };
 
@@ -145,9 +145,9 @@ const UsersPage: React.FC = () => {
             onVerifyEmail={async (userId) => {
               try {
                 await verifyEmail(userId);
-                showSuccess('Email verified successfully');
+                showToastSuccess('Email verified successfully');
               } catch (error) {
-                showError('Failed to verify email');
+                showToastError('Failed to verify email');
               }
             }}
           />

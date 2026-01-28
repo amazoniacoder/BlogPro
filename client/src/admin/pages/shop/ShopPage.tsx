@@ -8,6 +8,7 @@ import {
   CustomersPage,
   ShopSettingsPage
 } from './index';
+import ProductsPage from './ProductsPage';
 
 const ShopPage: React.FC = () => {
   const [activePath, setActivePath] = useState('/admin/shop/dashboard');
@@ -16,6 +17,8 @@ const ShopPage: React.FC = () => {
     switch (activePath) {
       case '/admin/shop/dashboard':
         return <ShopDashboardPage />;
+      case '/admin/shop/products':
+        return <ProductsPage />;
       case '/admin/shop/orders':
         return <OrdersPage />;
       case '/admin/shop/inventory':

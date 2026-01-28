@@ -5,10 +5,13 @@ import { ProductForm } from './ProductForm';
 import { ProductList } from './ProductList';
 import websocketService from '@/services/websocket-service';
 import { Product } from '../../../../../../shared/types/product';
+import { useNotifications } from '@/ui-system/components/feedback';
 import '../products.css';
 
 export const ProductsManager: React.FC = () => {
   const { products, loading, error, createProduct, updateProduct, deleteProduct, fetchProducts } = useProducts();
+  const { categories, fetchCategories } = useProductCategories();
+  const { showToastSuccess, showToastError, showModalError } = useNotifications();
   const { categories, fetchCategories } = useProductCategories();
 
   useEffect(() => {
@@ -69,8 +72,10 @@ export const ProductsManager: React.FC = () => {
     try {
       await createProduct(productData);
       setShowForm(false);
+      showToastSuccess('Product created successfully');
     } catch (error) {
       console.error('Failed to create product:', error);
+      showModalError('Failed to create product', 'Creation Error');
     }
   };
 
@@ -81,8 +86,10 @@ export const ProductsManager: React.FC = () => {
       await updateProduct(editingProduct.id, productData);
       setEditingProduct(null);
       setShowForm(false);
+      showToastSuccess('Product updated successfully');
     } catch (error) {
       console.error('Failed to update product:', error);
+      showModalError('Failed to update product', 'Update Error');
     }
   };
 
@@ -92,15 +99,14 @@ export const ProductsManager: React.FC = () => {
   };
 
   const handleDelete = async (productId: string) => {
-    if (confirm('Are you sure you want to delete this product?')) {
-      try {
-        console.log('Attempting to delete product with ID:', productId);
-        await deleteProduct(productId);
-        console.log('Product deleted successfully');
-      } catch (error) {
-        console.error('Failed to delete product:', error);
-        alert('Failed to delete product. Please check the console for details.');
-      }
+    try {
+      console.log('Attempting to delete product with ID:', productId);
+      await deleteProduct(productId);
+      console.log('Product deleted successfully');
+      showToastSuccess('Product deleted successfully');
+    } catch (error) {
+      console.error('Failed to delete product:', error);
+      showModalError('Failed to delete product. Please check the console for details.', 'Deletion Error');
     }
   };
 

@@ -9,7 +9,7 @@ import BlogEditor from "./components/BlogEditor";
 import DeleteConfirmation from "@/components/common/delete-confirmation";
 import { Pagination } from "@/ui-system/components/pagination";
 import { ErrorDisplay } from "@/ui-system/components/feedback";
-import { useToast } from "@/ui-system/components/feedback";
+import { useNotifications } from "@/ui-system/components/feedback";
 
 import { AdminRoutes } from "../../utils/routePatterns";
 
@@ -23,7 +23,7 @@ const BlogPage: React.FC = () => {
     changePage,
     changeItemsPerPage,
   } = useBlogData();
-  const { showSuccess, showError } = useToast();
+  const { showToastSuccess, showToastError } = useNotifications();
   const [, navigate] = useLocation();
   const [showEditPage, setShowEditPage] = useState(false);
   const [editingPostId, setEditingPostId] = useState<string | undefined>(
@@ -150,7 +150,7 @@ const BlogPage: React.FC = () => {
                 await deleteBlogPost(state.postToDelete);
                 
                 // Show success message
-                showSuccess("Blog post deleted successfully");
+                showToastSuccess("Blog post deleted successfully");
                 
                 // Immediately refresh the entire list to get fresh data
                 await fetchBlogPosts(state.currentPage, state.itemsPerPage);
@@ -159,14 +159,14 @@ const BlogPage: React.FC = () => {
                 if (
                   !(error instanceof Error && error.message.includes("404"))
                 ) {
-                  showError(
+                  showToastError(
                     `Failed to delete blog post: ${
                       error instanceof Error ? error.message : "Unknown error"
                     }`
                   );
                 } else {
                   // Even for 404, refresh the list
-                  showSuccess("Blog post deleted successfully");
+                  showToastSuccess("Blog post deleted successfully");
                   await fetchBlogPosts(state.currentPage, state.itemsPerPage);
                 }
               }

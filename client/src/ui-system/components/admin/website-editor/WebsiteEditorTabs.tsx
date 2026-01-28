@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { ProductsManager } from '../products/ProductsManager';
 import { MenuEditor } from '../../../../admin/pages/site-editor/components/MenuEditor';
 import '../categories.css';
 
-type TabType = 'menu' | 'products';
+type TabType = 'menu';
 
 export const WebsiteEditorTabs: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('menu');
@@ -12,7 +11,7 @@ export const WebsiteEditorTabs: React.FC = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get('tab');
-    if (tab && ['menu', 'products'].includes(tab)) {
+    if (tab && ['menu'].includes(tab)) {
       setActiveTab(tab as TabType);
     }
   }, []);
@@ -29,24 +28,17 @@ export const WebsiteEditorTabs: React.FC = () => {
       // Trigger menu item creation
       const event = new CustomEvent('createMenuItem');
       window.dispatchEvent(event);
-    } else if (activeTab === 'products') {
-      // Trigger product creation
-      const event = new CustomEvent('createProduct');
-      window.dispatchEvent(event);
     }
   };
 
   const tabs = [
-    { id: 'menu' as TabType, label: 'Menu', icon: 'hamburger' },
-    { id: 'products' as TabType, label: 'Products', icon: 'grid' }
+    { id: 'menu' as TabType, label: 'Menu', icon: 'hamburger' }
   ];
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'menu':
         return <MenuEditor />;
-      case 'products':
-        return <ProductsManager />;
       default:
         return null;
     }
@@ -87,7 +79,7 @@ export const WebsiteEditorTabs: React.FC = () => {
             className="admin-button admin-button--primary"
             onClick={handleAddClick}
           >
-            {activeTab === 'menu' ? 'Add Menu Item' : 'Add Product'}
+            Add Menu Item
           </button>
         </div>
       </div>

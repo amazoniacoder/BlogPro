@@ -31,13 +31,10 @@ git add .gitignore
 
 ### 4. Создание коммита
 ```bash
-git commit -m "Update admin credentials and email settings
+git commit -m "28.01.26 Исправления 1
 
-- Changed default admin email to genavinogradov@gmail.com
-- Updated admin username to Gena with secure password
-- Removed sensitive admin data from README
-- Added docs/ folder to .gitignore for security
-- Updated email service default recipient"
+- Некоторые исправления и доработка
+- ..."
 ```
 
 ## Выгрузка на GitHub

@@ -15,11 +15,11 @@ router.get('/', authenticateToken, requireAdmin, async (req: Request, res: Respo
     const { page = 1, limit = 20, status } = req.query;
     const offset = (parseInt(page as string) - 1) * parseInt(limit as string);
     
-    let whereClause = 'WHERE 1=1';
+    let whereClause = 'WHERE deleted_at IS NULL';
     const params: any[] = [limit, offset];
     
     if (status && status !== 'all') {
-      whereClause += ` AND c.status = $${params.length + 1}`;
+      whereClause += ` AND COALESCE(c.status, 'approved') = $${params.length + 1}`;
       params.push(status);
     }
     
@@ -57,16 +57,28 @@ router.get('/stats', authenticateToken, requireAdmin, async (_req: Request, res:
     const query = `
       SELECT 
         COUNT(*) as total,
-        COUNT(CASE WHEN status = 'pending' THEN 1 END) as pending,
-        COUNT(CASE WHEN status = 'approved' THEN 1 END) as approved
+        COUNT(CASE WHEN COALESCE(status, 'approved') = 'pending' THEN 1 END) as pending,
+        COUNT(CASE WHEN COALESCE(status, 'approved') = 'approved' THEN 1 END) as approved,
+        COUNT(CASE WHEN COALESCE(status, 'approved') = 'rejected' THEN 1 END) as rejected,
+        COUNT(CASE WHEN COALESCE(flagged_count, 0) > 0 THEN 1 END) as flagged
       FROM comments
+      WHERE deleted_at IS NULL
     `;
     
     const result = await pool.query(query);
     const stats = result.rows[0];
     
+    // Convert string numbers to integers
+    const formattedStats = {
+      total: parseInt(stats.total) || 0,
+      pending: parseInt(stats.pending) || 0,
+      approved: parseInt(stats.approved) || 0,
+      rejected: parseInt(stats.rejected) || 0,
+      flagged: parseInt(stats.flagged) || 0
+    };
+    
     res.json(createSuccessResponse(
-      stats,
+      formattedStats,
       'Comment statistics retrieved successfully'
     ));
   } catch (error: any) {
@@ -83,7 +95,10 @@ router.put('/:id/approve', authenticateToken, requireAdmin, async (req: Request,
     
     const query = `
       UPDATE comments 
-      SET status = 'approved', approved_by = $1, approved_at = CURRENT_TIMESTAMP
+      SET status = 'approved', 
+          approved_by = $1, 
+          approved_at = CURRENT_TIMESTAMP,
+          updated_at = CURRENT_TIMESTAMP
       WHERE id = $2
       RETURNING *
     `;
@@ -109,7 +124,10 @@ router.put('/:id/reject', authenticateToken, requireAdmin, async (req: Request, 
     
     const query = `
       UPDATE comments 
-      SET status = 'rejected', approved_by = $1, approved_at = CURRENT_TIMESTAMP
+      SET status = 'rejected', 
+          approved_by = $1, 
+          approved_at = CURRENT_TIMESTAMP,
+          updated_at = CURRENT_TIMESTAMP
       WHERE id = $2
       RETURNING *
     `;
@@ -132,7 +150,7 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req: Request, res:
   try {
     const { id } = req.params;
     
-    await pool.query('DELETE FROM comments WHERE id = $1', [id]);
+    await pool.query('UPDATE comments SET deleted_at = CURRENT_TIMESTAMP WHERE id = $1', [id]);
     
     res.json(createSuccessResponse(
       { id: parseInt(id) },

@@ -7,11 +7,13 @@ import {
   DeviceStats,
   RealtimeVisitors
 } from '@/ui-system/components/admin';
+import { useNotifications } from '@/ui-system/components/feedback';
 import websocketService from '@/services/websocket-service';
 
 const AnalyticsPage: React.FC = () => {
   const [period, setPeriod] = useState(7);
   const { data, loading, error, refetch } = useAnalyticsData(period);
+  const { showToastSuccess, showToastError, showModalError } = useNotifications();
 
   // Connect WebSocket for analytics updates
   useEffect(() => {
@@ -56,11 +58,14 @@ const AnalyticsPage: React.FC = () => {
                     }
                   });
                   if (response.ok) {
-                    alert('Cache cleared successfully!');
+                    showToastSuccess('Cache cleared successfully!');
                     refetch();
+                  } else {
+                    showModalError('Failed to clear cache', 'Cache Clear Error');
                   }
                 } catch (error) {
                   console.error('Failed to clear cache:', error);
+                  showModalError('Failed to clear cache', 'Network Error');
                 }
               }
             }}
@@ -74,16 +79,22 @@ const AnalyticsPage: React.FC = () => {
               if (confirm('Clear ALL analytics data? This cannot be undone.')) {
                 try {
                   const token = localStorage.getItem('authToken');
-                  await fetch('/api/analytics/clear-data', {
-                    method: 'POST',
+                  const response = await fetch('/api/analytics/clear-data', {
+                    method: 'DELETE',
                     headers: {
                       'Authorization': `Bearer ${token}`,
                       'Content-Type': 'application/json'
                     }
                   });
-                  refetch();
+                  if (response.ok) {
+                    showToastSuccess('All analytics data cleared successfully!');
+                    refetch();
+                  } else {
+                    showModalError('Failed to clear analytics data', 'Data Clear Error');
+                  }
                 } catch (error) {
                   console.error('Failed to clear data:', error);
+                  showModalError('Failed to clear analytics data', 'Network Error');
                 }
               }
             }}

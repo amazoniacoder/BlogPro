@@ -110,7 +110,7 @@ export class EmailService {
                   </tr>
                   <tr>
                     <td style="background: #f8fafc; padding: 30px 40px; text-align: center; border-top: 1px solid #e2e8f0;">
-                      <p style="color: #94a3b8; font-size: 12px; margin: 0;">© 2024 BlogPro. Все права защищены.</p>
+                      <p style="color: #94a3b8; font-size: 12px; margin: 0;">© 2026 BlogPro. Все права защищены.</p>
                     </td>
                   </tr>
                 </table>
