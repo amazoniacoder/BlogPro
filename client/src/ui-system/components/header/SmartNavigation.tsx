@@ -51,17 +51,15 @@ export const SmartNavigation: React.FC<SmartNavigationProps> = ({
     return false;
   };
 
-  // Convert MenuItem to DropdownItem structure (only active items)
+  // Convert MenuItem to DropdownItem structure
   const convertToDropdownItems = (items: MenuItem[]): DropdownItem[] => {
-    return items
-      .filter(item => item.is_active) // Only show active menu items
-      .map(item => ({
-        id: item.id.toString(),
-        label: item.title,
-        href: item.url,
-        children: item.children ? convertToDropdownItems(item.children) : undefined,
-        active: isActive(item.url)
-      }));
+    return items.map(item => ({
+      id: item.id.toString(),
+      label: item.title,
+      href: item.url,
+      children: item.children ? convertToDropdownItems(item.children) : undefined,
+      active: isActive(item.url)
+    }));
   };
 
   // Find corresponding MenuItem for each visible NavigationItem
@@ -75,11 +73,6 @@ export const SmartNavigation: React.FC<SmartNavigationProps> = ({
       <div className="header__nav-list list-none m-0 p-0">
         {visibleItems.map((item) => {
           const menuItem = getMenuItemById(item.id);
-          
-          // Skip inactive menu items
-          if (menuItem && !menuItem.is_active) {
-            return null;
-          }
           
           return (
             <div 

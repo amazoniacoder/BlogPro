@@ -16,6 +16,17 @@ router.get('/tree', async (_, res) => {
   }
 });
 
+// Admin route - get full menu tree including inactive items
+router.get('/admin/tree', requireAdmin, async (_, res) => {
+  try {
+    const menuTree = await menuService.getFullMenuTree();
+    res.json(menuTree);
+  } catch (error) {
+    console.error('Error fetching full menu tree:', error);
+    res.status(500).json({ error: 'Failed to fetch full menu tree' });
+  }
+});
+
 // Admin routes - require admin privileges  
 router.get('/', requireAdmin, async (_, res) => {
   console.log('✅ Menu endpoint accessed successfully by admin');

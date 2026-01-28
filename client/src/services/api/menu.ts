@@ -3,9 +3,15 @@ import { httpClient } from '../cache/http-client';
 import type { MenuItem, CreateMenuItemRequest, UpdateMenuItemRequest, ReorderMenuRequest } from '../../types/menu';
 
 export const menuApi = {
-  // Public API - get menu tree
+  // Public API - get menu tree (only active items)
   async getMenuTree(): Promise<MenuItem[]> {
     const response = await httpClient.get('/api/menu/tree', { bypassCache: true });
+    return response;
+  },
+
+  // Admin API - get full menu tree (including inactive items)
+  async getFullMenuTree(): Promise<MenuItem[]> {
+    const response = await httpClient.get('/api/menu/admin/tree', { bypassCache: true });
     return response;
   },
 

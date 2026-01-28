@@ -12,7 +12,7 @@ export const useMenuData = () => {
   const fetchMenuItems = useCallback(async () => {
     dispatch({ type: 'MENU/FETCH_START' });
     try {
-      const items = await menuApi.getMenuTree();
+      const items = await menuApi.getFullMenuTree(); // Используем полное дерево для админки
       dispatch({ type: 'MENU/FETCH_SUCCESS', payload: items || [] });
     } catch (err: any) {
       dispatch({ type: 'MENU/FETCH_FAILURE', error: 'Ошибка загрузки меню' });

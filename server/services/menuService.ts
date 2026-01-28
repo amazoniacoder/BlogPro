@@ -96,6 +96,16 @@ export const menuService = {
     return buildMenuTree(items);
   },
 
+  // Get all menu items with hierarchy (including inactive for admin)
+  async getFullMenuTree(): Promise<MenuItem[]> {
+    const result = await pool.query(`
+      SELECT * FROM menu_items 
+      ORDER BY order_index ASC
+    `);
+    const items = result.rows.map(transformMenuItem);
+    return buildMenuTree(items);
+  },
+
   // Get all menu items (flat list for admin)
   async getAllMenuItems(): Promise<MenuItem[]> {
     const result = await pool.query(`
