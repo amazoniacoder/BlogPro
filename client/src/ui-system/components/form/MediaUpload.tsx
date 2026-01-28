@@ -5,7 +5,7 @@
 
 import { useState, useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
+import { useNotification } from '@/ui-system/components/feedback';
 import { Icon } from '../../icons/components';
 
 import './media-upload.css';
@@ -25,7 +25,7 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
   maxSize = 10 * 1024 * 1024, // 10MB
   className = ''
 }) => {
-  const { toast } = useToast();
+  const { showSuccess, showError } = useNotification();
   const queryClient = useQueryClient();
   const [isDragging, setIsDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -39,10 +39,7 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
       // Validate file sizes
       const oversizedFiles = fileArray.filter(file => file.size > maxSize);
       if (oversizedFiles.length > 0) {
-        toast({
-          children: `Some files are too large. Maximum size is ${Math.round(maxSize / 1024 / 1024)}MB`,
-          variant: 'error',
-        });
+        showError(`Some files are too large. Maximum size is ${Math.round(maxSize / 1024 / 1024)}MB`);
         return;
       }
 
@@ -66,23 +63,17 @@ export const MediaUpload: React.FC<MediaUploadProps> = ({
 
         const uploadedFiles = await Promise.all(uploadPromises);
         
-        toast({
-          children: `Files uploaded successfully! Uploaded ${uploadedFiles.length} file(s)`,
-          variant: 'success',
-        });
+        showSuccess(`Files uploaded successfully! Uploaded ${uploadedFiles.length} file(s)`);
         
         queryClient.invalidateQueries({ queryKey: ['/api/media'] });
       }
       
     } catch (error) {
-      toast({
-        children: 'Upload failed. Please try again later.',
-        variant: 'error',
-      });
+      showError('Upload failed. Please try again later.');
     } finally {
       setUploading(false);
     }
-  }, [toast, queryClient, onUpload, maxSize]);
+  }, [showSuccess, showError, queryClient, onUpload, maxSize]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();

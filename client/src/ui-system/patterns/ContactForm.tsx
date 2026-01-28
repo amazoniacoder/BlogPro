@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotification } from '@/ui-system/components/feedback';
 import { CaptchaButton } from '@/plugins/captcha';
 import './contact-form.css';
 
@@ -30,7 +30,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className = '' }) => {
     showError(`Captcha error: ${error}`);
     setCaptchaVerified(false);
   };
-  const { showSuccess, showError } = useToast();
+  const { showError, showSuccess } = useNotification();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

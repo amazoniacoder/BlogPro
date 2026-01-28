@@ -7,7 +7,7 @@ import CategoryForm from './components/CategoryForm';
 import DocumentationCategoryManager from './DocumentationCategoryManager';
 import ProductCategoriesPage from './ProductCategoriesPage';
 import { ErrorDisplay } from '@/ui-system/components/feedback';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotification } from "@/ui-system/components/feedback";
 import { BlogCategory } from '@/../../shared/types/api';
 import './categories.css';
 
@@ -21,7 +21,7 @@ const CategoriesPage: React.FC = () => {
     refreshCategories
   } = useCategoryData();
   
-  const { showSuccess, showError } = useToast();
+  const { showSuccess, showError } = useNotification();
   const [activeTab, setActiveTab] = useState<'blog' | 'documentation' | 'products'>('blog');
 
   // URL-based tab navigation

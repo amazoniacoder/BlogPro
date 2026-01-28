@@ -3,11 +3,11 @@ import { useReducer, useEffect, useCallback } from "react";
 import { mediaReducer, initialState } from "../state/reducer";
 import { mediaService } from "@/services/api/media";
 import { MediaItem } from "../state/types";
-import { useToast } from "@/ui-system/components/feedback";
+import { useNotification } from "@/ui-system/components/feedback";
 
 export const useMediaData = () => {
   const [state, dispatch] = useReducer(mediaReducer, initialState);
-  const { showSuccess, showError } = useToast();
+  const { showSuccess, showError } = useNotification();
 
   const fetchMedia = useCallback(async (forceRefresh = false) => {
     dispatch({ type: "FETCH_MEDIA_START" });

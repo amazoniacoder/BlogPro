@@ -5,7 +5,7 @@ import { PasswordInput } from "@/ui-system/components/input";
 import { Button } from "@/ui-system/components/button";
 import { Heading, Text } from "@/ui-system/components/typography";
 import { Card } from "@/ui-system/components/card";
-import { useToast } from "@/ui-system/components/feedback";
+import { useNotification } from "@/ui-system/components/feedback";
 import { authService } from "@/services/api/auth";
 
 export default function ResetPasswordPage() {
@@ -15,7 +15,7 @@ export default function ResetPasswordPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const { showToast } = useToast();
+  const { showSuccess, showError } = useNotification();
 
   const token = params?.token;
 
@@ -29,12 +29,12 @@ export default function ResetPasswordPage() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      showToast("Passwords do not match", "error");
+      showError("Passwords do not match");
       return;
     }
 
     if (password.length < 8) {
-      showToast("Password must be at least 8 characters long", "error");
+      showError("Password must be at least 8 characters long");
       return;
     }
 
@@ -43,10 +43,10 @@ export default function ResetPasswordPage() {
     try {
       await authService.resetPassword(token!, password);
       setSuccess(true);
-      showToast("Password reset successfully! You can now login with your new password.", "success");
+      showSuccess("Password reset successfully! You can now login with your new password.");
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Failed to reset password";
-      showToast(errorMessage, "error");
+      showError(errorMessage);
     } finally {
       setLoading(false);
     }

@@ -13,12 +13,12 @@ export { StatusMessage } from './StatusMessage';
 export { UpdateNotification } from './UpdateNotification';
 export { ErrorDisplay } from './ErrorDisplay';
 export { ErrorBoundary } from './ErrorBoundary';
-export { ToastProvider, useToast } from './ToastProvider';
 
 // New unified notification system
 export { 
   NotificationProvider, 
   useNotifications,
+  useNotifications as useNotification,
   useGlobalNotifications,
   showSuccessNotification,
   showErrorNotification
@@ -35,7 +35,6 @@ export type { StatusMessageProps } from './StatusMessage';
 export type { UpdateNotificationProps } from './UpdateNotification';
 export type { ErrorDisplayProps } from './ErrorDisplay';
 export type { ErrorBoundaryProps } from './ErrorBoundary';
-export type { ToastContextType, ToastProviderProps } from './ToastProvider';
 export type { NotificationProps } from '../notifications/UnifiedNotification';
 
 // Import feedback styles

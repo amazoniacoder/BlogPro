@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotification } from '@/ui-system/components/feedback';
 
 interface Contact {
   id: number;
@@ -15,7 +15,7 @@ const ContactsPage = () => {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [replyMessage, setReplyMessage] = useState('');
   const [loading, setLoading] = useState(true);
-  const { showSuccess, showError } = useToast();
+  const { showSuccess, showError } = useNotification();
 
   useEffect(() => {
     fetchContacts();

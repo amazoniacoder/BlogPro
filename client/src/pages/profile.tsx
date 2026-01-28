@@ -7,7 +7,7 @@ import { Button } from '@/ui-system/components/button';
 import { authService } from '@/services/api/auth';
 import websocketService from '@/services/websocket-service';
 import { DeleteAccountDialog } from '@/components/common/delete-account-dialog';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotification } from '@/ui-system/components/feedback';
 import { Icon } from '@/ui-system/icons/components';
 import { CommentArchive } from '@/ui-system/components/user/CommentArchive';
 
@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
   } | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deletionStatus, setDeletionStatus] = useState<any>(null);
-  const { showToast } = useToast();
+  const { showSuccess, showError } = useNotification();
 
   useEffect(() => {
     // Load user data
@@ -156,7 +156,7 @@ const Profile: React.FC = () => {
     try {
       await authService.scheduleAccountDeletion('User requested deletion');
       setShowDeleteDialog(false);
-      showToast('Account scheduled for deletion. You will be logged out.', 'success');
+      showSuccess('Account scheduled for deletion. You will be logged out.');
       
       // Log out user after a short delay
       setTimeout(() => {
@@ -164,7 +164,7 @@ const Profile: React.FC = () => {
       }, 2000);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to schedule deletion';
-      showToast(errorMessage, 'error');
+      showError(errorMessage);
     }
   };
 

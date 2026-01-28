@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import { userService } from '@/services/api/users';
 import { User, UserRole } from '@/types/user';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotification } from '@/ui-system/components/feedback';
 
 interface UserFormData {
   firstName: string;
@@ -21,7 +21,7 @@ export const useUserEdit = (userId: string | undefined) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const { showToast } = useToast();
+  const { showSuccess, showError } = useNotification();
   
   const [formData, setFormData] = useState<UserFormData>({
     firstName: '',
@@ -58,7 +58,7 @@ export const useUserEdit = (userId: string | undefined) => {
       });
     } catch (error) {
       console.error('Error fetching user:', error);
-      showToast('Failed to load user', 'error');
+      showSuccess('Failed to load user', 'error');
       return false;
     } finally {
       setLoading(false);
@@ -112,19 +112,18 @@ export const useUserEdit = (userId: string | undefined) => {
       if (userId === 'new') {
         // Create new user
         await userService.create(formData);
-        showToast('User created successfully', 'success');
+        showSuccess('User created successfully', 'success');
       } else {
         // Update existing user
         const updatedUser = await userService.update(userId, formData);
         setUser(updatedUser);
-        showToast('User updated successfully', 'success');
+        showSuccess('User updated successfully', 'success');
       }
       
       return true;
     } catch (error) {
-      showToast(
-        userId === 'new' ? 'Failed to create user' : 'Failed to update user', 
-        'error'
+      showError(
+        userId === 'new' ? 'Failed to create user' : 'Failed to update user'
       );
       return false;
     } finally {
@@ -139,15 +138,13 @@ export const useUserEdit = (userId: string | undefined) => {
       setSaving(true);
       const updatedUser = await userService.blockUser(user.id, !user.isBlocked);
       setUser(updatedUser);
-      showToast(
-        `User ${updatedUser.isBlocked ? 'blocked' : 'unblocked'} successfully`, 
-        'success'
+      showSuccess(
+        `User ${updatedUser.isBlocked ? 'blocked' : 'unblocked'} successfully`
       );
       return true;
     } catch (error) {
-      showToast(
-        `Failed to ${user.isBlocked ? 'unblock' : 'block'} user`, 
-        'error'
+      showError(
+        `Failed to ${user.isBlocked ? 'unblock' : 'block'} user`
       );
       return false;
     } finally {
@@ -161,10 +158,10 @@ export const useUserEdit = (userId: string | undefined) => {
     try {
       setSaving(true);
       await userService.deleteUser(user.id);
-      showToast('User deleted successfully', 'success');
+      showSuccess('User deleted successfully');
       return true;
     } catch (error) {
-      showToast('Failed to delete user', 'error');
+      showError('Failed to delete user');
       return false;
     } finally {
       setSaving(false);

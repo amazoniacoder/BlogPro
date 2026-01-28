@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '@/store/auth-context';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotification } from '@/ui-system/components/feedback';
 import { Input } from '../components/form';
 import { PasswordInput } from '../components/input';
 import { Button } from '../components/button';
@@ -27,18 +27,18 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const { register, loading } = useAuth();
-  const { showToast } = useToast();
+  const { showError, showSuccess } = useNotification();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      showToast('Passwords do not match', 'error');
+      showError('Passwords do not match');
       return;
     }
 
     if (!captchaVerified) {
-      showToast('Please verify the captcha', 'error');
+      showError('Please verify the captcha');
       return;
     }
 
@@ -48,7 +48,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         email,
         password
       });
-      showToast('Registration successful! Please check your email.', 'success');
+      showSuccess('Registration successful! Please check your email.');
       
       if (onRegistrationSuccess) {
         onRegistrationSuccess(username, password, email);
@@ -61,7 +61,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       setCaptchaVerified(false);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to register';
-      showToast(errorMessage, 'error');
+      showError(errorMessage);
     }
   };
 

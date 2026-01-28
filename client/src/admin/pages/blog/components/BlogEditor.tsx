@@ -5,7 +5,7 @@ import { BlogPost } from "@/types/blog";
 import { useBlogData } from "../hooks/useBlogData";
 import { ContentEditableEditor } from "@/plugins/texteditor";
 import { AdminEditor, AdminEditorField } from '@/ui-system/components/admin';
-import { useToast } from "@/ui-system/components/feedback";
+import { useNotification } from "@/ui-system/components/feedback";
 import MediaSelector from "./MediaSelector";
 import CategorySelector from "@/admin/components/CategorySelector";
 
@@ -31,7 +31,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
     showMediaSelector,
     hideMediaSelector,
   } = useBlogData();
-  const { showSuccess, showError } = useToast();
+  const { showSuccess, showError } = useNotification();
   const isNewPost = !postId;
 
   // Initialize editor state

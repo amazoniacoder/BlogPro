@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { Input } from '../components/form';
 import { Button } from '../components/button';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotification } from '@/ui-system/components/feedback';
 import { authService } from '@/services/api/auth';
 import './forgot-password-form.css';
 
@@ -22,7 +22,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const { showToast } = useToast();
+  const { showError, showSuccess } = useNotification();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,10 +31,10 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     try {
       await authService.forgotPassword(email);
       setSuccess(true);
-      showToast('Password reset instructions sent to your email', 'success');
+      showSuccess('Password reset instructions sent to your email');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to send reset email';
-      showToast(errorMessage, 'error');
+      showError(errorMessage);
     } finally {
       setLoading(false);
     }

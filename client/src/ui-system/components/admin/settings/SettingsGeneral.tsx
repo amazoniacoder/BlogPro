@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotification } from '@/ui-system/components/feedback';
 import { useSettings } from '@/store/settings-context';
 import { settingsReducer, initialState } from '@/admin/pages/settings/state/reducer';
 import { loadSettings, saveSettings } from '@/admin/pages/settings/state/actions';
@@ -16,7 +16,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = ({ onSave }) => {
   const { t } = useTranslation(['admin', 'common']);
   const { updateSettings } = useSettings();
   const [state, dispatch] = useReducer(settingsReducer, initialState);
-  const { showSuccess, showError } = useToast();
+  const { showSuccess, showError } = useNotification();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [isSaving, setIsSaving] = useState(false);

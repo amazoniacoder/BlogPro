@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@/ui-system/icons/components';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotification } from '@/ui-system/components/feedback';
 
 interface SettingsData {
   general?: Record<string, any>;
@@ -24,7 +24,7 @@ const SettingsExportImport: React.FC<SettingsExportImportProps> = ({
   className = ''
 }) => {
   const { t } = useTranslation(['admin', 'common']);
-  const { showSuccess, showError } = useToast();
+  const { showSuccess, showError } = useNotification();
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);

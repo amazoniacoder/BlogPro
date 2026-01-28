@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { useAuth } from '@/store/auth-context';
-import { useToast } from '@/ui-system/components/feedback';
+import { useNotification } from '@/ui-system/components/feedback';
 import { Input } from '../components/form';
 import { PasswordInput } from '../components/input';
 import { Button } from '../components/button';
@@ -30,7 +30,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   const [password, setPassword] = useState('');
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const { login, loading } = useAuth();
-  const { showToast } = useToast();
+  const { showError, showSuccess } = useNotification();
   const [, navigate] = useLocation();
 
   useEffect(() => {
@@ -50,13 +50,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     e.preventDefault();
 
     if (!captchaVerified) {
-      showToast('Please verify the captcha', 'error');
+      showError('Please verify the captcha');
       return;
     }
 
     try {
       await login(username, password);
-      showToast('Login successful!', 'success');
+      showSuccess('Login successful!');
       
       // Get fresh user data to determine redirect
       const token = localStorage.getItem('authToken');
@@ -87,7 +87,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to login';
-      showToast(errorMessage, 'error');
+      showError(errorMessage);
       resetForm();
     }
   };
