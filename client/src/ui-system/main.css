@@ -95,6 +95,42 @@ ul, ol, dl, blockquote, pre {
 button, input, select, textarea {
   max-width: 100%;
   box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* Specific cursor styles for form elements */
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+input[type="search"], 
+textarea, 
+select {
+  cursor: text;
+}
+
+input[type="checkbox"], 
+input[type="radio"] {
+  cursor: pointer;
+}
+
+/* Interactive elements cursor */
+button, 
+[role="button"], 
+.clickable,
+[onclick] {
+  cursor: pointer !important;
+}
+
+/* Admin specific cursor fixes */
+.admin-button,
+.admin-sidebar__link,
+.admin-table__header-cell--sortable,
+.category-tree-selector__trigger,
+.category-tree-selector__row,
+.category-tree-selector__toggle,
+.admin-modal__close,
+.admin-sliding-menu__toggle {
+  cursor: pointer !important;
 }
 
 /* Container Utility */
