@@ -1,0 +1,73 @@
+{
+  "title": "Terms of Service",
+  "lastUpdated": "Last updated",
+  "date": "January 28, 2026",
+  "acceptance": {
+    "title": "Acceptance of Terms",
+    "content": "By accessing and using BlogPro (https://blogpro.tech), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service."
+  },
+  "services": {
+    "title": "Description of Service",
+    "content": "BlogPro is a professional blogging platform that provides the following services:",
+    "blog": "Blog creation and management tools",
+    "products": "Digital product marketplace and management",
+    "documentation": "Technical documentation and knowledge base",
+    "analytics": "Website analytics and performance monitoring"
+  },
+  "userAccounts": {
+    "title": "User Accounts",
+    "content": "When you create an account with us, you must provide information that is accurate, complete, and current at all times. You are responsible for:",
+    "accurate": "Maintaining the accuracy of your account information",
+    "secure": "Safeguarding your password and account security",
+    "responsible": "All activities that occur under your account"
+  },
+  "conduct": {
+    "title": "Acceptable Use",
+    "intro": "You agree not to use the service to:",
+    "illegal": "Engage in any illegal activities or violate any laws",
+    "harmful": "Transmit harmful, threatening, abusive, or defamatory content",
+    "spam": "Send spam, unsolicited messages, or engage in phishing",
+    "copyright": "Infringe on intellectual property rights of others",
+    "privacy": "Violate the privacy or rights of other users"
+  },
+  "content": {
+    "title": "User Content",
+    "ownership": "You retain ownership of any content you submit, post, or display on or through the service.",
+    "license": "By posting content, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, and distribute your content in connection with the service.",
+    "responsibility": "You are solely responsible for your content and the consequences of posting or publishing it."
+  },
+  "intellectual": {
+    "title": "Intellectual Property",
+    "content": "The service and its original content, features, and functionality are and will remain the exclusive property of BlogPro and its licensors. The service is protected by copyright, trademark, and other laws."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "content": "Your privacy is important to us. Please review our Privacy Policy, which also governs your use of the service, to understand our practices."
+  },
+  "termination": {
+    "title": "Termination",
+    "content": "We may terminate or suspend your account and bar access to the service immediately, without prior notice or liability, under our sole discretion, for any reason whatsoever and without limitation, including but not limited to a breach of the Terms."
+  },
+  "disclaimer": {
+    "title": "Disclaimer",
+    "content": "The information on this website is provided on an \"as is\" basis. To the fullest extent permitted by law, this Company excludes all representations, warranties, conditions and terms whether express or implied."
+  },
+  "limitation": {
+    "title": "Limitation of Liability",
+    "content": "In no event shall BlogPro, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses."
+  },
+  "governing": {
+    "title": "Governing Law",
+    "content": "These Terms shall be interpreted and governed by the laws of the jurisdiction in which BlogPro operates, without regard to its conflict of law provisions."
+  },
+  "changes": {
+    "title": "Changes to Terms",
+    "content": "We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days notice prior to any new terms taking effect."
+  },
+  "contact": {
+    "title": "Contact Information",
+    "content": "If you have any questions about these Terms of Service, please contact us:",
+    "email": "Email",
+    "website": "Website"
+  }
+}

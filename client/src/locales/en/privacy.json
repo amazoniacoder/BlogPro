@@ -1,0 +1,57 @@
+{
+  "title": "Privacy Policy",
+  "lastUpdated": "Last updated",
+  "date": "January 28, 2026",
+  "introduction": {
+    "title": "Introduction",
+    "content": "BlogPro (\"we\", \"our\", or \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website https://blogpro.tech and use our services."
+  },
+  "dataCollection": {
+    "title": "Information We Collect",
+    "intro": "We may collect information about you in a variety of ways:",
+    "personal": "Personal Information: Name, email address, username, and other information you provide when creating an account or contacting us",
+    "usage": "Usage Data: Information about how you use our website, including pages visited, time spent, and interactions",
+    "technical": "Technical Information: IP address, browser type, device information, and operating system",
+    "cookies": "Cookies and Tracking Technologies: We use cookies to enhance your experience and analyze website usage"
+  },
+  "dataUse": {
+    "title": "How We Use Your Information",
+    "service": "To provide, operate, and maintain our services",
+    "communication": "To communicate with you, including responding to your comments and questions",
+    "improvement": "To improve, personalize, and expand our website and services",
+    "legal": "To comply with legal obligations and protect our rights"
+  },
+  "dataSharing": {
+    "title": "Information Sharing",
+    "content": "We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:",
+    "consent": "With your explicit consent",
+    "legal": "To comply with legal requirements or protect our rights",
+    "business": "In connection with a business transfer or merger"
+  },
+  "security": {
+    "title": "Data Security",
+    "content": "We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure."
+  },
+  "rights": {
+    "title": "Your Rights",
+    "access": "Access: You can request access to your personal information",
+    "correct": "Correction: You can request correction of inaccurate information",
+    "delete": "Deletion: You can request deletion of your personal information",
+    "portability": "Portability: You can request a copy of your data in a structured format",
+    "object": "Object: You can object to processing of your personal information"
+  },
+  "cookies": {
+    "title": "Cookies Policy",
+    "content": "We use cookies to improve your browsing experience, analyze site traffic, and personalize content. You can control cookie settings through your browser preferences. Disabling cookies may affect website functionality."
+  },
+  "changes": {
+    "title": "Changes to This Policy",
+    "content": "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the \"Last updated\" date."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "content": "If you have any questions about this Privacy Policy, please contact us:",
+    "email": "Email",
+    "website": "Website"
+  }
+}

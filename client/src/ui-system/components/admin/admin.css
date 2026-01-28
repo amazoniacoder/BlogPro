@@ -3,6 +3,24 @@
  * BEM Methodology: .admin-*
  */
 
+/* Global Admin Cursor Rules */
+.admin-layout a,
+.admin-layout button,
+.admin-layout [role="button"],
+.admin-layout .admin-sidebar__link,
+.admin-layout .admin-menu__item,
+.admin-layout .site-editor-tree-item__action,
+.admin-layout .site-editor-tree-item__status,
+.admin-layout [data-clickable],
+.admin-layout .clickable {
+  cursor: pointer !important;
+}
+
+.admin-layout [disabled],
+.admin-layout .disabled {
+  cursor: not-allowed !important;
+}
+
 
 .admin-sidebar--collapsed {
   width: 64px;

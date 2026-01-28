@@ -32,6 +32,8 @@ const AdminPage = lazy(() => import('./admin'));
 const CartPage = lazy(() => import('./pages/CartPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const DocumentationPage = lazy(() => import('./pages/documentation'));
+const PrivacyPage = lazy(() => import('./pages/privacy'));
+const TermsPage = lazy(() => import('./pages/terms'));
 
 const TextEditorDocsPage = lazy(() => import('./plugins/texteditor/plugins/documentation-manager/src/components/pages/TextEditorDocsPage'));
 const SiteDocsPage = lazy(() => import('./plugins/texteditor/plugins/documentation-manager/src/components/pages/SiteDocsPage'));
@@ -95,6 +97,8 @@ function App() {
                           <Route path="/products/:slug" component={ProductDetailPage} />
                           <Route path="/cart" component={CartPage} />
                           <Route path="/checkout" component={CheckoutPage} />
+                          <Route path="/privacy" component={PrivacyPage} />
+                          <Route path="/terms" component={TermsPage} />
                           <Route path="/documentation/:categoryPath+/:slug" component={DocumentationPage} />
                           <Route path="/documentation/:slug?" component={DocumentationPage} />
                           <Route path="/auth" component={AuthPage} />
