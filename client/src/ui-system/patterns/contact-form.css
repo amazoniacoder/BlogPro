@@ -4,7 +4,8 @@
  */
 
 .contact-form {
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   margin: 0 auto;
   padding: 2rem;
   background-color: rgb(from var(--color-primary) r g b / 0.2);
@@ -88,12 +89,18 @@
 }
 
 @media (max-width: 768px) {
+  .contact-form {
+    margin: 0 1rem;
+    padding: 1.5rem;
+  }
+  
   .contact-form__submit-section {
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
   }
   
   .contact-form__captcha {
-    order: -1;
+    order: 0;
+    align-self: center;
   }
 }

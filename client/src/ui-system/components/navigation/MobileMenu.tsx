@@ -45,7 +45,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
       </button>
 
       <div className={menuClasses}>
-        <div className="mobile-menu__overlay" onClick={toggleMenu} />
+        {isOpen && <div className="mobile-menu__overlay" onClick={toggleMenu} />}
         <div className="mobile-menu__content">
           <div className="mobile-menu__header">
             <button
