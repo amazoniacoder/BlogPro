@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { MenuEditor } from '../../../../admin/pages/site-editor/components/MenuEditor';
+import { FooterEditorEmbedded } from '../footer-editor/FooterEditorEmbedded';
 import '../categories.css';
 
-type TabType = 'menu';
+type TabType = 'menu' | 'footer';
 
 export const WebsiteEditorTabs: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('menu');
@@ -11,7 +12,7 @@ export const WebsiteEditorTabs: React.FC = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get('tab');
-    if (tab && ['menu'].includes(tab)) {
+    if (tab && ['menu', 'footer'].includes(tab)) {
       setActiveTab(tab as TabType);
     }
   }, []);
@@ -28,17 +29,24 @@ export const WebsiteEditorTabs: React.FC = () => {
       // Trigger menu item creation
       const event = new CustomEvent('createMenuItem');
       window.dispatchEvent(event);
+    } else if (activeTab === 'footer') {
+      // Trigger footer block creation
+      const event = new CustomEvent('createFooterBlock');
+      window.dispatchEvent(event);
     }
   };
 
   const tabs = [
-    { id: 'menu' as TabType, label: 'Menu', icon: 'hamburger' }
+    { id: 'menu' as TabType, label: 'Меню', icon: 'hamburger' },
+    { id: 'footer' as TabType, label: 'Футер', icon: 'layout' }
   ];
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'menu':
         return <MenuEditor />;
+      case 'footer':
+        return <FooterEditorEmbedded />;
       default:
         return null;
     }
@@ -79,7 +87,7 @@ export const WebsiteEditorTabs: React.FC = () => {
             className="admin-button admin-button--primary"
             onClick={handleAddClick}
           >
-            Add Menu Item
+            {activeTab === 'menu' ? 'Add Menu Item' : 'Add Footer Block'}
           </button>
         </div>
       </div>

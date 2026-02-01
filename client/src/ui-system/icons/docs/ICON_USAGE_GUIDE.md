@@ -1,6 +1,6 @@
 # BlogPro Icon Usage Guide
 
-## 🎨 **Available Icons (27 total)**
+## 🎨 **Available Icons (29 total)**
 
 ### Actions (11)
 `save` `edit` `delete` `add` `login` `logout` `x` `alert-circle` `heart` `reply` `thumbs-up` `flag`
@@ -17,8 +17,8 @@
 ### Themes (2)
 `sun` `moon`
 
-### Tools (2)
-`gear` `wrench`
+### Tools (4)
+`gear` `wrench` `phone` `mobile`
 
 ## 🚀 **Usage**
 

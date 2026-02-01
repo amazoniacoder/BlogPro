@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { mediaService } from '@/services/api/media';
+import { Button } from '@/ui-system/components/button';
 
 interface ClearCacheButtonProps {
   onSuccess?: () => void;
@@ -31,13 +32,13 @@ const ClearCacheButton: React.FC<ClearCacheButtonProps> = ({ onSuccess }) => {
 
   return (
     <div className="admin-clear-cache">
-      <button 
-        className="admin-button admin-button--secondary"
+      <Button 
+        variant="secondary"
         onClick={handleClearCache}
-        disabled={loading}
+        loading={loading}
       >
-        {loading ? 'Clearing...' : 'Clear Media Cache'}
-      </button>
+        Clear Media Cache
+      </Button>
       
       {message && (
         <div className="admin-clear-cache__message">

@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Button } from '../components';
+import { Link } from '../components/typography';
 import { Icon } from '../icons/components';
 
 export interface HeroAction {
@@ -67,18 +68,31 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           
           {actions.length > 0 && (
             <div className="hero__actions">
-              {actions.map((action, index) => (
-                <Button
-                  key={index}
-                  variant={action.variant || 'primary'}
-                  size="lg"
-                  as={action.href ? 'a' : 'button'}
-                  href={action.href}
-                  onClick={action.onClick}
-                >
-                  {action.label}
-                </Button>
-              ))}
+              {actions.map((action, index) => {
+                if (action.href) {
+                  return (
+                    <Link
+                      key={index}
+                      href={action.href}
+                      variant="button"
+                      className={`btn--${action.variant || 'primary'} btn--lg`}
+                    >
+                      {action.label}
+                    </Link>
+                  );
+                }
+                
+                return (
+                  <Button
+                    key={index}
+                    variant={action.variant || 'primary'}
+                    size="lg"
+                    onClick={action.onClick}
+                  >
+                    {action.label}
+                  </Button>
+                );
+              })}
               
               <button 
                 className="hero__scroll-arrow backdrop-blur"

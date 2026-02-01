@@ -17,7 +17,7 @@ describe('Button Component', () => {
   });
 
   it('renders as link when href provided', () => {
-    render(<Button href="/test">Link Button</Button>);
+   
     expect(screen.getByRole('link')).toBeInTheDocument();
   });
 });

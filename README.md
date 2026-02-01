@@ -7,6 +7,16 @@ BlogPro is a modern, full-featured blogging platform with real-time content mana
 - **Real-time content management**: Enhanced real-time updates with 95%+ WebSocket reliability
 - **Advanced admin panel**: Comprehensive content management with BEM-style components
 - **Enterprise-grade analytics**: High-performance analytics system with Redis caching (75% faster response times)
+- **🆕 Professional Footer Visual Editor**: Drag & drop footer builder with live preview
+- **Footer Block Library**: Pre-built components (brand, links, contact, social, newsletter)
+- **Responsive Footer Design**: Mobile-first approach with device-specific layouts
+- **Footer Style Editor**: Visual styling with color picker, typography, and spacing controls
+- **Footer Version Control**: History tracking with rollback functionality
+- **🆕 Enhanced UI System**: Centralized Design Tokens with Storybook documentation
+- **Design Tokens**: Consistent colors, typography, spacing, and component tokens
+- **Accessibility First**: WCAG 2.1 AA compliance with screen reader support
+- **Component Library**: Enhanced Button, Input, Card components with Compound Components pattern
+- **Storybook Integration**: Interactive component documentation and testing
 - **Multi-level caching**: Client-side and server-side caching with Redis integration
 - **Type-safe development**: Full TypeScript implementation with generic types
 - **Modern architecture**: Clear separation of concerns with service layers
@@ -24,6 +34,10 @@ BlogPro is a modern, full-featured blogging platform with real-time content mana
 
 ### Frontend
 - React with TypeScript
+- **Enhanced UI System**: Centralized Design Tokens with Storybook documentation
+- **Design Tokens**: Consistent colors, typography, spacing, and component system
+- **Accessibility**: WCAG 2.1 AA compliance with screen reader and keyboard navigation support
+- **Component Library**: Enhanced Button, Input, Card with Compound Components pattern
 - **W3C compliant CSS** with strict BEM methodology (no utility frameworks)
 - **CSS duplicate analyzer** for optimization and standards compliance
 - **Professional text editor** with Google Docs-compliant behavior and performance
@@ -65,6 +79,7 @@ npm run dev
 - Analytics panel: http://localhost:3000/admin/analytics
 - Blog: http://localhost:3000/blog
 - API: http://localhost:5000/api
+- **🆕 Storybook**: http://localhost:6006 (component documentation)
 - Search: Available in the header with a slide-out menu
 
 ## Project structure
@@ -72,10 +87,17 @@ npm run dev
 ### Client (`client/`)
 - `src/components/` - Reusable UI components
 - `src/admin/` - Admin panel with BEM-styled components and analytics system
-- `src/ui-system/` - **Centralized UI System** with reusable components and BEM-compliant styles
-  - `components/` - Organized component library (admin, common, forms)
+- `src/ui-system/` - **Enhanced UI System** with Design Tokens and Storybook integration
+  - `tokens/` - Centralized Design Tokens (colors, typography, spacing, effects)
+  - `components/` - Enhanced component library with accessibility and Compound Components
+    - `button/` - Enhanced Button with Icon, Text, Group subcomponents
+    - `input/` - Enhanced Input with Label, Group, validation support
+    - `card/` - Enhanced Card with Design Tokens integration
+    - `admin/` - Admin-specific components
+    - `accessibility/` - WCAG 2.1 AA compliance utilities
+  - `utilities/` - Accessibility hooks and helper functions
   - `icons/` - SVG icon system with TypeScript integration
-  - `admin/` - Admin-specific CSS following BEM methodology
+  - `.storybook/` - Storybook configuration and documentation
 - `src/services/` - API services and caching system
 - `src/styles/` - **W3C compliant CSS** with strict BEM methodology and centralized architecture
 - `main.css` - Single entry point for all CSS imports (prevents duplicates)
@@ -164,6 +186,13 @@ Advanced search system with:
 - **Hierarchical Menu Structure**: Support nested menu items and submenus
 - **Live Menu Preview**: Live preview of navigation changes
 - **Multiple Menu Types**: Header, Footer and Custom Menu Configurations
+- **🆕 Professional Footer Visual Editor**: Advanced drag & drop footer builder with:
+  - **Live Preview**: Real-time footer preview with WebSocket synchronization
+  - **Block Library**: Pre-built components (brand, links, contact, social, newsletter)
+  - **Visual Style Editor**: Color picker, typography controls, spacing adjustments
+  - **Responsive Design**: Mobile-first approach with device-specific layouts
+  - **Version Control**: History tracking with rollback functionality
+  - **Custom Blocks**: Support for custom HTML and CSS blocks
 - **Link Management**: Internal Pages, External URLs and Custom Routing
 - **Mobile Menu Optimization**: Automatic responsive menu generation
 - **Visibility Control**: Role-based menu item display
@@ -244,6 +273,12 @@ See [docs/deployment/HTTPS_SETUP.md](./docs/deployment/HTTPS_SETUP.md) for local
 - [Performance Guide](./client/src/plugins/texteditor/docs/PERFORMANCE_GUIDE.md)
 - [TypeScript Standards](./client/src/plugins/texteditor/docs/TYPESCRIPT_STANDARDS.md)
 
+### 🆕 UI System & Storybook Documentation
+- [UI System Overview](#ui-system--design-tokens) - Design Tokens and Enhanced Components
+- [Storybook Documentation](http://localhost:6006) - Interactive component playground
+- [Accessibility Guide](./docs/features/ACCESSIBILITY.md) - WCAG 2.1 AA compliance
+- [Design Tokens Reference](./client/src/ui-system/tokens/) - Centralized design system
+
 ## Text Editor Testing
 
 The professional text editor includes comprehensive testing (97% coverage):
@@ -265,3 +300,101 @@ See [Testing Documentation](./client/src/plugins/texteditor/__tests__/) for comp
 ## License
 
 MIT License - see [LICENSE](./LICENSE) file for details.
+
+## UI System & Design Tokens
+
+BlogPro features a comprehensive UI system built with modern design principles and accessibility standards.
+
+### Design Tokens
+- **Centralized Design System**: Consistent colors, typography, spacing, and effects
+- **CSS Variables**: Easy theming and customization
+- **TypeScript Integration**: Type-safe token usage in components
+- **Scalable Architecture**: 8px grid system and modular color scales
+
+### Enhanced Components
+- **Button Component**: Compound Components pattern with Icon, Text, Group subcomponents
+- **Input Component**: Full accessibility support with Label, Group, validation
+- **Card Component**: Flexible layout with Design Tokens integration
+- **Accessibility First**: WCAG 2.1 AA compliance built-in
+
+### Storybook Documentation
+Interactive component documentation and testing environment:
+
+```bash
+# Start Storybook
+cd client
+npm run storybook
+```
+
+Access at: http://localhost:6006
+
+**Features**:
+- Interactive component playground
+- Accessibility testing with @storybook/addon-a11y
+- Design Tokens documentation
+- Responsive viewport testing
+- Dark/Light theme switching
+
+### Usage Examples
+
+#### Design Tokens in CSS
+```css
+.my-component {
+  color: var(--color-primary-600);
+  padding: var(--space-4);
+  font-size: var(--text-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+```
+
+#### Enhanced Components
+```tsx
+import { Button, Input } from '@/ui-system/components';
+
+// Button with icon and text
+<Button variant="primary" size="md">
+  <Button.Icon name="plus" position="left" />
+  <Button.Text>Add Item</Button.Text>
+</Button>
+
+// Input with label and validation
+<Input.Group>
+  <Input.Label required>Email</Input.Label>
+  <Input 
+    type="email" 
+    leftIcon="email"
+    error="Invalid email format"
+  />
+</Input.Group>
+```
+
+#### Accessibility Features
+```tsx
+import { useScreenReader, useFocusManagement } from '@/ui-system/utilities/accessibility';
+
+const MyComponent = () => {
+  const { announce } = useScreenReader();
+  const { trapFocus } = useFocusManagement();
+  
+  const handleAction = () => {
+    announce('Action completed successfully');
+  };
+  
+  return (
+    <div>
+      <Button onClick={handleAction} aria-label="Perform action">
+        Action
+      </Button>
+    </div>
+  );
+};
+```
+
+### Development Workflow
+
+1. **Design Tokens**: Use centralized tokens for consistency
+2. **Component Development**: Build with accessibility in mind
+3. **Storybook Testing**: Document and test components interactively
+4. **Accessibility Validation**: Use built-in a11y tools
+5. **Responsive Design**: Test across different viewports

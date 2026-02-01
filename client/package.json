@@ -28,5 +28,11 @@
     "@types/dompurify": "^3.0.5",
     "dompurify": "^3.2.6",
     "lucide-react": "^0.525.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^8.6.14",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/react-vite": "^8.6.14",
+    "storybook": "^8.6.14"
   }
 }

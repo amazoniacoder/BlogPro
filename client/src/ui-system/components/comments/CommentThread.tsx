@@ -110,9 +110,8 @@ export function CommentThread({ postId, currentUser }: CommentThreadProps) {
                     type="submit" 
                     variant="primary" 
                     disabled={!newComment.trim() || isSubmitting}
-                    loading={isSubmitting}
                   >
-                    Post Comment
+                    {isSubmitting ? 'Posting...' : 'Post Comment'}
                   </Button>
                 </div>
               </Stack>

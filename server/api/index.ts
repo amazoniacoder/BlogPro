@@ -28,6 +28,7 @@ import commentRoutes from "./comments";
 import adminCommentRoutes from "./admin-comments";
 import userCommentRoutes from "./user-comments";
 import csrfRoutes from "./csrf";
+import footerRoutes from "./footer";
 
 const router = Router();
 
@@ -61,6 +62,7 @@ router.use("/search", searchRoutes);
 router.use("/comments", commentRoutes);
 router.use("/admin/comments", adminCommentRoutes);
 router.use("/user", userCommentRoutes);
+router.use("/footer", footerRoutes);
 router.use("/", csrfRoutes);
 
 export default router;

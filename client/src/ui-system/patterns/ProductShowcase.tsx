@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Button } from '../components';
+import { Link } from '../components/typography';
 import './product-showcase.css';
 
 export interface ProductCard {
@@ -60,9 +60,9 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
         </div>
         
         <div className="product-showcase__cta">
-          <Button variant="primary" size="lg" as="a" href={ctaHref}>
+          <Link href={ctaHref} variant="button" className="btn--lg">
             {ctaLabel}
-          </Button>
+          </Link>
         </div>
       </div>
     </section>

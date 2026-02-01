@@ -78,10 +78,11 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
         type="submit"
         variant="primary"
         size="lg"
-        disabled={formState.isSubmitting || !formState.email}
+        loading={formState.isSubmitting}
+        disabled={!formState.email}
         className="auth-form__button"
       >
-        {formState.isSubmitting ? "Sending..." : "Reset Password"}
+        Reset Password
       </Button>
 
       <Button

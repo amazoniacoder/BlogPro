@@ -55,9 +55,11 @@ const ProductCategoryPage: React.FC = () => {
         <Icon name="alert-circle" size={48} />
         <h2>Category Not Found</h2>
         <p>The requested category could not be found.</p>
-        <Button as="a" href="/products">
-          Browse All Products
-        </Button>
+        <Link href="/products">
+          <Button>
+            Browse All Products
+          </Button>
+        </Link>
       </div>
     );
   }

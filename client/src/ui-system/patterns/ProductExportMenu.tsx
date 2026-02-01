@@ -83,10 +83,10 @@ export const ProductExportMenu: React.FC<ProductExportMenuProps> = ({
       <Button
         variant="outline"
         size="sm"
-        icon="download"
         onClick={() => setIsOpen(!isOpen)}
         disabled={isExporting}
       >
+        <Icon name="download" size={16} />
         {isExporting ? 'Exporting...' : 'Export'}
       </Button>
 

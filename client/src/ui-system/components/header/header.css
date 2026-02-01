@@ -774,6 +774,7 @@
     /* transition handled by .transition-opacity utility class */
     max-height: calc(100vh - 64px);
     overflow-y: auto;
+    pointer-events: none;
   }
   
   .header__nav--open {
@@ -781,6 +782,7 @@
     opacity: 1;
     transform: translateY(0);
     padding: 5px;
+    pointer-events: auto;
   }
   
   .header__nav-list {

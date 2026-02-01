@@ -20,7 +20,7 @@ export interface AdminEditorField {
 export interface AdminEditorProps {
   title: string;
   breadcrumbs?: { label: string; onClick?: () => void }[];
-  fields: AdminEditorField[];
+  fields?: AdminEditorField[];
   mediaPreview?: {
     imageUrl?: string;
     onRemove: () => void;
@@ -28,24 +28,26 @@ export interface AdminEditorProps {
     onSelect: () => void;
   };
   contentEditor?: React.ReactNode;
-  actions: {
+  actions?: {
     label: string;
     variant: 'primary' | 'secondary';
     onClick: () => void;
   }[];
-  onCancel: () => void;
+  onCancel?: () => void;
   className?: string;
+  children?: React.ReactNode;
 }
 
 export const AdminEditor: React.FC<AdminEditorProps> = ({
   title,
   breadcrumbs = [],
-  fields,
+  fields = [],
   mediaPreview,
   contentEditor,
-  actions,
+  actions = [],
   onCancel,
-  className = ''
+  className = '',
+  children
 }) => {
   const renderField = (field: AdminEditorField) => {
     if (field.render) {
@@ -134,8 +136,13 @@ export const AdminEditor: React.FC<AdminEditorProps> = ({
       {/* Form */}
       <div className="admin-card">
         <div className="admin-card__body">
-          {/* Three-column form layout */}
-          <div className="admin-editor__form-grid">
+          {/* Render children if provided, otherwise render form fields */}
+          {children ? (
+            children
+          ) : (
+            <>
+              {/* Three-column form layout */}
+              <div className="admin-editor__form-grid">
             {/* Column 1: Title and Description */}
             <div className="admin-editor__column admin-editor__column--main">
               <div className="admin-editor__field">
@@ -246,25 +253,31 @@ export const AdminEditor: React.FC<AdminEditorProps> = ({
           )}
 
           {/* Actions */}
-          <div className="admin-editor__actions">
-            <button
-              type="button"
-              className="admin-button admin-button--secondary"
-              onClick={onCancel}
-            >
-              Cancel
-            </button>
-            {actions.map((action, index) => (
-              <button
-                key={index}
-                type="button"
-                className={`admin-button admin-button--${action.variant}`}
-                onClick={action.onClick}
-              >
-                {action.label}
-              </button>
-            ))}
-          </div>
+          {(actions.length > 0 || onCancel) && (
+            <div className="admin-editor__actions">
+              {onCancel && (
+                <button
+                  type="button"
+                  className="admin-button admin-button--secondary"
+                  onClick={onCancel}
+                >
+                  Cancel
+                </button>
+              )}
+              {actions.map((action, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className={`admin-button admin-button--${action.variant}`}
+                  onClick={action.onClick}
+                >
+                  {action.label}
+                </button>
+              ))}
+            </div>
+          )}
+            </>
+          )}
         </div>
       </div>
     </div>

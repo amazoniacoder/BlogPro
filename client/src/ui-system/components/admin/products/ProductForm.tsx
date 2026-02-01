@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../../button';
-import { Input } from '../../form';
+import { Input } from '../../input';
 import { Product } from '../../../../../../shared/types/product';
 import { ProductCategory } from '../../../../../../shared/types/product-category';
 import MediaSelector from '../../../../admin/pages/blog/components/MediaSelector';
@@ -192,18 +192,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     type="button"
                     size="sm"
                     variant="ghost"
-                    icon="edit"
                     onClick={() => setShowMediaPicker(true)}
                   >
+                    <Icon name="edit" size={16} />
                     Change
                   </Button>
                   <Button
                     type="button"
                     size="sm"
                     variant="ghost"
-                    icon="delete"
                     onClick={() => setFormData(prev => ({ ...prev, image: '' }))}
                   >
+                    <Icon name="delete" size={16} />
                     Remove
                   </Button>
                 </div>

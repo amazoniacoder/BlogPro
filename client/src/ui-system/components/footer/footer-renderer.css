@@ -1,0 +1,94 @@
+/* Footer Renderer Styles - BEM Methodology */
+
+.footer-renderer {
+  width: 100%;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-top: 1px solid var(--border-color);
+}
+
+.footer-renderer--loading {
+  padding: var(--space-xl);
+  text-align: center;
+}
+
+.footer-renderer__loading {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.footer-renderer__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+
+/* Grid Layout */
+.footer-renderer--grid .footer-renderer__container {
+  display: grid;
+  align-items: start;
+}
+
+/* Flex Layout */
+.footer-renderer--flex .footer-renderer__container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+}
+
+/* Columns Layout */
+.footer-renderer--columns .footer-renderer__container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Theme Variations */
+.footer-renderer--theme-light {
+  background: #ffffff;
+  color: #333333;
+}
+
+.footer-renderer--theme-dark {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+.footer-renderer--theme-custom {
+  /* Custom theme styles applied via inline styles */
+}
+
+/* Link Styling */
+.footer-renderer a {
+  color: var(--link-color, var(--color-primary));
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer-renderer a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer-renderer--grid .footer-renderer__container {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-lg) !important;
+  }
+
+  .footer-renderer--flex .footer-renderer__container {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .footer-renderer__container {
+    padding: var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-renderer__container {
+    padding: var(--space-sm);
+  }
+}

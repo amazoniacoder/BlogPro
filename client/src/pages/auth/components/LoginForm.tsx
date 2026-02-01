@@ -82,10 +82,10 @@ const LoginForm: React.FC<LoginFormProps> = ({
         type="submit"
         variant="primary"
         size="lg"
-        disabled={formState.isSubmitting}
+        loading={formState.isSubmitting}
         className="auth-form__button"
       >
-        {formState.isSubmitting ? t('loggingIn', 'Logging in...') : t('login')}
+        {t('login')}
       </Button>
     </form>
   );

@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Button } from '../components';
+import { Link } from '../components/typography';
 
 export interface CTAAction {
   label: string;
@@ -52,17 +53,31 @@ export const CTASection: React.FC<CTASectionProps> = ({
           )}
           
           <div className="cta__actions">
-            {actions.map((action, index) => (
-              <Button
-                key={index}
-                variant={action.variant || 'primary'}
-                size="lg"
-                onClick={action.onClick}
-                href={action.href}
-              >
-                {action.label}
-              </Button>
-            ))}
+            {actions.map((action, index) => {
+              if (action.href) {
+                return (
+                  <Link
+                    key={index}
+                    href={action.href}
+                    variant="button"
+                    className={`btn--${action.variant || 'primary'} btn--lg`}
+                  >
+                    {action.label}
+                  </Link>
+                );
+              }
+              
+              return (
+                <Button
+                  key={index}
+                  variant={action.variant || 'primary'}
+                  size="lg"
+                  onClick={action.onClick}
+                >
+                  {action.label}
+                </Button>
+              );
+            })}
           </div>
         </div>
       </div>

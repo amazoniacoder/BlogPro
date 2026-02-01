@@ -15,7 +15,9 @@ import {
   cartItems,
   orders,
   orderItems,
-  paymentTransactions
+  paymentTransactions,
+  footerConfigs,
+  footerHistory
 } from "../../shared/types/schema";
 import * as dotenv from "dotenv";
 
@@ -53,7 +55,9 @@ export const db = drizzle(pool, {
     cartItems,
     orders,
     orderItems,
-    paymentTransactions
+    paymentTransactions,
+    footerConfigs,
+    footerHistory
   } 
 });
 

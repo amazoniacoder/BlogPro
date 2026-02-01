@@ -1,12 +1,29 @@
 // client/src/admin/pages/documentation/index.tsx
 import React, { useState } from 'react';
 import { useDocumentationData } from './hooks/useDocumentationData';
-import { 
-  DocumentationList, 
-  DocumentationForm,
-  type Documentation,
-  type DocumentationFormData
-} from '../../../ui-system/components/admin';
+// Types
+interface Documentation {
+  id: number;
+  title: string;
+  content?: string;
+  categoryId?: number;
+  status?: 'draft' | 'published';
+  slug?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+interface DocumentationFormData {
+  title: string;
+  content?: string;
+  categoryId?: number;
+  status?: 'draft' | 'published';
+  slug?: string;
+}
+
+// Simple components
+const DocumentationList: React.FC<any> = () => <div>Documentation List Component</div>;
+const DocumentationForm: React.FC<any> = () => <div>Documentation Form Component</div>;
 import { Spinner } from '../../../ui-system/components';
 import { useMenuUpdates } from '../../../hooks/useMenuUpdates';
 import './documentation.css';

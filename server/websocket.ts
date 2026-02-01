@@ -86,6 +86,21 @@ export function broadcastCartUpdate(action: 'added' | 'updated' | 'removed' | 'c
 }
 
 /**
+ * Broadcast footer update events to all connected clients
+ * @param action The action performed ('config_updated' | 'preview_updated' | 'block_updated')
+ * @param footerData The footer data
+ */
+export function broadcastFooterUpdate(action: 'config_updated' | 'preview_updated' | 'block_updated', footerData: any): void {
+  const wsInstance = (global as any).wss;
+  
+  broadcastUpdate(wsInstance, `footer:${action}`, {
+    action,
+    data: footerData,
+    timestamp: new Date().toISOString()
+  });
+}
+
+/**
  * Broadcast to all connected WebSocket clients (alias for broadcastUpdate)
  * @param type Event type
  * @param data Event data

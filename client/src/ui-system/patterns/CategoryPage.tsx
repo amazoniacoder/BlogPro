@@ -1,7 +1,6 @@
 import React from 'react';
 import { Spinner } from '@/ui-system/components/feedback';
-import { Button } from '@/ui-system/components/button';
-import { Heading, Text } from '@/ui-system/components/typography';
+import { Heading, Text, Link } from '@/ui-system/components/typography';
 
 export interface CategoryPageProps {
   title: string;
@@ -46,7 +45,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
           <div className="category-page__error">
             <Heading level={1}>Category Not Found</Heading>
             <Text>{error}</Text>
-            <Button href="/blog" variant="primary">Back to Blog</Button>
+            <Link href="/blog" variant="button">Back to Blog</Link>
           </div>
         </div>
       </div>

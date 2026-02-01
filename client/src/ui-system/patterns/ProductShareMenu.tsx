@@ -64,9 +64,9 @@ export const ProductShareMenu: React.FC<ProductShareMenuProps> = ({
       <Button
         variant="outline"
         size="sm"
-        icon="share"
         onClick={() => setIsOpen(!isOpen)}
       >
+        <Icon name="share" size={16} />
         Share
       </Button>
 

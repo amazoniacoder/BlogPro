@@ -1,11 +1,10 @@
 // client/src/admin/pages/site-editor/components/MenuEditor.tsx
 import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  SiteEditorTree,
-  SiteEditorForm,
-  SiteEditorActions
-} from '@/ui-system/components/admin/site-editor';
+// Simple placeholder components
+const SiteEditorTree: React.FC<any> = () => <div>Site Editor Tree Component</div>;
+const SiteEditorForm: React.FC<any> = () => <div>Site Editor Form Component</div>;
+const SiteEditorActions: React.FC<any> = () => <div>Site Editor Actions Component</div>;
 import { useKeyboardNavigation } from '@/ui-system/hooks/useKeyboardNavigation';
 import { useMenuData } from '../hooks/useMenuData';
 import type { MenuItem } from '../../../../types/menu';

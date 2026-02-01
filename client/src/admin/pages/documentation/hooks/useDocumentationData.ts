@@ -4,10 +4,24 @@ import { documentationApi } from '../../../../services/api/documentation';
 import { menuApi } from '../../../../services/api/menu';
 import { websocketService } from '../../../../services/websocket-service';
 import { documentationReducer, initialState } from '../state/reducer';
-import type { 
-  DocumentationFormData,
-  UseDocumentationDataReturn 
-} from '../../../../ui-system/components/admin';
+// Types
+interface DocumentationFormData {
+  title: string;
+  content?: string;
+  categoryId?: number;
+  status?: 'draft' | 'published';
+  slug?: string;
+}
+
+interface UseDocumentationDataReturn {
+  documentation: any[] | null;
+  categories: any[] | null;
+  loading: boolean;
+  error: string | null;
+  createDocument: (data: DocumentationFormData) => Promise<void>;
+  updateDocument: (id: number, data: DocumentationFormData) => Promise<void>;
+  deleteDocument: (id: number) => Promise<void>;
+}
 
 export const useDocumentationData = (): UseDocumentationDataReturn => {
   const [state, dispatch] = useReducer(documentationReducer, initialState);
@@ -46,7 +60,12 @@ export const useDocumentationData = (): UseDocumentationDataReturn => {
 
   const createDocument = useCallback(async (data: DocumentationFormData): Promise<void> => {
     try {
-      const newDocument = await documentationApi.createDocumentation(data);
+      // Generate slug if not provided
+      const documentData = {
+        ...data,
+        slug: data.slug || data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+      };
+      const newDocument = await documentationApi.createDocumentation(documentData);
       dispatch({ type: 'DOCUMENTATION/CREATE_SUCCESS', document: newDocument });
     } catch (err) {
       dispatch({ type: 'DOCUMENTATION/FETCH_FAILURE', error: 'Ошибка создания документа' });

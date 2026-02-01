@@ -82,17 +82,19 @@ export const ProductList: React.FC<ProductListProps> = ({
                 <Button
                   size="sm"
                   variant="ghost"
-                  icon="edit"
                   onClick={() => onEdit(product)}
                   title="Edit product"
-                />
+                >
+                  <Icon name="edit" size={16} />
+                </Button>
                 <Button
                   size="sm"
                   variant="ghost"
-                  icon="delete"
                   onClick={() => onDelete(product.id)}
                   title="Delete product"
-                />
+                >
+                  <Icon name="delete" size={16} />
+                </Button>
               </div>
             </div>
           </div>

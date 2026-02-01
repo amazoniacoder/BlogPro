@@ -372,3 +372,23 @@ export const paymentTransactions = pgTable('payment_transactions', {
   createdAt: timestamp('created_at').defaultNow()
 });
 
+// Footer Editor Tables
+export const footerConfigs = pgTable('footer_configs', {
+  id: serial('id').primaryKey(),
+  version: integer('version').notNull().default(1),
+  isActive: boolean('is_active').default(false),
+  config: jsonb('config').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+  createdBy: varchar('created_by').references(() => users.id, { onDelete: 'set null' })
+});
+
+export const footerHistory = pgTable('footer_history', {
+  id: serial('id').primaryKey(),
+  footerConfigId: integer('footer_config_id').references(() => footerConfigs.id, { onDelete: 'cascade' }),
+  config: jsonb('config').notNull(),
+  changeDescription: text('change_description'),
+  createdAt: timestamp('created_at').defaultNow(),
+  createdBy: varchar('created_by').references(() => users.id, { onDelete: 'set null' })
+});
+

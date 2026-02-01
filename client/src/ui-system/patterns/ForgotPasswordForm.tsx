@@ -40,8 +40,8 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     }
   };
 
-  const handleBackClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleBackClick = (e?: React.MouseEvent) => {
+    e?.preventDefault();
     if (onBackToLogin) {
       onBackToLogin();
     }

@@ -16,11 +16,15 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   onSave, 
   onCancel 
 }) => {
+  const handleSave = async (data: any) => {
+    onSave(data);
+  };
+
   return (
     <UICategoryForm 
-      category={category}
-      categories={categories}
-      onSave={onSave}
+      editingCategory={category as any}
+      categories={categories as any}
+      onSave={handleSave}
       onCancel={onCancel}
     />
   );

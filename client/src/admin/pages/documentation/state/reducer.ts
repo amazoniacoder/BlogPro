@@ -1,5 +1,22 @@
 // client/src/admin/pages/documentation/state/reducer.ts
-import type { Documentation, DocumentationCategory } from '../../../../ui-system/components/admin';
+// Types
+interface Documentation {
+  id: number;
+  title: string;
+  content?: string;
+  categoryId?: number;
+  status?: 'draft' | 'published';
+  slug?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+interface DocumentationCategory {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+}
 
 export interface DocumentationState {
   documents: Documentation[];

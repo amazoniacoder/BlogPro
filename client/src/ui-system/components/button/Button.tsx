@@ -1,105 +1,80 @@
-/**
- * BlogPro Button Component
- * Unified button system with TypeScript support
- */
-
 import React from 'react';
-import { Link } from 'wouter';
-import { Icon, IconName } from '../../icons/components';
-import './index.css';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
-  fullWidth?: boolean;
-  loading?: boolean;
-  disabled?: boolean;
-  icon?: IconName;
-  iconPosition?: 'left' | 'right';
+export interface ButtonProps {
   children?: React.ReactNode;
+  onClick?: (e?: React.MouseEvent) => void;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'outline' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  className?: string;
+  fullWidth?: boolean;
+  style?: React.CSSProperties;
+  title?: string;
+  // Extended props for compatibility
   as?: 'button' | 'a';
   href?: string;
+  loading?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
+  children,
+  onClick,
+  type = 'button',
   variant = 'primary',
   size = 'md',
-  fullWidth = false,
-  loading = false,
   disabled = false,
-  icon,
-  iconPosition = 'left',
-  children,
   className = '',
+  fullWidth = false,
+  style,
+  title,
   as = 'button',
   href,
+  loading = false,
   ...props
 }) => {
-  const baseClasses = [
-    'btn',
-    'relative',
-    'cursor-pointer',
-    'no-underline',
-    'items-center',
-    'justify-center',
-    'overflow-hidden',
-    `btn--${variant}`,
-    variant === 'ghost' && 'text-primary',
-    size !== 'md' && `btn--${size}`,
-    fullWidth && 'btn--full',
-    fullWidth && 'w-full',
-    loading && 'btn--loading',
-    (disabled || loading) && 'disabled',
-    className
-  ].filter(Boolean).join(' ');
+  const baseClasses = 'button';
+  const variantClasses = `button--${variant}`;
+  const sizeClasses = `button--${size}`;
+  const fullWidthClass = fullWidth ? 'button--full-width' : '';
+  const loadingClass = loading ? 'button--loading' : '';
+  
+  const classes = [baseClasses, variantClasses, sizeClasses, fullWidthClass, loadingClass, className]
+    .filter(Boolean)
+    .join(' ');
 
-  const iconSize = {
-    sm: 14,
-    md: 16,
-    lg: 18
-  }[size];
+  const isDisabled = disabled || loading;
 
-  const renderIcon = () => {
-    if (!icon) return null;
-    
+  // Render as link if href is provided or as prop is 'a'
+  if (as === 'a' || href) {
     return (
-      <Icon
-        name={icon}
-        size={iconSize}
-        className={`btn__icon ${iconPosition === 'right' ? 'btn__icon--right' : ''}`}
-      />
-    );
-  };
-
-  const renderContent = () => (
-    <>
-      {icon && iconPosition === 'left' && renderIcon()}
-      {children && <span className="btn__text">{children}</span>}
-      {icon && iconPosition === 'right' && renderIcon()}
-    </>
-  );
-
-  if (as === 'a') {
-    return (
-      <Link
-        href={href || '#'}
-        className={baseClasses}
-        aria-disabled={disabled || loading}
-        {...(props as any)}
+      <a
+        href={href}
+        onClick={onClick}
+        className={classes}
+        style={style}
+        title={title}
+        {...(isDisabled && { 'aria-disabled': true })}
+        {...props}
       >
-        {renderContent()}
-      </Link>
+        {loading && <span className="button__spinner" />}
+        {children}
+      </a>
     );
   }
 
   return (
     <button
-      className={baseClasses}
-      disabled={disabled || loading}
-      type="button"
+      type={type}
+      onClick={onClick}
+      disabled={isDisabled}
+      className={classes}
+      style={style}
+      title={title}
       {...props}
     >
-      {renderContent()}
+      {loading && <span className="button__spinner" />}
+      {children}
     </button>
   );
 };

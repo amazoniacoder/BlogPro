@@ -66,9 +66,10 @@ export const MediaLibraryPicker: React.FC<MediaLibraryPickerProps> = ({
         <Button
           variant="ghost"
           size="sm"
-          icon="x"
           onClick={onCancel}
-        />
+        >
+          <Icon name="x" size={16} />
+        </Button>
       </div>
 
       <div className="media-library-picker__filters">

@@ -171,8 +171,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         type="submit"
         variant="primary"
         size="lg"
+        loading={formState.isSubmitting}
         disabled={
-          formState.isSubmitting ||
           !formState.agreeToTerms ||
           formState.password !== formState.confirmPassword ||
           !formState.captchaVerified ||
@@ -180,7 +180,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         }
         className="auth-form__button"
       >
-        {formState.isSubmitting ? t('creatingAccount', 'Creating Account...') : t('register')}
+        {t('register')}
       </Button>
     </form>
   );

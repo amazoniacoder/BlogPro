@@ -155,10 +155,9 @@ export function CommentItem({
                       variant="primary" 
                       size="sm"
                       disabled={isUpdating}
-                      loading={isUpdating}
                     >
                       <Icon name="save" size={16} />
-                      Save
+                      {isUpdating ? 'Saving...' : 'Save'}
                     </Button>
                     <Button 
                       type="button" 
